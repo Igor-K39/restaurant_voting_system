@@ -3,14 +3,29 @@ package ru.kopyshev.rvs.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
+
+import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Size;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "restaurant")
+@Access(AccessType.FIELD)
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Restaurant extends NamedEntity {
 
+    @NotBlank
+    @Size(min = 8, max = 120)
+    @Column(name = "address")
     private String address;
 
+    @NotBlank
+    @Size(min = 8, max = 80)
+    @Column(name = "website")
     private String website;
 
     public Restaurant(Restaurant r) {
@@ -29,7 +44,7 @@ public class Restaurant extends NamedEntity {
 
     @Override
     public String toString() {
-        return "Restaurant{" +
+        return getClass().getSimpleName() + "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", address='" + address + '\'' +

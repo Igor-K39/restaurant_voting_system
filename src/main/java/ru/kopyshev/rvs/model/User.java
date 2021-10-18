@@ -4,24 +4,52 @@ package ru.kopyshev.rvs.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.hibernate.annotations.BatchSize;
+import org.hibernate.annotations.OnDelete;
+import org.hibernate.annotations.OnDeleteAction;
 
+import javax.persistence.*;
+import javax.validation.constraints.Email;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import java.util.Date;
-import java.util.EnumSet;
 import java.util.Set;
 
 @Getter
 @Setter
 @NoArgsConstructor
+@Entity
+@Table(name = "users")
+@Access(AccessType.FIELD)
 public class User extends NamedEntity {
 
+    @Email
+    @NotNull
+    @Size(min = 5, max = 50)
+    @Column(name = "email", nullable = false, unique = true)
     private String email;
 
+    @NotBlank
+    @Size(min = 8, max = 255)
+    @Column(name = "password", nullable = false)
     private String password;
 
+    @Column(name = "enabled", nullable = false, columnDefinition = "bool default true")
     private boolean enabled;
 
+    @NotNull
+    @Column(name = "registered", nullable = false, columnDefinition = "timestamp default now()")
     private Date registered = new Date();
 
+    @Column(name = "role")
+    @Enumerated(EnumType.STRING)
+    @CollectionTable(name = "user_roles", joinColumns = @JoinColumn(name = "user_id"),
+            uniqueConstraints = {@UniqueConstraint(columnNames = {"user_id", "role"}, name = "uk_user_roles")})
+    @ElementCollection(fetch = FetchType.EAGER)
+    @BatchSize(size = 200)
+    @JoinColumn(name = "id")
+    @OnDelete(action = OnDeleteAction.CASCADE)
     private Set<Role> roles = Set.of();
 
     public User(User u) {
@@ -46,7 +74,7 @@ public class User extends NamedEntity {
     }
 
     public Set<Role> getRoles() {
-        return EnumSet.copyOf(roles);
+        return Set.copyOf(roles);
     }
 
     public void setRoles(Set<Role> roles) {
@@ -55,7 +83,7 @@ public class User extends NamedEntity {
 
     @Override
     public String toString() {
-        return "User{" +
+        return getClass().getSimpleName() + "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
                 ", email='" + email + '\'' +
