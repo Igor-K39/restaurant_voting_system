@@ -1,7 +1,13 @@
 package ru.kopyshev.rvs;
 
 import lombok.experimental.UtilityClass;
+import org.springframework.test.web.servlet.MvcResult;
+import org.springframework.test.web.servlet.ResultActions;
+import org.springframework.test.web.servlet.ResultMatcher;
+import ru.kopyshev.rvs.util.JsonUtil;
 
+import java.io.UnsupportedEncodingException;
+import java.util.Arrays;
 import java.util.List;
 import java.util.function.BiConsumer;
 
@@ -44,6 +50,34 @@ public class MatcherFactory {
         public final void assertMatch(Iterable<T> actual, T... expected) {
             var listExpected = List.of(expected);
             iterableAssertion.accept(actual, listExpected);
+        }
+
+        public ResultMatcher contentJson(T tExpected) {
+            return result -> {
+                T tActual = JsonUtil.readValue(getContent(result), tClass);
+                assertMatch(tActual, tExpected);
+            };
+        }
+
+        public ResultMatcher contentJson(Iterable<T> tExpected) {
+            return result -> {
+                List<T> tActual = JsonUtil.readValues(getContent(result), tClass);
+                assertMatch(tActual, tExpected);
+            };
+        }
+
+        @SafeVarargs
+        public final ResultMatcher contentJson(T... tExpected) {
+            return contentJson(Arrays.asList(tExpected));
+        }
+
+        public T readFromJson(ResultActions actions) throws UnsupportedEncodingException {
+            String content = getContent(actions.andReturn());
+            return JsonUtil.readValue(content, tClass);
+        }
+
+        public String getContent(MvcResult result) throws UnsupportedEncodingException {
+            return result.getResponse().getContentAsString();
         }
     }
 }
