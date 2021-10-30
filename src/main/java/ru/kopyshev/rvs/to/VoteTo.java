@@ -1,5 +1,6 @@
 package ru.kopyshev.rvs.to;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
@@ -39,10 +40,12 @@ public class VoteTo extends BaseTo {
         this.dateTime = dateTime;
     }
 
+    @JsonIgnore
     public LocalDate getLocalDate() {
         return dateTime.toLocalDate();
     }
 
+    @JsonIgnore
     public LocalTime getLocalTime() {
         return dateTime.toLocalTime();
     }
