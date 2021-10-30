@@ -3,6 +3,7 @@ package ru.kopyshev.rvs;
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.model.Dish;
+import ru.kopyshev.rvs.to.DishTo;
 
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
@@ -12,6 +13,7 @@ import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_2;
 public class DishTestData {
 
     public static final Matcher<Dish> DISH_MATCHER = usingIgnoreFieldComparator(Dish.class, "restaurant");
+    public static final Matcher<DishTo> DISH_TO_MATCHER = usingIgnoreFieldComparator(DishTo.class);
     public static final int DISH_ID_1 = 100_004;
     public static final int DISH_ID_2 = 100_005;
     public static final int DISH_ID_3 = 100_006;
