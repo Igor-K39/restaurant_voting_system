@@ -1,4 +1,5 @@
-## Graduation web project "Restaurant voting system"
+[![Codacy Badge](https://app.codacy.com/project/badge/Grade/22b5188f5b21463da9201889d6b7692f)](https://www.codacy.com/gh/Igor-K39/restaurant_voting_system/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=Igor-K39/restaurant_voting_system&amp;utm_campaign=Badge_Grade) 
+# Restaurant voting system (updated)
 
 Design and implement a REST API using Hibernate/Spring/SpringMVC (or Spring-Boot) **without frontend**.
 
