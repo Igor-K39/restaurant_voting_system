@@ -19,6 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestData.DATE_1;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.USER;
 import static ru.kopyshev.rvs.UserTestData.USER_ID;
 import static ru.kopyshev.rvs.VoteTestData.VOTE_TO_MATCHER;
@@ -33,7 +34,8 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
     @Test
     void voteUp() throws Exception {
         perform(MockMvcRequestBuilders.post(restUrl)
-                .param("restaurant", String.valueOf(RESTAURANT_ID_1)))
+                .param("restaurant", String.valueOf(RESTAURANT_ID_1))
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         var votes = service.getAll(USER_ID, LocalDate.now(), LocalDate.now());
@@ -44,7 +46,8 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
     @Test
     void cancelVote() throws Exception {
         int id = service.voteUp(USER, RESTAURANT_1).id();
-        perform(MockMvcRequestBuilders.post(restUrl + "/cancel"))
+        perform(MockMvcRequestBuilders.post(restUrl + "/cancel")
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         Assertions.assertThrows(NotFoundException.class, () -> service.get(id));
@@ -55,7 +58,8 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
         var votes = service.getAll(USER_ID, DATE_1, DATE_1);
         perform(MockMvcRequestBuilders.get(restUrl)
                 .param("start", DATE_1.toString())
-                .param("end", DATE_1.toString()))
+                .param("end", DATE_1.toString())
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

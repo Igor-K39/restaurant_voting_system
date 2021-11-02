@@ -20,6 +20,7 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.*;
 
 public class AdminRestControllerTest extends AbstractControllerTest {
@@ -34,6 +35,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         var userTo = UserUtil.getToFromUser(UserTestData.getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(userTo)))
                 .andDo(print())
@@ -48,7 +50,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        perform(MockMvcRequestBuilders.get(restUrl + ADMIN_ID))
+        perform(MockMvcRequestBuilders.get(restUrl + ADMIN_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -57,7 +60,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void getAll() throws Exception  {
-        perform(MockMvcRequestBuilders.get(restUrl))
+        perform(MockMvcRequestBuilders.get(restUrl)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -67,7 +71,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getByEmail() throws Exception  {
         perform(MockMvcRequestBuilders.get(restUrl + "/by")
-                .param("email", ADMIN.getEmail()))
+                .param("email", ADMIN.getEmail())
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -79,6 +84,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         UserTo updated = UserUtil.getToFromUser(UserTestData.getUpdated(USER));
 
         perform(MockMvcRequestBuilders.patch(restUrl + USER_ID)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
@@ -90,7 +96,8 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception  {
-        perform(MockMvcRequestBuilders.delete(restUrl + USER_ID))
+        perform(MockMvcRequestBuilders.delete(restUrl + USER_ID)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 

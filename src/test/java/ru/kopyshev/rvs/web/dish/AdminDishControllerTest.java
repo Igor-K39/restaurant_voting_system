@@ -19,6 +19,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kopyshev.rvs.DishTestData.*;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
+import static ru.kopyshev.rvs.UserTestData.ADMIN;
 
 class AdminDishControllerTest extends AbstractControllerTest {
     private static final String restUrl = "/rest/admin/restaurants/";
@@ -32,6 +34,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
         var json = JsonUtil.writeValue(dish);
 
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl + RESTAURANT_ID_1 + "/dishes")
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(json))
                 .andDo(print())
@@ -46,7 +49,8 @@ class AdminDishControllerTest extends AbstractControllerTest {
     @Test
     void get() throws Exception {
         var dishTo = DishUtil.getToFromDish(DISH_1);
-        perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/dishes/" + DISH_ID_1))
+        perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/dishes/" + DISH_ID_1)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -58,6 +62,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
         var dishTo = DishUtil.getToFromDish(DISH_1);
         dishTo.setName("new name");
         perform(MockMvcRequestBuilders.put(restUrl + RESTAURANT_ID_1 + "/dishes/" + DISH_ID_1)
+                .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(dishTo)))
                 .andDo(print())
@@ -68,7 +73,8 @@ class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(restUrl + RESTAURANT_ID_1 + "/dishes/" + DISH_ID_1))
+        perform(MockMvcRequestBuilders.delete(restUrl + RESTAURANT_ID_1 + "/dishes/" + DISH_ID_1)
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         Assertions.assertThrows(NotFoundException.class, () -> service.get(DISH_ID_1, RESTAURANT_ID_1));
@@ -78,7 +84,8 @@ class AdminDishControllerTest extends AbstractControllerTest {
     void getAll() throws Exception {
         var dishes = service.getAll(RESTAURANT_ID_1);
         var tos = DishUtil.getToFromDish(dishes);
-        perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/dishes"))
+        perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/dishes")
+                .with(userHttpBasic(ADMIN)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(DISH_TO_MATCHER.contentJson(tos));

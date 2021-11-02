@@ -17,6 +17,7 @@ import ru.kopyshev.rvs.web.AbstractControllerTest;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.*;
 import static ru.kopyshev.rvs.web.user.ProfileRestController.REST_URL;
 
@@ -29,6 +30,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         var userTo = UserUtil.getToFromUser(UserTestData.getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
+                .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(userTo)))
                 .andDo(print())
@@ -44,7 +46,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void get() throws Exception {
         UserTo expected  = UserUtil.getToFromUser(UserTestData.USER);
-        perform(MockMvcRequestBuilders.get(REST_URL))
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -59,6 +62,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
         expected.setEmail(UserTestData.USER_UPDATED_EMAIL);
 
         perform(MockMvcRequestBuilders.patch(REST_URL)
+                .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
                 .andDo(print())
@@ -70,7 +74,8 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void delete() throws Exception {
-        perform(MockMvcRequestBuilders.delete(REST_URL))
+        perform(MockMvcRequestBuilders.delete(REST_URL)
+                .with(userHttpBasic(USER)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
