@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.DishTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.DishService;
 import ru.kopyshev.rvs.to.DishTo;
@@ -30,7 +29,7 @@ class AdminDishControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        var dish = DishTestData.getNew();
+        var dish = getNew();
         var json = JsonUtil.writeValue(dish);
 
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl + RESTAURANT_ID_1 + "/dishes")

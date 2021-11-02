@@ -37,7 +37,7 @@ public abstract class AbstractRestaurantController {
 
     protected void update(RestaurantTo restaurantTo, int id) {
         log.info("updating restaurant with id = {} by restaurantTo {}", id, restaurantTo);
-        var restaurant = RestaurantUtil.getRestaurantFromTo(restaurantTo);
+        var restaurant = getRestaurantFromTo(restaurantTo);
         service.update(restaurant, id);
     }
 

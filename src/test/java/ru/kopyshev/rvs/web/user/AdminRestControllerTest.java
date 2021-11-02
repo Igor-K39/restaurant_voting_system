@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.UserTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
 import ru.kopyshev.rvs.to.UserTo;
@@ -33,7 +32,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void create() throws Exception {
-        var userTo = UserUtil.getToFromUser(UserTestData.getNew());
+        var userTo = UserUtil.getToFromUser(getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl)
                 .with(userHttpBasic(ADMIN))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -81,7 +80,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void patch() throws Exception  {
-        UserTo updated = UserUtil.getToFromUser(UserTestData.getUpdated(USER));
+        UserTo updated = UserUtil.getToFromUser(getUpdated(USER));
 
         perform(MockMvcRequestBuilders.patch(restUrl + USER_ID)
                 .with(userHttpBasic(ADMIN))

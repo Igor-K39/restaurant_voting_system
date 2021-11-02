@@ -5,7 +5,6 @@ import org.springframework.context.annotation.*;
 import ru.kopyshev.rvs.repository.CrudVoteRepository;
 import ru.kopyshev.rvs.service.VoteService;
 
-import javax.persistence.EntityManager;
 import java.time.*;
 
 @Configuration
@@ -18,9 +17,6 @@ import java.time.*;
 public class SpringApplicationConfigTest {
     @Autowired
     private CrudVoteRepository voteRepository;
-
-    @Autowired
-    private EntityManager entityManager;
 
     public static final Clock testClockNotExpired =
             Clock.fixed(LocalDateTime

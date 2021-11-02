@@ -41,7 +41,7 @@ public class MenuServiceTest extends AbstractServiceTest {
 
     @Test
     void update() {
-        MenuItem expected = MenuTestData.getUpdated(ITEM_1, DISH_2);
+        MenuItem expected = getUpdated(ITEM_1, DISH_2);
         service.update(expected, ITEM_ID_1);
         MenuItem actual = service.get(ITEM_ID_1);
         MENU_ITEM_MATCHER.assertMatch(actual, expected);
@@ -132,7 +132,7 @@ public class MenuServiceTest extends AbstractServiceTest {
 
     @Test
     void updateNotConsistent() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> service.update(MenuTestData.getUpdated(ITEM_1, DISH_2), NOT_FOUND_ID));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> service.update(getUpdated(ITEM_1, DISH_2), NOT_FOUND_ID));
     }
 
     @Test

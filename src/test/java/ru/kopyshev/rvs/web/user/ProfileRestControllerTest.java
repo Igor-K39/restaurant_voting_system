@@ -6,7 +6,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.UserTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
 import ru.kopyshev.rvs.to.UserTo;
@@ -28,7 +27,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void create() throws Exception {
-        var userTo = UserUtil.getToFromUser(UserTestData.getNew());
+        var userTo = UserUtil.getToFromUser(getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
                 .with(userHttpBasic(USER))
                 .contentType(MediaType.APPLICATION_JSON)
@@ -45,7 +44,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        UserTo expected  = UserUtil.getToFromUser(UserTestData.USER);
+        UserTo expected  = UserUtil.getToFromUser(USER);
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(USER)))
                 .andExpect(status().isOk())
@@ -56,10 +55,10 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void patch() throws Exception {
-        UserTo expected = UserUtil.getToFromUser(UserTestData.USER);
-        expected.setName(UserTestData.USER_UPDATED_NAME);
-        expected.setPassword(UserTestData.USER_UPDATED_PASSWORD);
-        expected.setEmail(UserTestData.USER_UPDATED_EMAIL);
+        UserTo expected = UserUtil.getToFromUser(USER);
+        expected.setName(USER_UPDATED_NAME);
+        expected.setPassword(USER_UPDATED_PASSWORD);
+        expected.setEmail(USER_UPDATED_EMAIL);
 
         perform(MockMvcRequestBuilders.patch(REST_URL)
                 .with(userHttpBasic(USER))
