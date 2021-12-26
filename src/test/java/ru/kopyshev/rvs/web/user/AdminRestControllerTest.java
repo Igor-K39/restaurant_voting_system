@@ -34,7 +34,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         var userTo = UserUtil.getToFromUser(getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl)
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(userTo)))
                 .andDo(print())
@@ -50,7 +50,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void get() throws Exception {
         perform(MockMvcRequestBuilders.get(restUrl + ADMIN_ID)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -60,7 +60,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void getAll() throws Exception  {
         perform(MockMvcRequestBuilders.get(restUrl)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -71,7 +71,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     void getByEmail() throws Exception  {
         perform(MockMvcRequestBuilders.get(restUrl + "/by")
                 .param("email", ADMIN.getEmail())
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -83,7 +83,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
         UserTo updated = UserUtil.getToFromUser(getUpdated(USER));
 
         perform(MockMvcRequestBuilders.patch(restUrl + USER_ID)
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(updated)))
                 .andDo(print())
@@ -96,7 +96,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
     @Test
     void delete() throws Exception  {
         perform(MockMvcRequestBuilders.delete(restUrl + USER_ID)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 

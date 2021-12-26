@@ -29,7 +29,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     void create() throws Exception {
         var userTo = UserUtil.getToFromUser(getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(REST_URL + "/register")
-                .with(userHttpBasic(USER))
+                .with(userHttpBasic(USER_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(userTo)))
                 .andDo(print())
@@ -46,7 +46,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     void get() throws Exception {
         UserTo expected  = UserUtil.getToFromUser(USER);
         perform(MockMvcRequestBuilders.get(REST_URL)
-                .with(userHttpBasic(USER)))
+                .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isOk())
                 .andDo(print())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
@@ -61,7 +61,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
         expected.setEmail(USER_UPDATED_EMAIL);
 
         perform(MockMvcRequestBuilders.patch(REST_URL)
-                .with(userHttpBasic(USER))
+                .with(userHttpBasic(USER_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(expected)))
                 .andDo(print())
@@ -74,7 +74,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
     @Test
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(REST_URL)
-                .with(userHttpBasic(USER)))
+                .with(userHttpBasic(USER_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 

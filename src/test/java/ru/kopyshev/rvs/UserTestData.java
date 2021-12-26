@@ -20,10 +20,20 @@ public class UserTestData {
 
     public static final int USER_ID = 100_000;
     public static final int ADMIN_ID = 100_001;
+    public static final String USER_PASSWORD_ENCODED = "$2a$10$Xg5LHE.UX/3kOM2wGn/8cegWuSovUfaw2Y.9Tx7k8nRbf0SvycvYW";
+    public static final String ADMIN_PASSWORD_ENCODED = "$2a$10$I8BSO9meeinTKz5pXvqi4uK2nncdU4Krj/PscmAjgKzYgFFhFlCHi";
+    public static final String USER_PASSWORD = "user_password";
+    public static final String ADMIN_PASSWORD = "admin_password";
+
     public static final
-    User USER = new User(100_000, "User", "user.sd@gmail.com", "{noop}user_password", Set.of(Role.USER));
+    User USER = new User(100_000, "User", "user.sd@gmail.com", USER_PASSWORD_ENCODED, Set.of(Role.USER));
     public static final
-    User ADMIN = new User(100_001, "Admin", "admin.sd@gmail.com", "{noop}admin_password", Set.of(Role.ADMIN));
+    User ADMIN = new User(100_001, "Admin", "admin.sd@gmail.com", ADMIN_PASSWORD_ENCODED, Set.of(Role.ADMIN));
+
+    public static final
+    User USER_AUTH = new User(100_000, "User", "user.sd@gmail.com", USER_PASSWORD, Set.of(Role.USER));
+    public static final
+    User ADMIN_AUTH = new User(100_001, "Admin", "admin.sd@gmail.com", ADMIN_PASSWORD, Set.of(Role.ADMIN));
 
     public static final String USER_UPDATED_NAME = "Updated Elk";
     public static final String USER_UPDATED_EMAIL = "updated.little.elk@gmail.com";

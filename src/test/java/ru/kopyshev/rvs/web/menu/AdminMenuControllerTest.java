@@ -26,7 +26,7 @@ import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 import static ru.kopyshev.rvs.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.ADMIN;
+import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
 import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 
 class AdminMenuControllerTest extends AbstractControllerTest {
@@ -48,7 +48,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
         System.out.println(menuTo);
 
         perform(MockMvcRequestBuilders.post(restUrl + "menu")
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(menuTo)))
                 .andDo(print())
@@ -64,7 +64,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
         var menuTos = MenuUtil.getMenuTos(service.getAll(RESTAURANT_ID_1, DATE_1, DATE_1));
 
         perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/menu")
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .param("start", DATE_1.toString())
                 .param("end", DATE_1.toString()))
                 .andDo(print())
@@ -76,9 +76,9 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @Test
     void getAll() throws Exception {
         var menuTos = MenuUtil.getMenuTos(service.getAll(DATE_1, DATE_2));
-        menuTos.forEach(System.out::println);
+
         perform(MockMvcRequestBuilders.get(restUrl + "/menu")
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .param("start", DATE_1.toString())
                 .param("end", DATE_2.toString()))
                 .andDo(print())
@@ -98,7 +98,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
         var menuTo = MenuUtil.getMenuTo(RESTAURANT_1, DATE_1, menuItems);
 
         perform(MockMvcRequestBuilders.put(restUrl + "menu")
-                .with(userHttpBasic(ADMIN))
+                .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(JsonUtil.writeValue(menuTo)))
                 .andDo(print())
@@ -112,7 +112,7 @@ class AdminMenuControllerTest extends AbstractControllerTest {
     @Test
     void delete() throws Exception {
         perform(MockMvcRequestBuilders.delete(restUrl + RESTAURANT_ID_1+ "/menu/" + DATE_1)
-                .with(userHttpBasic(ADMIN)))
+                .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
         System.out.println("ALL");
