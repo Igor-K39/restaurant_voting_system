@@ -34,7 +34,10 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests().antMatchers("/rest/restaurants/**").permitAll()
+                .authorizeRequests()
+                .antMatchers("/swagger-ui/", "/swagger-ui/**", "/swagger-resources/**", "/v2/**").permitAll()
+                .antMatchers("/webjars/**").permitAll()
+                .antMatchers("/rest/restaurants/**").permitAll()
                 .and().authorizeRequests().antMatchers("/rest/profile").hasAnyRole("USER", "ADMIN")
                 .and().authorizeRequests().antMatchers("/rest/admin/**").hasRole("ADMIN")
                 .and().authorizeRequests().antMatchers("/rest/votes").hasRole("USER")

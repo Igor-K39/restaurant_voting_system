@@ -14,12 +14,8 @@ import static ru.kopyshev.rvs.config.ApplicationProperties.SECURITY_FILTER_NAME;
 public class MainWebInitializer implements WebApplicationInitializer {
     @Override
     public void onStartup(ServletContext servletContext) {
+
         AnnotationConfigWebApplicationContext rootContext = new AnnotationConfigWebApplicationContext();
-        rootContext.register(SpringDataJpaConfig.class);
-        rootContext.register(SpringApplicationConfig.class);
-        rootContext.register(SpringWebMvc.class);
-        rootContext.register(SpringSecurityConfig.class);
-        rootContext.setDisplayName("RVS");
 
         ContextLoaderListener contextLoaderListener = new ContextLoaderListener(rootContext);
         servletContext.addListener(contextLoaderListener);
@@ -30,7 +26,12 @@ public class MainWebInitializer implements WebApplicationInitializer {
                 servletContext.addServlet("mvc-dispatcher", new DispatcherServlet(rootContext));
         dispatcher.setLoadOnStartup(1);
         dispatcher.addMapping("/");
+
+        rootContext.register(SpringDataJpaConfig.class);
+        rootContext.register(SpringApplicationConfig.class);
+        rootContext.register(SpringWebMvc.class);
+        rootContext.register(SpringSecurityConfig.class);
+        rootContext.register(SpringFoxConfig.class);
+        rootContext.setDisplayName("RVS");
     }
-
-
 }
