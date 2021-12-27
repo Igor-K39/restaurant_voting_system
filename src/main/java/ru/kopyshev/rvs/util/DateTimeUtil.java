@@ -8,9 +8,9 @@ import java.util.Objects;
 @UtilityClass
 public class DateTimeUtil {
 
-    private static final LocalDate max = LocalDate.parse("3000-01-01");
+    private static final LocalDate max = LocalDate.now().plusYears(300);
 
-    private static final LocalDate min = LocalDate.parse("1000-01-01");
+    private static final LocalDate min = LocalDate.now().minusYears(300);
 
     public static LocalDate getMaxDate() {
         return max;
