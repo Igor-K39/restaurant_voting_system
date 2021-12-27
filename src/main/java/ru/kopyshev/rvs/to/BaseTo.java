@@ -4,13 +4,14 @@ import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import ru.kopyshev.rvs.HasId;
 
 import java.util.Objects;
 
 @Getter
 @Setter
 @NoArgsConstructor
-public class BaseTo {
+public class BaseTo implements HasId {
 
     protected Integer id;
 

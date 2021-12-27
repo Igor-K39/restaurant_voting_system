@@ -2,6 +2,7 @@ package ru.kopyshev.rvs.model;
 
 import lombok.*;
 import org.springframework.util.Assert;
+import ru.kopyshev.rvs.HasId;
 
 import javax.persistence.*;
 import java.util.Objects;
@@ -11,7 +12,7 @@ import java.util.Objects;
 @NoArgsConstructor
 @MappedSuperclass
 @Access(AccessType.FIELD)
-public abstract class BaseEntity {
+public abstract class BaseEntity implements HasId {
     public static final int START_SEQ = 100_000;
 
     @Id
