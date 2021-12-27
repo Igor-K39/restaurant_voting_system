@@ -4,16 +4,16 @@ import lombok.experimental.UtilityClass;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
+import ru.kopyshev.rvs.HasId;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.BaseEntity;
 
 @UtilityClass
 public class ValidationUtil {
 
-    public static void checkNew(BaseEntity entity) {
-        Assert.notNull(entity, "The entity must not be null");
-        if (!entity.isNew()) {
-            throw new IllegalArgumentException(entity + " must be new (id == null)");
+    public static void checkNew(HasId bean) {
+        Assert.notNull(bean, "The bean must not be null");
+        if (!bean.isNew()) {
+            throw new IllegalArgumentException(bean + " must be new (id == null)");
         }
     }
 
@@ -37,12 +37,12 @@ public class ValidationUtil {
         }
     }
 
-    public static void assureIdConsistent(BaseEntity entity, int id) {
-        Assert.notNull(entity, "The entity must not be null");
-        if (entity.isNew()) {
-            entity.setId(id);
-        } else if (entity.id() != id) {
-            throw new IllegalArgumentException(entity + " must be with id = " + id);
+    public static void assureIdConsistent(HasId hasId, int id) {
+        Assert.notNull(hasId, "The hasId must not be null");
+        if (hasId.isNew()) {
+            hasId.setId(id);
+        } else if (hasId.id() != id) {
+            throw new IllegalArgumentException(hasId + " must be with id = " + id);
         }
     }
 
