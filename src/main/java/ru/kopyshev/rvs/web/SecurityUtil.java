@@ -1,15 +1,14 @@
 package ru.kopyshev.rvs.web;
 
+import lombok.experimental.UtilityClass;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import ru.kopyshev.rvs.AuthorizedUser;
 
 import java.util.Objects;
 
+@UtilityClass
 public class SecurityUtil {
-
-    private SecurityUtil() {
-    }
 
     public static int authUserId() {
         return get().getId();

@@ -2,10 +2,12 @@ package ru.kopyshev.rvs.util;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectReader;
+import lombok.experimental.UtilityClass;
 
 import java.io.IOException;
 import java.util.List;
 
+@UtilityClass
 public class JsonUtil {
     public static <T> List<T> readValues(String json, Class<T> tClass) {
         ObjectReader reader = JacksonObjectMapper.getMapper().readerFor(tClass);
