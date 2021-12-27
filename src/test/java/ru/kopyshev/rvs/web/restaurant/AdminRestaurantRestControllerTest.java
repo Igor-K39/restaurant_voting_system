@@ -21,8 +21,8 @@ import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
 
-class AdminRestaurantControllerTest extends AbstractControllerTest {
-    private static final String restUrl = AdminRestaurantController.ADMIN_REST_URL + "/";
+class AdminRestaurantRestControllerTest extends AbstractControllerTest {
+    private static final String restUrl = AdminRestaurantRestController.ADMIN_REST_URL + "/";
 
     @Autowired
     private RestaurantService service;

@@ -21,7 +21,7 @@ import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
 
-class AdminDishControllerTest extends AbstractControllerTest {
+class AdminDishRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = "/rest/admin/restaurants/";
 
     @Autowired

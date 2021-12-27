@@ -14,8 +14,8 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_TO_MATCHER;
 
-public class UserRestaurantControllerTest extends AbstractControllerTest {
-    private static final String restUrl = UserRestaurantController.REST_URL + "/";
+public class UserRestaurantRestControllerTest extends AbstractControllerTest {
+    private static final String restUrl = UserRestaurantRestController.REST_URL + "/";
 
     @Test
     void get() throws Exception {

@@ -1,7 +1,6 @@
 package ru.kopyshev.rvs.web.menu;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.MenuService;
 import ru.kopyshev.rvs.to.MenuTo;
@@ -11,8 +10,8 @@ import ru.kopyshev.rvs.util.MenuUtil;
 import java.time.LocalDate;
 import java.util.List;
 
+@Slf4j
 public abstract class AbstractMenuController {
-    private static final Logger log = LoggerFactory.getLogger(AbstractMenuController.class);
 
     @Autowired
     MenuService service;
@@ -22,6 +21,14 @@ public abstract class AbstractMenuController {
         var menuItems = MenuUtil.getMenuItems(menuTo);
         var created = service.createAll(menuItems);
         return MenuUtil.getMenuTo(created.get(0).getRestaurant(), created.get(0).getDateOf(), created);
+    }
+
+    protected MenuTo get(int restaurantId, LocalDate dateParam) {
+        var date = dateParam == null ? LocalDate.now() : dateParam;
+        log.debug("getting items for restaurant {} at {}", restaurantId, dateParam);
+        var items = service.getAll(restaurantId, date, date);
+
+        return MenuUtil.getMenuTos(items).get(0);
     }
 
     protected List<MenuTo> getAll(LocalDate start, LocalDate end) {

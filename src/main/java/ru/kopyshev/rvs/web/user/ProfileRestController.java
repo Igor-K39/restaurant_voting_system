@@ -1,5 +1,6 @@
 package ru.kopyshev.rvs.web.user;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import ru.kopyshev.rvs.web.SecurityUtil;
 import java.net.URI;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping(value = ProfileRestController.REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class ProfileRestController extends AbstractUserController{

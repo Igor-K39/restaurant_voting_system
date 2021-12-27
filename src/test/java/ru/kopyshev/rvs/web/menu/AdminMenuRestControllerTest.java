@@ -29,8 +29,8 @@ import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
 import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 
-class AdminMenuControllerTest extends AbstractControllerTest {
-    private static final String restUrl = AdminMenuController.REST_URL;
+class AdminMenuRestControllerTest extends AbstractControllerTest {
+    private static final String restUrl = AdminMenuRestController.REST_URL;
 
     @Autowired
     private MenuService service;

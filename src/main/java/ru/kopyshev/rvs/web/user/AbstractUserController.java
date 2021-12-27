@@ -1,7 +1,6 @@
 package ru.kopyshev.rvs.web.user;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.model.User;
 import ru.kopyshev.rvs.service.UserService;
@@ -15,8 +14,8 @@ import static ru.kopyshev.rvs.util.CollectionUtil.addAllIfNotEmpty;
 import static ru.kopyshev.rvs.util.UserUtil.getToFromUser;
 import static ru.kopyshev.rvs.util.UserUtil.getUserFromTo;
 
+@Slf4j
 public abstract class AbstractUserController {
-    private final Logger log = LoggerFactory.getLogger(getClass());
 
     @Autowired
     private UserService service;

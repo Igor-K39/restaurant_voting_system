@@ -15,8 +15,8 @@ import static ru.kopyshev.rvs.MenuTestData.MENU_TO_MATCHER;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 
-class UserMenuControllerTest extends AbstractControllerTest {
-    private static final String restUrl = UserMenuController.REST_URL + "/";
+class UserMenuRestControllerTest extends AbstractControllerTest {
+    private static final String restUrl = UserMenuRestController.REST_URL + "/";
 
     @Autowired
     private MenuService service;
@@ -27,8 +27,7 @@ class UserMenuControllerTest extends AbstractControllerTest {
         var menuTosExpected = MenuUtil.getMenuTos(menuItems);
 
         perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/menu")
-                .param("start", DATE_1.toString())
-                .param("end", DATE_1.toString()))
+                .param("date", DATE_1.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))

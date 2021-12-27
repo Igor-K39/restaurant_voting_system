@@ -1,7 +1,6 @@
 package ru.kopyshev.rvs.web.restaurant;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.RestaurantService;
 import ru.kopyshev.rvs.to.RestaurantTo;
@@ -11,8 +10,8 @@ import java.util.List;
 
 import static ru.kopyshev.rvs.util.RestaurantUtil.getRestaurantFromTo;
 
+@Slf4j
 public abstract class AbstractRestaurantController {
-    private final Logger log = LoggerFactory.getLogger(getClass().getSimpleName());
 
     @Autowired
     private RestaurantService service;

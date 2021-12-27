@@ -1,5 +1,6 @@
 package ru.kopyshev.rvs.web.restaurant;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -10,9 +11,10 @@ import ru.kopyshev.rvs.to.RestaurantTo;
 import java.net.URI;
 import java.util.List;
 
+@Slf4j
 @RestController
-@RequestMapping(value = AdminRestaurantController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminRestaurantController extends AbstractRestaurantController {
+@RequestMapping(value = AdminRestaurantRestController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminRestaurantRestController extends AbstractRestaurantController {
     public static final String ADMIN_REST_URL = "/rest/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)

@@ -1,7 +1,6 @@
 package ru.kopyshev.rvs.web.dish;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -15,15 +14,15 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
-@RequestMapping(value = AdminDishController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
-public class AdminDishController {
+@RequestMapping(value = AdminDishRestController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
+public class AdminDishRestController {
     public static final String ADMIN_REST_URL = "/rest/admin/restaurants/{restaurantId}/dishes";
-    private final Logger log = LoggerFactory.getLogger(getClass().getSimpleName());
 
     private final DishService dishService;
 
-    public AdminDishController(DishService dishService) {
+    public AdminDishRestController(DishService dishService) {
         this.dishService = dishService;
     }
 

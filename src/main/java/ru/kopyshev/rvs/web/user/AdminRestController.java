@@ -1,6 +1,6 @@
 package ru.kopyshev.rvs.web.user;
 
-import org.springframework.data.repository.query.Param;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -12,6 +12,7 @@ import java.net.URI;
 import java.util.List;
 import java.util.Map;
 
+@Slf4j
 @RestController
 @RequestMapping(value = AdminRestController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminRestController extends AbstractUserController {
@@ -42,7 +43,7 @@ public class AdminRestController extends AbstractUserController {
 
     @Override
     @GetMapping("/by")
-    public UserTo getByEmail(@Param("email") String email) {
+    public UserTo getByEmail(@RequestParam("email") String email) {
         return super.getByEmail(email);
     }
 
