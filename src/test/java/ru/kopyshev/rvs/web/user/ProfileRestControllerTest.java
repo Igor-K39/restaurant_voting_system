@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.util.UserUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
@@ -44,7 +44,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void get() throws Exception {
-        UserTo expected  = UserUtil.getToFromUser(USER);
+        UserDTO expected  = UserUtil.getToFromUser(USER);
         perform(MockMvcRequestBuilders.get(REST_URL)
                 .with(userHttpBasic(USER_AUTH)))
                 .andExpect(status().isOk())
@@ -55,7 +55,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
 
     @Test
     void patch() throws Exception {
-        UserTo expected = UserUtil.getToFromUser(USER);
+        UserDTO expected = UserUtil.getToFromUser(USER);
         expected.setName(USER_UPDATED_NAME);
         expected.setPassword(USER_UPDATED_PASSWORD);
         expected.setEmail(USER_UPDATED_EMAIL);
@@ -67,7 +67,7 @@ public class ProfileRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        UserTo actual = UserUtil.getToFromUser(service.get(USER_ID));
+        UserDTO actual = UserUtil.getToFromUser(service.get(USER_ID));
         USER_TO_MATCHER.assertMatch(actual, expected);
     }
 

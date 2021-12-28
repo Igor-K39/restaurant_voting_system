@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.util.UserUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
@@ -24,8 +24,8 @@ import static ru.kopyshev.rvs.UserTestData.*;
 
 public class AdminRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = AdminRestController.ADMIN_REST_URL + '/';
-    private static final UserTo adminTo = UserUtil.getToFromUser(ADMIN);
-    private static final List<UserTo> allTo = UserUtil.getToFromUser(Arrays.asList(ADMIN, USER));
+    private static final UserDTO adminTo = UserUtil.getToFromUser(ADMIN);
+    private static final List<UserDTO> allTo = UserUtil.getToFromUser(Arrays.asList(ADMIN, USER));
 
     @Autowired
     private UserService service;
@@ -80,7 +80,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void patch() throws Exception  {
-        UserTo updated = UserUtil.getToFromUser(getUpdated(USER));
+        UserDTO updated = UserUtil.getToFromUser(getUpdated(USER));
 
         perform(MockMvcRequestBuilders.patch(restUrl + USER_ID)
                 .with(userHttpBasic(ADMIN_AUTH))
@@ -89,7 +89,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        UserTo actual = UserUtil.getToFromUser(service.get(USER_ID));
+        UserDTO actual = UserUtil.getToFromUser(service.get(USER_ID));
         USER_TO_MATCHER.assertMatch(actual, updated);
     }
 

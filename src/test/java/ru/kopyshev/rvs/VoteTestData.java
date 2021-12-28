@@ -2,7 +2,7 @@ package ru.kopyshev.rvs;
 
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.model.Vote;
-import ru.kopyshev.rvs.to.VoteTo;
+import ru.kopyshev.rvs.to.VoteDTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;
@@ -16,7 +16,7 @@ import static ru.kopyshev.rvs.UserTestData.USER;
 public class VoteTestData {
     public static final
     Matcher<Vote> VOTE_MATCHER = usingIgnoreFieldComparator(Vote.class, "restaurant", "time", "user");
-    public static final Matcher<VoteTo> VOTE_TO_MATCHER = usingIgnoreFieldComparator(VoteTo.class);
+    public static final Matcher<VoteDTO> VOTE_TO_MATCHER = usingIgnoreFieldComparator(VoteDTO.class);
     public static final int VOTE_1_ID = 100_016;
     public static final int VOTE_2_ID = 100_017;
     public static final int VOTE_3_ID = 100_018;

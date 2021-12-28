@@ -3,7 +3,7 @@ package ru.kopyshev.rvs.web.menu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.MenuService;
-import ru.kopyshev.rvs.to.MenuTo;
+import ru.kopyshev.rvs.to.MenuDTO;
 import ru.kopyshev.rvs.util.DateTimeUtil;
 import ru.kopyshev.rvs.util.MenuUtil;
 
@@ -16,14 +16,14 @@ public abstract class AbstractMenuController {
     @Autowired
     MenuService service;
 
-    protected MenuTo create(MenuTo menuTo) {
-        log.info("creating menu items from menu {}", menuTo);
-        var menuItems = MenuUtil.getMenuItems(menuTo);
+    protected MenuDTO create(MenuDTO menuDTO) {
+        log.info("creating menu items from menu {}", menuDTO);
+        var menuItems = MenuUtil.getMenuItems(menuDTO);
         var created = service.createAll(menuItems);
         return MenuUtil.getMenuTo(created.get(0).getRestaurant(), created.get(0).getDateOf(), created);
     }
 
-    protected MenuTo get(int restaurantId, LocalDate dateParam) {
+    protected MenuDTO get(int restaurantId, LocalDate dateParam) {
         var date = dateParam == null ? LocalDate.now() : dateParam;
         log.debug("getting items for restaurant {} at {}", restaurantId, dateParam);
         var items = service.getAll(restaurantId, date, date);
@@ -31,7 +31,7 @@ public abstract class AbstractMenuController {
         return MenuUtil.getMenuTos(items).get(0);
     }
 
-    protected List<MenuTo> getAll(LocalDate start, LocalDate end) {
+    protected List<MenuDTO> getAll(LocalDate start, LocalDate end) {
         var startDate = DateTimeUtil.getMinIfNull(start);
         var endDate = DateTimeUtil.getMaxIfNull(end);
         log.info("getting menus of all the restaurants between dates {} and {}", startDate, endDate);
@@ -39,7 +39,7 @@ public abstract class AbstractMenuController {
         return MenuUtil.getMenuTos(menuItems);
     }
 
-    protected List<MenuTo> getAll(int restaurantId, LocalDate start, LocalDate end) {
+    protected List<MenuDTO> getAll(int restaurantId, LocalDate start, LocalDate end) {
         var startDate = DateTimeUtil.getMinIfNull(start);
         var endDate = DateTimeUtil.getMaxIfNull(end);
         log.info("getting menus of restaurant {} between dates {} and {}", restaurantId, startDate, endDate);
@@ -47,9 +47,9 @@ public abstract class AbstractMenuController {
         return MenuUtil.getMenuTos(menuItems);
     }
 
-    protected void update(MenuTo menuTo) {
-        log.info("updating menu {}", menuTo);
-        var menuItems = MenuUtil.getMenuItems(menuTo);
+    protected void update(MenuDTO menuDTO) {
+        log.info("updating menu {}", menuDTO);
+        var menuItems = MenuUtil.getMenuItems(menuDTO);
         service.updateAllByReplacing(menuItems);
     }
 

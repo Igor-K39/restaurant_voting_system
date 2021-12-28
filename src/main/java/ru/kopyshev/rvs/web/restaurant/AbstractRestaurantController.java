@@ -3,7 +3,7 @@ package ru.kopyshev.rvs.web.restaurant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.RestaurantService;
-import ru.kopyshev.rvs.to.RestaurantTo;
+import ru.kopyshev.rvs.to.RestaurantDTO;
 import ru.kopyshev.rvs.util.RestaurantUtil;
 
 import java.util.List;
@@ -16,7 +16,7 @@ public abstract class AbstractRestaurantController {
     @Autowired
     private RestaurantService service;
 
-    protected RestaurantTo create(RestaurantTo restaurantTo) {
+    protected RestaurantDTO create(RestaurantDTO restaurantTo) {
         log.info("create restaurant from {}", restaurantTo);
         var restaurant = getRestaurantFromTo(restaurantTo);
         restaurant = service.create(restaurant);
@@ -24,17 +24,17 @@ public abstract class AbstractRestaurantController {
         return restaurantTo;
     }
 
-    protected RestaurantTo get(int id) {
+    protected RestaurantDTO get(int id) {
         log.info("getting restaurant with id = {}", id);
         return RestaurantUtil.getToFromRestaurant(service.get(id));
     }
 
-    protected List<RestaurantTo> getAll() {
+    protected List<RestaurantDTO> getAll() {
         log.info("getting all restaurants");
         return RestaurantUtil.getToFromRestaurant(service.getAll());
     }
 
-    protected void update(RestaurantTo restaurantTo, int id) {
+    protected void update(RestaurantDTO restaurantTo, int id) {
         log.info("updating restaurant with id = {} by restaurantTo {}", id, restaurantTo);
         var restaurant = getRestaurantFromTo(restaurantTo);
         service.update(restaurant, id);

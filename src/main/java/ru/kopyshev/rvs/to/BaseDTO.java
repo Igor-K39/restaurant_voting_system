@@ -11,11 +11,11 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class BaseTo implements HasId {
+public class BaseDTO implements HasId {
 
     protected Integer id;
 
-    public BaseTo(Integer id) {
+    public BaseDTO(Integer id) {
         this.id = id;
     }
 
@@ -28,7 +28,7 @@ public class BaseTo implements HasId {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        BaseTo that = (BaseTo) o;
+        BaseDTO that = (BaseDTO) o;
         return Objects.equals(id, that.id);
     }
 

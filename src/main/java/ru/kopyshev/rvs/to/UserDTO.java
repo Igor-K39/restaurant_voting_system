@@ -15,7 +15,7 @@ import java.util.*;
 @Getter
 @Setter
 @NoArgsConstructor
-public class UserTo extends NamedTo {
+public class UserDTO extends NamedDTO {
 
     @Email
     @NotBlank
@@ -34,19 +34,19 @@ public class UserTo extends NamedTo {
     @NotNull
     protected Set<Role> roles = new HashSet<>();
 
-    public UserTo(UserTo user) {
+    public UserDTO(UserDTO user) {
         this(user.id, user.name, user.email, user.password, user.enabled, user.registered, user.roles);
     }
 
-    public UserTo(Integer id, String name, String email, String password, Role... roles) {
+    public UserDTO(Integer id, String name, String email, String password, Role... roles) {
         this(id, name, email, password, true, new Date(), Objects.isNull(roles) ? new HashSet<>() : Arrays.asList(roles));
     }
 
-    public UserTo(String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
+    public UserDTO(String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         this(null, name, email, password, enabled, registered, roles);
     }
 
-    public UserTo(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
+    public UserDTO(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
         this.password = password;
@@ -70,7 +70,7 @@ public class UserTo extends NamedTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        UserTo userTo = (UserTo) o;
+        UserDTO userTo = (UserDTO) o;
         return enabled == userTo.enabled && Objects.equals(email, userTo.email) && Objects.equals(password, userTo.password) && Objects.equals(registered, userTo.registered) && Objects.equals(roles, userTo.roles);
     }
 

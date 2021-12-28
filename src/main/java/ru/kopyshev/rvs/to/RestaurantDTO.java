@@ -11,7 +11,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class RestaurantTo extends NamedTo {
+public class RestaurantDTO extends NamedDTO {
 
     @NotBlank
     @Size(min = 8, max = 120)
@@ -21,15 +21,15 @@ public class RestaurantTo extends NamedTo {
     @Size(min = 8, max = 80)
     protected String website;
 
-    public RestaurantTo(RestaurantTo restaurant) {
+    public RestaurantDTO(RestaurantDTO restaurant) {
         this(restaurant.id, restaurant.name, restaurant.address, restaurant.website);
     }
 
-    public RestaurantTo(String name, String address, String website) {
+    public RestaurantDTO(String name, String address, String website) {
         this(null, name, address, website);
     }
 
-    public RestaurantTo(Integer id, String name, String address, String website) {
+    public RestaurantDTO(Integer id, String name, String address, String website) {
         super(id, name);
         this.address = address;
         this.website = website;
@@ -40,7 +40,7 @@ public class RestaurantTo extends NamedTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        RestaurantTo that = (RestaurantTo) o;
+        RestaurantDTO that = (RestaurantDTO) o;
         return Objects.equals(address, that.address) && Objects.equals(website, that.website);
     }
 

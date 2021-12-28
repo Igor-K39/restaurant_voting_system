@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 
 import java.net.URI;
 import java.util.List;
@@ -19,8 +19,8 @@ public class AdminRestController extends AbstractUserController {
     static final String ADMIN_REST_URL = "/rest/admin/users";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserTo> createWithLocation(@RequestBody UserTo userTo) {
-        UserTo created = super.create(userTo);
+    public ResponseEntity<UserDTO> createWithLocation(@RequestBody UserDTO userTo) {
+        UserDTO created = super.create(userTo);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(ADMIN_REST_URL + "/{id}")
@@ -31,19 +31,19 @@ public class AdminRestController extends AbstractUserController {
 
     @Override
     @GetMapping("/{id}")
-    public UserTo get(@PathVariable int id) {
+    public UserDTO get(@PathVariable int id) {
         return super.get(id);
     }
 
     @Override
     @GetMapping("")
-    public List<UserTo> getAll() {
+    public List<UserDTO> getAll() {
         return super.getAll();
     }
 
     @Override
     @GetMapping("/by")
-    public UserTo getByEmail(@RequestParam("email") String email) {
+    public UserDTO getByEmail(@RequestParam("email") String email) {
         return super.getByEmail(email);
     }
 

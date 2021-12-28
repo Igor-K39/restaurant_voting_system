@@ -4,7 +4,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.model.User;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 
 import java.util.HashMap;
 import java.util.List;
@@ -20,7 +20,7 @@ public abstract class AbstractUserController {
     @Autowired
     private UserService service;
 
-    protected UserTo create(UserTo userTo) {
+    protected UserDTO create(UserDTO userTo) {
         log.info("create user from {}", userTo);
         User user = getUserFromTo(userTo);
         user = service.create(user);
@@ -28,17 +28,17 @@ public abstract class AbstractUserController {
         return userTo;
     }
 
-    protected UserTo get(int id) {
+    protected UserDTO get(int id) {
         log.info("get user {}", id);
         return getToFromUser(service.get(id));
     }
 
-    protected List<UserTo> getAll() {
+    protected List<UserDTO> getAll() {
         log.info("get all users");
         return getToFromUser(service.getAll());
     }
 
-    protected UserTo getByEmail(String email) {
+    protected UserDTO getByEmail(String email) {
         log.info("get user by email {}", email);
         return getToFromUser(service.getByEmail(email));
     }

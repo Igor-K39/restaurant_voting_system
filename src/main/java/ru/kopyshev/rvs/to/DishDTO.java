@@ -9,20 +9,20 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class DishTo extends NamedTo {
+public class DishDTO extends NamedDTO {
 
-    private RestaurantTo restaurant;
+    private RestaurantDTO restaurant;
 
-    public DishTo(DishTo to) {
+    public DishDTO(DishDTO to) {
         this(to.id, to.name, to.restaurant);
     }
 
-    public DishTo(String name, RestaurantTo restaurant) {
+    public DishDTO(String name, RestaurantDTO restaurant) {
         super(null, name);
         this.restaurant = restaurant;
     }
 
-    public DishTo(Integer id, String name, RestaurantTo restaurant) {
+    public DishDTO(Integer id, String name, RestaurantDTO restaurant) {
         super(id, name);
         this.restaurant = restaurant;
     }
@@ -32,7 +32,7 @@ public class DishTo extends NamedTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        DishTo dishTo = (DishTo) o;
+        DishDTO dishTo = (DishDTO) o;
         return Objects.equals(restaurant, dishTo.restaurant);
     }
 

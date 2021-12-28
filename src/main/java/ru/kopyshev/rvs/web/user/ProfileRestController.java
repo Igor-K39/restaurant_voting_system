@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 import ru.kopyshev.rvs.web.SecurityUtil;
 
 import java.net.URI;
@@ -19,8 +19,8 @@ public class ProfileRestController extends AbstractUserController{
     static final String REST_URL = "/rest/profile";
 
     @PostMapping("/register")
-    public ResponseEntity<UserTo> createWithLocation(@RequestBody UserTo userTo) {
-        UserTo created = super.create(userTo);
+    public ResponseEntity<UserDTO> createWithLocation(@RequestBody UserDTO userTo) {
+        UserDTO created = super.create(userTo);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(REST_URL + "/{id}")
@@ -29,7 +29,7 @@ public class ProfileRestController extends AbstractUserController{
     }
 
     @GetMapping("")
-    public UserTo get() {
+    public UserDTO get() {
         int userId = SecurityUtil.authUserId();
         return super.get(userId);
     }

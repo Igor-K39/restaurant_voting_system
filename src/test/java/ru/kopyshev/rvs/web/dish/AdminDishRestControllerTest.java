@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.DishService;
-import ru.kopyshev.rvs.to.DishTo;
+import ru.kopyshev.rvs.to.DishDTO;
 import ru.kopyshev.rvs.util.DishUtil;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
@@ -66,7 +66,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
                 .content(JsonUtil.writeValue(dishTo)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        DishTo actual = DishUtil.getToFromDish(service.get(DISH_ID_1, RESTAURANT_ID_1));
+        DishDTO actual = DishUtil.getToFromDish(service.get(DISH_ID_1, RESTAURANT_ID_1));
         DISH_TO_MATCHER.assertMatch(actual, dishTo);
     }
 

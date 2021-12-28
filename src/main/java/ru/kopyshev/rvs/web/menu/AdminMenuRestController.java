@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.kopyshev.rvs.to.MenuTo;
+import ru.kopyshev.rvs.to.MenuDTO;
 import ru.kopyshev.rvs.web.restaurant.AdminRestaurantRestController;
 
 import java.net.URI;
@@ -20,34 +20,34 @@ public class AdminMenuRestController extends AbstractMenuController {
     public static final String REST_URL = AdminRestaurantRestController.ADMIN_REST_URL + "/";
 
     @PostMapping(value = "menu", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<MenuTo> createWithLocation(@RequestBody MenuTo menuTo) {
-        var created = super.create(menuTo);
+    public ResponseEntity<MenuDTO> createWithLocation(@RequestBody MenuDTO menuDTO) {
+        var created = super.create(menuDTO);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(REST_URL + "{restaurantId}/menu")
                 .buildAndExpand(created.getRestaurantTo().getId())
                 .toUri();
-        return ResponseEntity.created(uriOfNewResource).body(menuTo);
+        return ResponseEntity.created(uriOfNewResource).body(menuDTO);
     }
 
     @Override
     @GetMapping("{restaurantId}/menu")
-    public List<MenuTo> getAll(@PathVariable("restaurantId") int restaurantId,
-                               @RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
+    public List<MenuDTO> getAll(@PathVariable("restaurantId") int restaurantId,
+                                @RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
         return super.getAll(restaurantId, start, end);
     }
 
     @Override
     @GetMapping("menu")
-    protected List<MenuTo> getAll(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
+    protected List<MenuDTO> getAll(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
         return super.getAll(start, end);
     }
 
     @Override
     @PutMapping(value = "menu", consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody MenuTo menuTo) {
-        super.update(menuTo);
+    public void update(@RequestBody MenuDTO menuDTO) {
+        super.update(menuDTO);
     }
 
     @Override

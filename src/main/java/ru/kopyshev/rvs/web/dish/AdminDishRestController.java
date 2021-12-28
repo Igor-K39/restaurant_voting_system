@@ -7,7 +7,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kopyshev.rvs.service.DishService;
-import ru.kopyshev.rvs.to.DishTo;
+import ru.kopyshev.rvs.to.DishDTO;
 import ru.kopyshev.rvs.util.DishUtil;
 
 import java.net.URI;
@@ -27,8 +27,8 @@ public class AdminDishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DishTo> createWithLocation(@PathVariable("restaurantId") int restaurantId,
-                                                     @RequestBody DishTo dishTo) {
+    public ResponseEntity<DishDTO> createWithLocation(@PathVariable("restaurantId") int restaurantId,
+                                                      @RequestBody DishDTO dishTo) {
         log.info("creating dish of restaurant {} from named to {}", restaurantId, dishTo);
         var dish = DishUtil.getDishFromTo(dishTo);
         dish = dishService.create(dish);
@@ -43,7 +43,7 @@ public class AdminDishRestController {
     }
 
     @GetMapping("/{dishId}")
-    public DishTo get(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId) {
+    public DishDTO get(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId) {
         log.info("getting dish {} of restaurant {}", dishId, restaurantId);
         var dish = dishService.get(dishId, restaurantId);
         return DishUtil.getToFromDish(dish);
@@ -52,7 +52,7 @@ public class AdminDishRestController {
     @PutMapping(value = {"/{dishId}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void update(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId,
-                       @RequestBody DishTo dishTo) {
+                       @RequestBody DishDTO dishTo) {
         log.info("updating dish {} of restaurant {} by namedTo {}", dishTo.getId(), restaurantId, dishTo);
         var dish = DishUtil.getDishFromTo(dishTo);
         dishService.update(dish, dishId, restaurantId);
@@ -66,7 +66,7 @@ public class AdminDishRestController {
     }
 
     @GetMapping
-    public List<DishTo> getAll(@PathVariable("restaurantId") int restaurantId) {
+    public List<DishDTO> getAll(@PathVariable("restaurantId") int restaurantId) {
         log.info("getting all the dishes for restaurant {}", restaurantId);
         var dishes = dishService.getAll(restaurantId);
         return DishUtil.getToFromDish(dishes);

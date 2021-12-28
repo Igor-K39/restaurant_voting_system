@@ -14,28 +14,28 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class MenuTo{
+public class MenuDTO {
 
     @NotNull
     private LocalDate dateOf;
 
     @NotNull
-    protected RestaurantTo restaurantTo;
+    protected RestaurantDTO restaurantTo;
 
     @NotEmpty
-    private List<MenuItemTo> menuItemTos;
+    private List<MenuItemDTO> menuItemTos;
 
-    public MenuTo(LocalDate dateOf, RestaurantTo restaurantTo, List<MenuItemTo> menuItems) {
+    public MenuDTO(LocalDate dateOf, RestaurantDTO restaurantTo, List<MenuItemDTO> menuItems) {
         this.dateOf = dateOf;
         this.restaurantTo = restaurantTo;
         setMenuItemTos(menuItems);
     }
 
-    public List<MenuItemTo> getMenuItemTos() {
+    public List<MenuItemDTO> getMenuItemTos() {
         return List.copyOf(menuItemTos);
     }
 
-    public void setMenuItemTos(List<MenuItemTo> menuItemTos) {
+    public void setMenuItemTos(List<MenuItemDTO> menuItemTos) {
         this.menuItemTos = List.copyOf(menuItemTos);
     }
 
@@ -43,10 +43,10 @@ public class MenuTo{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
-        MenuTo menuTo = (MenuTo) o;
-        return Objects.equals(dateOf, menuTo.dateOf)
-                && Objects.equals(restaurantTo, menuTo.restaurantTo)
-                && Objects.equals(menuItemTos, menuTo.menuItemTos);
+        MenuDTO menuDTO = (MenuDTO) o;
+        return Objects.equals(dateOf, menuDTO.dateOf)
+                && Objects.equals(restaurantTo, menuDTO.restaurantTo)
+                && Objects.equals(menuItemTos, menuDTO.menuItemTos);
     }
 
     @Override
@@ -66,19 +66,19 @@ public class MenuTo{
     @Getter
     @Setter
     @NoArgsConstructor
-    public static class MenuItemTo extends BaseTo {
+    public static class MenuItemDTO extends BaseDTO {
 
         @NotNull
-        protected NamedTo dishTo;
+        protected NamedDTO dishTo;
 
         @PositiveOrZero
         int price;
 
-        public MenuItemTo(NamedTo dishTo, int price) {
+        public MenuItemDTO(NamedDTO dishTo, int price) {
             this(null, dishTo, price);
         }
 
-        public MenuItemTo(Integer id, NamedTo dishTo, int price) {
+        public MenuItemDTO(Integer id, NamedDTO dishTo, int price) {
             super(id);
             this.dishTo = dishTo;
             this.price = price;

@@ -7,8 +7,8 @@ import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.model.MenuItem;
 import ru.kopyshev.rvs.service.MenuService;
-import ru.kopyshev.rvs.to.MenuTo;
-import ru.kopyshev.rvs.to.NamedTo;
+import ru.kopyshev.rvs.to.MenuDTO;
+import ru.kopyshev.rvs.to.NamedDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.util.MenuUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
@@ -37,11 +37,11 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        var menuItemTo1 = new MenuTo.MenuItemTo(new NamedTo(DISH_1.getId(), DISH_1.getName()), 10000);
-        var menuItemTo2 = new MenuTo.MenuItemTo(new NamedTo(DISH_2.getId(), DISH_2.getName()), 20000);
-        var menuItemTo3 = new MenuTo.MenuItemTo(new NamedTo(DISH_3.getId(), DISH_3.getName()), 30000);
+        var menuItemTo1 = new MenuDTO.MenuItemDTO(new NamedDTO(DISH_1.getId(), DISH_1.getName()), 10000);
+        var menuItemTo2 = new MenuDTO.MenuItemDTO(new NamedDTO(DISH_2.getId(), DISH_2.getName()), 20000);
+        var menuItemTo3 = new MenuDTO.MenuItemDTO(new NamedDTO(DISH_3.getId(), DISH_3.getName()), 30000);
         var menuItemTos = List.of(menuItemTo1, menuItemTo2, menuItemTo3);
-        var menuTo = new MenuTo();
+        var menuTo = new MenuDTO();
         menuTo.setDateOf(LocalDate.now());
         menuTo.setRestaurantTo(getToFromRestaurant(RESTAURANT_1));
         menuTo.setMenuItemTos(menuItemTos);
@@ -54,7 +54,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        MenuTo actual = MenuUtil.getMenuTo(RESTAURANT_1, LocalDate.now(),
+        MenuDTO actual = MenuUtil.getMenuTo(RESTAURANT_1, LocalDate.now(),
                 service.getAll(RESTAURANT_ID_1, LocalDate.now(), LocalDate.now()));
         MENU_TO_MATCHER.assertMatch(actual, menuTo);
     }
@@ -105,7 +105,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
                 .andExpect(status().isNoContent());
 
         service.getAll(RESTAURANT_ID_1, DATE_1, DATE_1).forEach(System.out::println);
-        MenuTo actual = MenuUtil.getMenuTo(RESTAURANT_1, DATE_1, service.getAll(RESTAURANT_ID_1, DATE_1, DATE_1));
+        MenuDTO actual = MenuUtil.getMenuTo(RESTAURANT_1, DATE_1, service.getAll(RESTAURANT_ID_1, DATE_1, DATE_1));
         MENU_TO_MATCHER.assertMatch(menuTo, actual);
     }
 

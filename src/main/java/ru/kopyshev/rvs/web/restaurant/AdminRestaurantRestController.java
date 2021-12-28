@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.kopyshev.rvs.to.RestaurantTo;
+import ru.kopyshev.rvs.to.RestaurantDTO;
 
 import java.net.URI;
 import java.util.List;
@@ -18,7 +18,7 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
     public static final String ADMIN_REST_URL = "/rest/admin/restaurants";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<RestaurantTo> createWithLocation(@RequestBody RestaurantTo restaurantTo) {
+    public ResponseEntity<RestaurantDTO> createWithLocation(@RequestBody RestaurantDTO restaurantTo) {
         var created = super.create(restaurantTo);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
@@ -30,20 +30,20 @@ public class AdminRestaurantRestController extends AbstractRestaurantController 
 
     @Override
     @GetMapping("/{id}")
-    public RestaurantTo get(@PathVariable int id) {
+    public RestaurantDTO get(@PathVariable int id) {
         return super.get(id);
     }
 
     @Override
     @GetMapping
-    public List<RestaurantTo> getAll() {
+    public List<RestaurantDTO> getAll() {
         return super.getAll();
     }
 
     @Override
     @PutMapping("/{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@RequestBody RestaurantTo restaurantTo, @PathVariable("id") int id) {
+    public void update(@RequestBody RestaurantDTO restaurantTo, @PathVariable("id") int id) {
         super.update(restaurantTo, id);
     }
 

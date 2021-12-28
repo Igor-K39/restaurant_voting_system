@@ -14,7 +14,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class VoteTo extends BaseTo {
+public class VoteDTO extends BaseDTO {
 
     @NotNull
     private LocalDateTime dateTime;
@@ -25,15 +25,15 @@ public class VoteTo extends BaseTo {
     @NotNull
     private Integer restaurantId;
 
-    public VoteTo(VoteTo vote) {
+    public VoteDTO(VoteDTO vote) {
         this(vote.id, vote.userId, vote.restaurantId, vote.dateTime);
     }
 
-    public VoteTo(Integer userId, Integer restaurantId, LocalDateTime dateTime){
+    public VoteDTO(Integer userId, Integer restaurantId, LocalDateTime dateTime){
         this(null, userId, restaurantId, dateTime);
     }
 
-    public VoteTo(Integer id, Integer userId, Integer restaurantId, LocalDateTime dateTime) {
+    public VoteDTO(Integer id, Integer userId, Integer restaurantId, LocalDateTime dateTime) {
         super(id);
         this.userId = userId;
         this.restaurantId = restaurantId;
@@ -55,7 +55,7 @@ public class VoteTo extends BaseTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        VoteTo voteTo = (VoteTo) o;
+        VoteDTO voteTo = (VoteDTO) o;
         return Objects.equals(dateTime, voteTo.dateTime) && Objects.equals(userId, voteTo.userId) && Objects.equals(restaurantId, voteTo.restaurantId);
     }
 

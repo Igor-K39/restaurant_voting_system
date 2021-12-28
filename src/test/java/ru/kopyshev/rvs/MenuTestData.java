@@ -4,8 +4,8 @@ import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.model.Dish;
 import ru.kopyshev.rvs.model.MenuItem;
-import ru.kopyshev.rvs.to.MenuTo;
-import ru.kopyshev.rvs.to.NamedTo;
+import ru.kopyshev.rvs.to.MenuDTO;
+import ru.kopyshev.rvs.to.NamedDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -22,7 +22,7 @@ import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 public class MenuTestData {
 
     public static final Matcher<MenuItem> MENU_ITEM_MATCHER = usingIgnoreFieldComparator(MenuItem.class, "dish.restaurant");
-    public static final Matcher<MenuTo> MENU_TO_MATCHER = usingIgnoreFieldComparator(MenuTo.class, "menuItemTos.id");
+    public static final Matcher<MenuDTO> MENU_TO_MATCHER = usingIgnoreFieldComparator(MenuDTO.class, "menuItemTos.id");
     public static final int ITEM_ID_1 = 100_010;
     public static final int ITEM_ID_2 = 100_011;
     public static final int ITEM_ID_3 = 100_012;
@@ -59,12 +59,12 @@ public class MenuTestData {
         return itemsCopy;
     }
 
-    public static MenuTo getMenuTo() {
-        var dishTo1 = new NamedTo(DISH_1.id(), DISH_1.getName());
-        var dishTo2 = new NamedTo(DISH_2.id(), DISH_2.getName());
-        var menuItemTo1 = new MenuTo.MenuItemTo(ITEM_ID_1, dishTo1, ITEM_1.getPrice());
-        var menuItemTo2 = new MenuTo.MenuItemTo(ITEM_ID_2, dishTo2, ITEM_2.getPrice());
+    public static MenuDTO getMenuTo() {
+        var dishTo1 = new NamedDTO(DISH_1.id(), DISH_1.getName());
+        var dishTo2 = new NamedDTO(DISH_2.id(), DISH_2.getName());
+        var menuItemTo1 = new MenuDTO.MenuItemDTO(ITEM_ID_1, dishTo1, ITEM_1.getPrice());
+        var menuItemTo2 = new MenuDTO.MenuItemDTO(ITEM_ID_2, dishTo2, ITEM_2.getPrice());
         var menuItemTos = List.of(menuItemTo1, menuItemTo2);
-        return new MenuTo(DATE_1, getToFromRestaurant(RESTAURANT_1), menuItemTos);
+        return new MenuDTO(DATE_1, getToFromRestaurant(RESTAURANT_1), menuItemTos);
     }
 }

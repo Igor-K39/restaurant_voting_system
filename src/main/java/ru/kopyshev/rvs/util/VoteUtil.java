@@ -2,7 +2,7 @@ package ru.kopyshev.rvs.util;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.model.Vote;
-import ru.kopyshev.rvs.to.VoteTo;
+import ru.kopyshev.rvs.to.VoteDTO;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -11,8 +11,8 @@ import java.util.List;
 @UtilityClass
 public class VoteUtil {
 
-    public static VoteTo getToFromVote(Vote vote) {
-        return new VoteTo(
+    public static VoteDTO getToFromVote(Vote vote) {
+        return new VoteDTO(
                 vote.id(),
                 vote.getUser().id(),
                 vote.getRestaurant().id(),
@@ -20,8 +20,8 @@ public class VoteUtil {
         );
     }
 
-    public static List<VoteTo> getToFromVote(List<Vote> votes) {
-        List<VoteTo> tos = new ArrayList<>();
+    public static List<VoteDTO> getToFromVote(List<Vote> votes) {
+        List<VoteDTO> tos = new ArrayList<>();
         for (Vote vote : votes) {
             tos.add(getToFromVote(vote));
         }

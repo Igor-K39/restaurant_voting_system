@@ -10,12 +10,12 @@ import java.util.Objects;
 @Getter
 @Setter
 @NoArgsConstructor
-public class NamedTo extends BaseTo {
+public class NamedDTO extends BaseDTO {
 
     @NotBlank
     protected String name;
 
-    public NamedTo(Integer id, String name) {
+    public NamedDTO(Integer id, String name) {
         super(id);
         this.name = name;
     }
@@ -25,7 +25,7 @@ public class NamedTo extends BaseTo {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        NamedTo namedTo = (NamedTo) o;
+        NamedDTO namedTo = (NamedDTO) o;
         return Objects.equals(name, namedTo.name);
     }
 

@@ -4,7 +4,7 @@ import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.model.Role;
 import ru.kopyshev.rvs.model.User;
-import ru.kopyshev.rvs.to.UserTo;
+import ru.kopyshev.rvs.to.UserDTO;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -16,7 +16,7 @@ import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
 public class UserTestData {
 
     public static final Matcher<User> USER_MATCHER = usingIgnoreFieldComparator(User.class, "registered");
-    public static final Matcher<UserTo> USER_TO_MATCHER = usingIgnoreFieldComparator(UserTo.class, "registered");
+    public static final Matcher<UserDTO> USER_TO_MATCHER = usingIgnoreFieldComparator(UserDTO.class, "registered");
 
     public static final int USER_ID = 100_000;
     public static final int ADMIN_ID = 100_001;

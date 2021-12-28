@@ -7,7 +7,7 @@ import org.springframework.web.bind.annotation.*;
 import ru.kopyshev.rvs.service.RestaurantService;
 import ru.kopyshev.rvs.service.UserService;
 import ru.kopyshev.rvs.service.VoteService;
-import ru.kopyshev.rvs.to.VoteTo;
+import ru.kopyshev.rvs.to.VoteDTO;
 import ru.kopyshev.rvs.util.DateTimeUtil;
 import ru.kopyshev.rvs.util.VoteUtil;
 import ru.kopyshev.rvs.web.SecurityUtil;
@@ -49,7 +49,7 @@ public class UserVoteRestController {
     }
 
     @GetMapping
-    public List<VoteTo> getAll(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
+    public List<VoteDTO> getAll(@RequestParam("start") LocalDate start, @RequestParam("end") LocalDate end) {
         int userId = SecurityUtil.authUserId();
         var startDate = DateTimeUtil.getMinIfNull(start);
         var endDate = DateTimeUtil.getMaxIfNull(end);
