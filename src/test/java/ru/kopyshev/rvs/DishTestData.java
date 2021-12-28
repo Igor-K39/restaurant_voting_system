@@ -4,42 +4,42 @@ import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.model.Dish;
 import ru.kopyshev.rvs.to.DishDTO;
+import ru.kopyshev.rvs.to.DishUpdateDTO;
 
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_2;
+import static ru.kopyshev.rvs.RestaurantTestData.*;
 
 @UtilityClass
 public class DishTestData {
 
-    public static final Matcher<Dish> DISH_MATCHER = usingIgnoreFieldComparator(Dish.class, "restaurant");
-    public static final Matcher<DishDTO> DISH_TO_MATCHER = usingIgnoreFieldComparator(DishDTO.class);
+    public static final Matcher<DishDTO> DISH_TO_MATCHER = usingIgnoreFieldComparator(DishDTO.class, "id");
     public static final int DISH_ID_1 = 100_004;
     public static final int DISH_ID_2 = 100_005;
     public static final int DISH_ID_3 = 100_006;
     public static final int DISH_ID_4 = 100_007;
     public static final int DISH_ID_5 = 100_008;
     public static final int DISH_ID_6 = 100_009;
+    public static final DishDTO NEW_DISH_DTO = new DishDTO(null, "New Borsch", RESTAURANT_TO_1);
+    public static final DishUpdateDTO NEW_DISH_UPDATE_DTO = new DishUpdateDTO(null, "New Borsch", RESTAURANT_ID_1);
     public static final Dish DISH_1 = new Dish(DISH_ID_1, "R1-Borsch", RESTAURANT_1);
     public static final Dish DISH_2 = new Dish(DISH_ID_2, "R1-Beef", RESTAURANT_1);
     public static final Dish DISH_3 = new Dish(DISH_ID_3, "R1-Pork", RESTAURANT_1);
     public static final Dish DISH_4 = new Dish(DISH_ID_4, "R2-Potato", RESTAURANT_2);
     public static final Dish DISH_5 = new Dish(DISH_ID_5, "R2-Mushrooms", RESTAURANT_2);
     public static final Dish DISH_6 = new Dish(DISH_ID_6, "R2-Cabbage", RESTAURANT_2);
+    public static final DishDTO DISH_DTO_1 = new DishDTO(DISH_ID_1, "R1-Borsch", RESTAURANT_TO_1);
+    public static final DishDTO DISH_DTO_2 = new DishDTO(DISH_ID_2, "R1-Beef", RESTAURANT_TO_1);
+    public static final DishDTO DISH_DTO_3 = new DishDTO(DISH_ID_3, "R1-Pork", RESTAURANT_TO_1);
+    public static final DishDTO DISH_DTO_4 = new DishDTO(DISH_ID_4, "R2-Potato", RESTAURANT_TO_2);
+    public static final DishDTO DISH_DTO_5 = new DishDTO(DISH_ID_5, "R2-Mushrooms", RESTAURANT_TO_2);
+    public static final DishDTO DISH_DTO_6 = new DishDTO(DISH_ID_6, "R2-Cabbage", RESTAURANT_TO_2);
 
-    public static final String DISH_UPDATED_NAME = "Updated BORSCH";
 
-    public Dish getNew() {
-        Dish aNew = new Dish();
-        aNew.setName("New BORSCH");
-        aNew.setRestaurant(RESTAURANT_1);
-        return aNew;
-    }
-
-    public Dish getUpdated(Dish dish) {
-        Dish updated = new Dish(dish);
-        updated.setName(DISH_UPDATED_NAME);
-        updated.setRestaurant(RESTAURANT_2);
+    public static DishUpdateDTO getUpdated(DishDTO dishDTO, int restaurantId) {
+        DishUpdateDTO updated = new DishUpdateDTO();
+        updated.setId(dishDTO.id());
+        updated.setName(dishDTO.getName() + "updated");
+        updated.setRestaurantId(restaurantId);
         return updated;
     }
 }

@@ -3,8 +3,7 @@ package ru.kopyshev.rvs.model;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-import org.hibernate.annotations.OnDelete;
-import org.hibernate.annotations.OnDeleteAction;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -15,13 +14,12 @@ import javax.validation.constraints.NotNull;
 @Entity
 @Table(name = "dish")
 @Access(AccessType.FIELD)
-@NamedEntityGraph(name = "with-restaurant", attributeNodes = @NamedAttributeNode("restaurant"))
+@org.hibernate.annotations.Cache(usage = CacheConcurrencyStrategy.NONSTRICT_READ_WRITE)
 public class Dish extends NamedEntity {
 
     @NotNull
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "restaurant_id", nullable = false)
-    @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
     public Dish(Dish item) {
@@ -42,7 +40,7 @@ public class Dish extends NamedEntity {
         return getClass().getSimpleName() + "{" +
                 "id=" + id +
                 ", name='" + name + '\'' +
-                ", restaurant=" + restaurant.getId() +
+                ", restaurant=" + restaurant +
                 '}';
     }
 }

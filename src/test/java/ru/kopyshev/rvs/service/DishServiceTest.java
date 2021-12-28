@@ -6,12 +6,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.DishTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.Dish;
+import ru.kopyshev.rvs.to.DishDTO;
+import ru.kopyshev.rvs.to.DishUpdateDTO;
+import ru.kopyshev.rvs.util.mapper.DishMapper;
 
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.util.List;
 
+import static ru.kopyshev.rvs.DishTestData.getUpdated;
 import static ru.kopyshev.rvs.DishTestData.*;
 import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
@@ -21,69 +24,80 @@ public class DishServiceTest extends AbstractServiceTest {
     @Autowired
     private DishService service;
 
+    @Autowired
+    private DishMapper dishMapper;
+
     @Test
     void create() {
-        Dish expected = DishTestData.getNew();
-        Dish created = service.create(expected);
-        DISH_MATCHER.assertMatch(created, expected);
-        DISH_MATCHER.assertMatch(service.get(created.id(), expected.getRestaurant().id()), created);
+        DishDTO created = service.create(NEW_DISH_UPDATE_DTO);
+        DISH_TO_MATCHER.assertMatch(created, NEW_DISH_DTO);
+        DISH_TO_MATCHER.assertMatch(service.get(created.id()), created);
     }
 
     @Test
     void get() {
-        Dish dish = service.get(DISH_ID_1, RESTAURANT_ID_1);
-        DISH_MATCHER.assertMatch(dish, DISH_1);
+        DishDTO dishDTO = service.get(DISH_ID_1);
+        DISH_TO_MATCHER.assertMatch(dishDTO, DISH_DTO_1);
     }
 
     @Test
     void update() {
-        Dish updated = DishTestData.getUpdated(DISH_1);
-        service.update(updated, DISH_ID_1, RESTAURANT_ID_2);
-        Dish actual = service.get(DISH_ID_1, RESTAURANT_ID_2);
-        DISH_MATCHER.assertMatch(actual, updated);
+        DishUpdateDTO updateDTO = DishTestData.getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
+        service.update(updateDTO, updateDTO.id());
+        DishDTO actual = service.get(DISH_ID_1);
+        DishDTO expected = new DishDTO();
+        expected.setId(updateDTO.id());
+        expected.setName(updateDTO.getName());
+        expected.setRestaurant(RESTAURANT_TO_2);
+        DISH_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void delete() {
-        Dish existing = service.get(DISH_ID_1, RESTAURANT_ID_1);
+        DishDTO existing = service.get(DISH_ID_1);
         Assert.notNull(existing, "Must be an existing restaurant");
-        service.delete(DISH_ID_1, RESTAURANT_ID_1);
-        Assertions.assertThrows(NotFoundException.class, () -> service.get(DISH_ID_1, RESTAURANT_ID_1));
+        service.delete(DISH_ID_1);
+        Assertions.assertThrows(NotFoundException.class, () -> service.get(DISH_ID_1));
     }
 
     @Test
     void getAll() {
-        List<Dish> expected = List.of(DISH_6, DISH_5, DISH_4);
-        List<Dish> actual = service.getAll(RESTAURANT_ID_2);
-        DISH_MATCHER.assertMatch(actual, expected);
+        List<DishDTO> expected = List.of(DISH_DTO_6, DISH_DTO_5, DISH_DTO_4);
+        List<DishDTO> actual = service.getAll(RESTAURANT_ID_2);
+        DISH_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void createDuplicate() {
-        Dish dish = new Dish(DISH_1);
-        dish.setId(null);
-        validateRootCause(SQLException.class, () -> service.create(dish));
+        DishUpdateDTO updateDTO = new DishUpdateDTO();
+        updateDTO.setId(null);
+        updateDTO.setName(DISH_DTO_1.getName());
+        updateDTO.setRestaurantId(DISH_DTO_1.getRestaurant().id());
+        validateRootCause(SQLException.class, () -> service.create(updateDTO));
     }
 
     @Test
     void createWithException() {
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new Dish("   ", RESTAURANT_1)));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new Dish("The valid name of a dish", null)));
+        validateRootCause(ConstraintViolationException.class,
+                () -> service.create(new DishUpdateDTO(null, "   ", RESTAURANT_ID_1)));
+        validateRootCause(NullPointerException.class,
+                () -> service.create(new DishUpdateDTO(null, "The valid name of a dish", null)));
     }
 
     @Test
     void getNotFound() {
-        Assertions.assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND_ID, RESTAURANT_ID_1));
+        Assertions.assertThrows(NotFoundException.class, () -> service.get(NOT_FOUND_ID));
     }
 
     @Test
     void updateNotConsistent() {
+        DishUpdateDTO updateDTO = getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
         Assertions.assertThrows(IllegalArgumentException.class, () ->
-                service.update(DishTestData.getUpdated(DISH_1), DISH_ID_1, NOT_FOUND_ID));
+                service.update(updateDTO, NOT_FOUND_ID));
     }
 
     @Test
     void deleteNotFound() {
-        Assertions.assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND_ID, RESTAURANT_ID_1));
+        Assertions.assertThrows(NotFoundException.class, () -> service.delete(NOT_FOUND_ID));
     }
 }

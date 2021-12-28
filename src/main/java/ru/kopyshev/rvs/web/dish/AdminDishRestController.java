@@ -8,17 +8,16 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kopyshev.rvs.service.DishService;
 import ru.kopyshev.rvs.to.DishDTO;
-import ru.kopyshev.rvs.util.DishUtil;
+import ru.kopyshev.rvs.to.DishUpdateDTO;
 
 import java.net.URI;
 import java.util.List;
-import java.util.Map;
 
 @Slf4j
 @RestController
 @RequestMapping(value = AdminDishRestController.ADMIN_REST_URL, produces = MediaType.APPLICATION_JSON_VALUE)
 public class AdminDishRestController {
-    public static final String ADMIN_REST_URL = "/rest/admin/restaurants/{restaurantId}/dishes";
+    public static final String ADMIN_REST_URL = "/rest/admin/dishes";
 
     private final DishService dishService;
 
@@ -27,48 +26,41 @@ public class AdminDishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DishDTO> createWithLocation(@PathVariable("restaurantId") int restaurantId,
-                                                      @RequestBody DishDTO dishTo) {
-        log.info("creating dish of restaurant {} from named to {}", restaurantId, dishTo);
-        var dish = DishUtil.getDishFromTo(dishTo);
-        dish = dishService.create(dish);
-        var map = Map.of("restaurantId", restaurantId, "id", dish.getId());
+    public ResponseEntity<DishDTO> createWithLocation(@RequestBody DishUpdateDTO dishUpdateDTO) {
+        log.info("creating dish from dishUpdateDTO {}", dishUpdateDTO);
+        var dishDTO = dishService.create(dishUpdateDTO);
+
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
-                .path(ADMIN_REST_URL + "/{restaurantId}/dishes/{id}")
-                .buildAndExpand(map)
+                .path(ADMIN_REST_URL + "/{id}")
+                .buildAndExpand(dishDTO.id())
                 .toUri();
-        dishTo.setId(dish.getId());
-        return ResponseEntity.created(uriOfNewResource).body(dishTo);
+        return ResponseEntity.created(uriOfNewResource).body(dishDTO);
     }
 
-    @GetMapping("/{dishId}")
-    public DishDTO get(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId) {
-        log.info("getting dish {} of restaurant {}", dishId, restaurantId);
-        var dish = dishService.get(dishId, restaurantId);
-        return DishUtil.getToFromDish(dish);
+    @GetMapping("/{id}")
+    public DishDTO get(@PathVariable("id") int dishId) {
+        log.info("getting dish {}", dishId);
+        return dishService.get(dishId);
     }
 
-    @PutMapping(value = {"/{dishId}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @PutMapping(value = {"/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId,
-                       @RequestBody DishDTO dishTo) {
-        log.info("updating dish {} of restaurant {} by namedTo {}", dishTo.getId(), restaurantId, dishTo);
-        var dish = DishUtil.getDishFromTo(dishTo);
-        dishService.update(dish, dishId, restaurantId);
+    public void update(@PathVariable("id") int dishId, @RequestBody DishUpdateDTO dishUpdateDTO) {
+        log.info("updating dish {} of by dishUpdateDTO {}", dishUpdateDTO.getId(), dishUpdateDTO);
+        dishService.update(dishUpdateDTO, dishId);
     }
 
-    @DeleteMapping("{dishId}")
+    @DeleteMapping("{id}")
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void delete(@PathVariable("restaurantId") int restaurantId, @PathVariable("dishId") int dishId) {
-        log.info("deleting dish {} of restaurant {}", dishId, restaurantId);
-        dishService.delete(dishId, restaurantId);
+    public void delete(@PathVariable("id") int dishId) {
+        log.info("deleting dish {}", dishId);
+        dishService.delete(dishId);
     }
 
     @GetMapping
-    public List<DishDTO> getAll(@PathVariable("restaurantId") int restaurantId) {
+    public List<DishDTO> getAll(@RequestParam(value = "restaurant", required = false) Integer restaurantId) {
         log.info("getting all the dishes for restaurant {}", restaurantId);
-        var dishes = dishService.getAll(restaurantId);
-        return DishUtil.getToFromDish(dishes);
+        return dishService.getAll(restaurantId);
     }
 }

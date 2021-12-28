@@ -19,6 +19,11 @@ public class RestaurantTestData {
     public static final
     Restaurant RESTAURANT_2 = new Restaurant(RESTAURANT_ID_2, "The restaurant 2", "Minsk", "WannaBeRestaurant.com");
 
+    public static final
+    RestaurantDTO RESTAURANT_TO_1 = new RestaurantDTO(RESTAURANT_ID_1, "Restaurant", "Minsk", "restaurant.com");
+    public static final
+    RestaurantDTO RESTAURANT_TO_2 = new RestaurantDTO(RESTAURANT_ID_2, "The restaurant 2", "Minsk", "WannaBeRestaurant.com");
+
     public static final String RESTAURANT_UPDATED_NAME = "Updated Name";
     public static final String RESTAURANT_UPDATED_ADDRESS = "Updated address";
     public static final String RESTAURANT_UPDATED_WEBSITE = "Updated website";

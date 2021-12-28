@@ -1,13 +1,11 @@
 package ru.kopyshev.rvs.to;
 
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
 public class DishDTO extends NamedDTO {
 
@@ -39,14 +37,5 @@ public class DishDTO extends NamedDTO {
     @Override
     public int hashCode() {
         return Objects.hash(super.hashCode(), restaurant);
-    }
-
-    @Override
-    public String toString() {
-        return "DishTo{" +
-                "id=" + id +
-                ", restaurant=" + restaurant +
-                ", name='" + name + '\'' +
-                '}';
     }
 }
