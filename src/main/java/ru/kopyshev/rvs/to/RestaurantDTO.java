@@ -51,8 +51,10 @@ public class RestaurantDTO extends NamedDTO {
 
     @Override
     public String toString() {
-        return "RestaurantTo{" +
-                "address='" + address + '\'' +
+        return "RestaurantDTO{" +
+                "id=" + id +
+                ", name='" + name + '\'' +
+                ", address='" + address + '\'' +
                 ", website='" + website + '\'' +
                 '}';
     }

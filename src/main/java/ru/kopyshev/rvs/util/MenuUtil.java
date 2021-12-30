@@ -6,16 +6,17 @@ import ru.kopyshev.rvs.model.MenuItem;
 import ru.kopyshev.rvs.model.Restaurant;
 import ru.kopyshev.rvs.to.MenuDTO;
 import ru.kopyshev.rvs.to.NamedDTO;
+import ru.kopyshev.rvs.util.mapper.RestaurantMapper;
 
 import java.time.LocalDate;
-import java.util.*;
+import java.util.Collection;
+import java.util.List;
 import java.util.stream.Collectors;
-
-import static ru.kopyshev.rvs.util.RestaurantUtil.getRestaurantFromTo;
-import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 
 @UtilityClass
 public class MenuUtil {
+
+    private final RestaurantMapper restaurantMapper = new RestaurantMapper();
 
     public static List<MenuItem> getMenuItems(MenuDTO menuDTO) {
         return menuDTO.getMenuItemTos().stream()
@@ -24,9 +25,9 @@ public class MenuUtil {
                     var price = menuItemTo.getPrice();
                     var dishTo = menuItemTo.getDishTo();
                     var dateOf = menuDTO.getDateOf();
-                    var restaurantTo = menuDTO.getRestaurantTo();
-                    var dish = new Dish(dishTo.getId(), dishTo.getName(), getRestaurantFromTo(restaurantTo));
-                    return new MenuItem(id, getRestaurantFromTo(restaurantTo), dish, dateOf, price);
+                    var restaurantDTO = menuDTO.getRestaurantTo();
+                    var dish = new Dish(dishTo.getId(), dishTo.getName(), restaurantMapper.toEntity(restaurantDTO));
+                    return new MenuItem(id, restaurantMapper.toEntity(restaurantDTO), dish, dateOf, price);
                 })
                 .collect(Collectors.toList());
     }
@@ -41,7 +42,7 @@ public class MenuUtil {
                     var price = item.getPrice();
                     return new MenuDTO.MenuItemDTO(id, dishTo, price);
                 }).collect(Collectors.toList());
-        return new MenuDTO(date, getToFromRestaurant(restaurant), menuItemTos);
+        return new MenuDTO(date, restaurantMapper.toDTO(restaurant), menuItemTos);
     }
 
 

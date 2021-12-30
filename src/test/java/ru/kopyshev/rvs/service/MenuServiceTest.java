@@ -14,9 +14,9 @@ import java.util.List;
 
 import static ru.kopyshev.rvs.DishTestData.DISH_1;
 import static ru.kopyshev.rvs.DishTestData.DISH_2;
+import static ru.kopyshev.rvs.MenuTestData.getUpdated;
 import static ru.kopyshev.rvs.MenuTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
 

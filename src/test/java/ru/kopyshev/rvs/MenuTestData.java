@@ -12,15 +12,12 @@ import java.util.List;
 
 import static ru.kopyshev.rvs.DishTestData.*;
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_2;
+import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 import static ru.kopyshev.rvs.TestData.DATE_2;
-import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 
 @UtilityClass
 public class MenuTestData {
-
     public static final Matcher<MenuItem> MENU_ITEM_MATCHER = usingIgnoreFieldComparator(MenuItem.class, "dish.restaurant");
     public static final Matcher<MenuDTO> MENU_TO_MATCHER = usingIgnoreFieldComparator(MenuDTO.class, "menuItemTos.id");
     public static final int ITEM_ID_1 = 100_010;
@@ -65,6 +62,6 @@ public class MenuTestData {
         var menuItemTo1 = new MenuDTO.MenuItemDTO(ITEM_ID_1, dishTo1, ITEM_1.getPrice());
         var menuItemTo2 = new MenuDTO.MenuItemDTO(ITEM_ID_2, dishTo2, ITEM_2.getPrice());
         var menuItemTos = List.of(menuItemTo1, menuItemTo2);
-        return new MenuDTO(DATE_1, getToFromRestaurant(RESTAURANT_1), menuItemTos);
+        return new MenuDTO(DATE_1, RESTAURANT_TO_1, menuItemTos);
     }
 }

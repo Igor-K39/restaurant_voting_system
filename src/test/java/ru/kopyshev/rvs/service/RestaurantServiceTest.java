@@ -5,7 +5,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.Restaurant;
+import ru.kopyshev.rvs.to.RestaurantDTO;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -20,29 +20,28 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void create() {
-        Restaurant expected = getNew();
-        Restaurant actual = service.create(expected);
-        RESTAURANT_MATCHER.assertMatch(actual, expected);
-        RESTAURANT_MATCHER.assertMatch(service.get(expected.id()), expected);
+        RestaurantDTO actual = service.create(NEW_RESTAURANT_DTO);
+        RESTAURANT_TO_MATCHER.assertMatch(actual, NEW_RESTAURANT_DTO);
+        RESTAURANT_TO_MATCHER.assertMatch(service.get(actual.id()), NEW_RESTAURANT_DTO);
     }
 
     @Test
     void get() {
-        Restaurant restaurant = service.get(RESTAURANT_ID_1);
-        RESTAURANT_MATCHER.assertMatch(restaurant, RESTAURANT_1);
+        RestaurantDTO restaurant = service.get(RESTAURANT_ID_1);
+        RESTAURANT_TO_MATCHER.assertMatch(restaurant, RESTAURANT_TO_1);
     }
 
     @Test
     void update() {
-        Restaurant updated = getUpdated(RESTAURANT_1);
+        RestaurantDTO updated = getUpdated(RESTAURANT_TO_1);
         service.update(updated, RESTAURANT_ID_1);
-        Restaurant actual = service.get(RESTAURANT_ID_1);
-        RESTAURANT_MATCHER.assertMatch(actual, updated);
+        RestaurantDTO actual = service.get(RESTAURANT_ID_1);
+        RESTAURANT_TO_MATCHER.assertMatch(actual, updated);
     }
 
     @Test
     void delete() {
-        Restaurant existing = service.get(RESTAURANT_ID_1);
+        RestaurantDTO existing = service.get(RESTAURANT_ID_1);
         Assert.notNull(existing, "Must be an existing restaurant");
         service.delete(RESTAURANT_ID_1);
         Assertions.assertThrows(NotFoundException.class, () -> service.get(RESTAURANT_ID_1));
@@ -50,23 +49,23 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void getAll() {
-        List<Restaurant> expected = List.of(RESTAURANT_1, RESTAURANT_2);
-        List<Restaurant> actual = service.getAll();
-        RESTAURANT_MATCHER.assertMatch(actual, expected);
+        List<RestaurantDTO> expected = List.of(RESTAURANT_TO_1, RESTAURANT_TO_2);
+        List<RestaurantDTO> actual = service.getAll();
+        RESTAURANT_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void createDuplicate() {
-        Restaurant restaurant = new Restaurant(RESTAURANT_1);
+        RestaurantDTO restaurant = new RestaurantDTO(RESTAURANT_TO_1);
         restaurant.setId(null);
         validateRootCause(ConstraintViolationException.class, () -> service.create(restaurant));
     }
 
     @Test
     void createWithException() {
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new Restaurant("   ", "Minsk", "restaurant.com")));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new Restaurant("Restaurant", "   ", "restaurant.com")));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new Restaurant("Restaurant", "Minsk", "   ")));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new RestaurantDTO("   ", "Minsk", "restaurant.com")));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new RestaurantDTO("Restaurant", "   ", "restaurant.com")));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new RestaurantDTO("Restaurant", "Minsk", "   ")));
     }
 
     @Test
@@ -76,7 +75,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void updateNotConsistent() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> service.update(getUpdated(RESTAURANT_1), NOT_FOUND_ID));
+        Assertions.assertThrows(IllegalArgumentException.class, () -> service.update(getUpdated(RESTAURANT_TO_1), NOT_FOUND_ID));
     }
 
     @Test

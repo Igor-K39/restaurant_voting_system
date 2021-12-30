@@ -10,6 +10,7 @@ import ru.kopyshev.rvs.service.VoteService;
 import ru.kopyshev.rvs.to.VoteDTO;
 import ru.kopyshev.rvs.util.DateTimeUtil;
 import ru.kopyshev.rvs.util.VoteUtil;
+import ru.kopyshev.rvs.util.mapper.RestaurantMapper;
 import ru.kopyshev.rvs.web.SecurityUtil;
 
 import java.time.LocalDate;
@@ -25,11 +26,14 @@ public class UserVoteRestController {
     private final VoteService voteService;
     private final UserService userService;
     private final RestaurantService restaurantService;
+    private final RestaurantMapper restaurantMapper;
 
-    public UserVoteRestController(VoteService voteService, UserService userService, RestaurantService restaurantService) {
+    public UserVoteRestController(VoteService voteService, UserService userService,
+                                  RestaurantService restaurantService, RestaurantMapper restaurantMapper) {
         this.voteService = voteService;
         this.userService = userService;
         this.restaurantService = restaurantService;
+        this.restaurantMapper = restaurantMapper;
     }
 
     @PostMapping
@@ -37,7 +41,7 @@ public class UserVoteRestController {
     public void voteUp(@RequestParam("restaurant") Integer restaurantId) {
         int userId = SecurityUtil.authUserId();
         log.info("voting up {} for restaurant {} by user {}", LocalDateTime.now(), restaurantId, userId);
-        voteService.voteUp(userService.get(userId), restaurantService.get(restaurantId));
+        voteService.voteUp(userService.get(userId), restaurantMapper.toEntity(restaurantService.get(restaurantId)));
     }
 
     @PostMapping("/cancel")

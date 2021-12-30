@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ru.kopyshev.rvs.model.Restaurant;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 @Transactional(readOnly = true)
@@ -20,5 +21,5 @@ public interface CrudRestaurantRepository extends JpaRepository<Restaurant, Inte
     int delete(@Param("id") int id);
 
     @Query("SELECT r FROM Restaurant r ORDER BY r.name, r.address")
-    List<Restaurant> getAll();
+    Optional<List<Restaurant>> getAll();
 }

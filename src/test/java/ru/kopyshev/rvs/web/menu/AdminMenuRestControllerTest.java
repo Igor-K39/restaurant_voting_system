@@ -21,13 +21,11 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kopyshev.rvs.DishTestData.*;
 import static ru.kopyshev.rvs.MenuTestData.MENU_TO_MATCHER;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 import static ru.kopyshev.rvs.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
-import static ru.kopyshev.rvs.util.RestaurantUtil.getToFromRestaurant;
 
 class AdminMenuRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = AdminMenuRestController.REST_URL;
@@ -43,7 +41,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
         var menuItemTos = List.of(menuItemTo1, menuItemTo2, menuItemTo3);
         var menuTo = new MenuDTO();
         menuTo.setDateOf(LocalDate.now());
-        menuTo.setRestaurantTo(getToFromRestaurant(RESTAURANT_1));
+        menuTo.setRestaurantTo(RESTAURANT_TO_1);
         menuTo.setMenuItemTos(menuItemTos);
         System.out.println(menuTo);
 

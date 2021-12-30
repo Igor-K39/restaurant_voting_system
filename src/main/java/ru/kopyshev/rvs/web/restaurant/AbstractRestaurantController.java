@@ -4,11 +4,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.RestaurantService;
 import ru.kopyshev.rvs.to.RestaurantDTO;
-import ru.kopyshev.rvs.util.RestaurantUtil;
 
 import java.util.List;
-
-import static ru.kopyshev.rvs.util.RestaurantUtil.getRestaurantFromTo;
 
 @Slf4j
 public abstract class AbstractRestaurantController {
@@ -16,28 +13,24 @@ public abstract class AbstractRestaurantController {
     @Autowired
     private RestaurantService service;
 
-    protected RestaurantDTO create(RestaurantDTO restaurantTo) {
-        log.info("create restaurant from {}", restaurantTo);
-        var restaurant = getRestaurantFromTo(restaurantTo);
-        restaurant = service.create(restaurant);
-        restaurantTo.setId(restaurant.id());
-        return restaurantTo;
+    protected RestaurantDTO create(RestaurantDTO restaurantDTO) {
+        log.info("create restaurant from {}", restaurantDTO);
+        return service.create(restaurantDTO);
     }
 
     protected RestaurantDTO get(int id) {
         log.info("getting restaurant with id = {}", id);
-        return RestaurantUtil.getToFromRestaurant(service.get(id));
+        return service.get(id);
     }
 
     protected List<RestaurantDTO> getAll() {
         log.info("getting all restaurants");
-        return RestaurantUtil.getToFromRestaurant(service.getAll());
+        return service.getAll();
     }
 
-    protected void update(RestaurantDTO restaurantTo, int id) {
-        log.info("updating restaurant with id = {} by restaurantTo {}", id, restaurantTo);
-        var restaurant = getRestaurantFromTo(restaurantTo);
-        service.update(restaurant, id);
+    protected void update(RestaurantDTO restaurantDTO, int id) {
+        log.info("updating restaurant with id = {} by restaurantDTO {}", id, restaurantDTO);
+        service.update(restaurantDTO, id);
     }
 
     protected void delete(int id) {

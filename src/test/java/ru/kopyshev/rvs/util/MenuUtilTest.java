@@ -9,7 +9,7 @@ import ru.kopyshev.rvs.config.SpringDataJpaConfig;
 import java.util.List;
 
 import static ru.kopyshev.rvs.MenuTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_1;
+import static ru.kopyshev.rvs.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 
 @SpringJUnitConfig(value = {SpringDataJpaConfig.class, SpringApplicationConfigTest.class})

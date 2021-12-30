@@ -8,8 +8,8 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.RestaurantService;
+import ru.kopyshev.rvs.to.RestaurantDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
-import ru.kopyshev.rvs.util.RestaurantUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
 import java.util.List;
@@ -29,55 +29,51 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
 
     @Test
     void createWithLocation() throws Exception {
-        var restaurantTo = RestaurantUtil.getToFromRestaurant(getNew());
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(restaurantTo)))
+                .content(JsonUtil.writeValue(NEW_RESTAURANT_DTO)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        var createdTo = RESTAURANT_TO_MATCHER.readFromJson(actions);
-        int id = createdTo.getId();
-        restaurantTo.setId(id);
-        RESTAURANT_TO_MATCHER.assertMatch(createdTo, restaurantTo);
-        RESTAURANT_MATCHER.assertMatch(service.get(id), RestaurantUtil.getRestaurantFromTo(restaurantTo));
+        RestaurantDTO createdDTO = RESTAURANT_TO_MATCHER.readFromJson(actions);
+        RESTAURANT_TO_MATCHER.assertMatch(createdDTO, NEW_RESTAURANT_DTO);
+        RESTAURANT_TO_MATCHER.assertMatch(service.get(createdDTO.getId()), NEW_RESTAURANT_DTO);
     }
 
     @Test
     void get() throws Exception {
-        var restaurantTo = RestaurantUtil.getToFromRestaurant(RESTAURANT_1);
         perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(restaurantTo));
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RESTAURANT_TO_1));
     }
 
     @Test
     void getAll() throws Exception {
-        var allRestaurantTo = RestaurantUtil.getToFromRestaurant(List.of(RESTAURANT_1, RESTAURANT_2));
+        List<RestaurantDTO> restaurantDTOs = List.of(RESTAURANT_TO_1, RESTAURANT_TO_2);
         perform(MockMvcRequestBuilders.get(restUrl)
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(allRestaurantTo));
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(restaurantDTOs));
     }
 
     @Test
     void update() throws Exception {
-        var restaurantTo = RestaurantUtil.getToFromRestaurant(getUpdated(RESTAURANT_1));
+        RestaurantDTO expected = getUpdated(RESTAURANT_TO_1);
         perform(MockMvcRequestBuilders.put(restUrl + RESTAURANT_ID_1)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(restaurantTo)))
+                .content(JsonUtil.writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        var actual = RestaurantUtil.getToFromRestaurant(service.get(RESTAURANT_ID_1));
-        RESTAURANT_TO_MATCHER.assertMatch(actual, restaurantTo);
+        RestaurantDTO actual = service.get(RESTAURANT_ID_1);
+        RESTAURANT_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
@@ -86,6 +82,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .with(userHttpBasic(ADMIN_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
+
         Assertions.assertThrows(NotFoundException.class, () -> service.get(RESTAURANT_ID_1));
     }
 }

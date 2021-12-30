@@ -4,7 +4,9 @@ import org.springframework.stereotype.Service;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.model.Restaurant;
 import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
+import ru.kopyshev.rvs.to.RestaurantDTO;
 import ru.kopyshev.rvs.util.ValidationUtil;
+import ru.kopyshev.rvs.util.mapper.RestaurantMapper;
 
 import java.util.List;
 
@@ -12,23 +14,28 @@ import java.util.List;
 public class RestaurantService {
 
     private final CrudRestaurantRepository repository;
+    private final RestaurantMapper restaurantMapper;
 
-    public RestaurantService(CrudRestaurantRepository repository) {
+    public RestaurantService(CrudRestaurantRepository repository, RestaurantMapper restaurantMapper) {
         this.repository = repository;
+        this.restaurantMapper = restaurantMapper;
     }
 
-    public Restaurant create(Restaurant restaurant) {
-        ValidationUtil.checkNew(restaurant);
-        return repository.save(restaurant);
+    public RestaurantDTO create(RestaurantDTO restaurantDTO) {
+        ValidationUtil.checkNew(restaurantDTO);
+        Restaurant saved = repository.save(restaurantMapper.toEntity(restaurantDTO));
+        return restaurantMapper.toDTO(saved);
     }
 
-    public Restaurant get(int id) {
-        return repository.findById(id).orElseThrow(() -> new NotFoundException("Not found a restaurant with id: " + id));
+    public RestaurantDTO get(int id) {
+        Restaurant restaurant = repository.findById(id)
+                .orElseThrow(() -> new NotFoundException("Not found a restaurant with id: " + id));
+        return restaurantMapper.toDTO(restaurant);
     }
 
-    public void update(Restaurant restaurant, int id) {
-        ValidationUtil.assureIdConsistent(restaurant, id);
-        repository.save(restaurant);
+    public void update(RestaurantDTO restaurantDTO, int id) {
+        ValidationUtil.assureIdConsistent(restaurantDTO, id);
+        repository.save(restaurantMapper.toEntity(restaurantDTO));
     }
 
     public void delete(int id) {
@@ -36,7 +43,7 @@ public class RestaurantService {
         ValidationUtil.checkNotFoundWithId(affectedRows != 0, id);
     }
 
-    public List<Restaurant> getAll() {
-        return repository.findAll();
+    public List<RestaurantDTO> getAll() {
+        return restaurantMapper.toDTO(repository.getAll().orElse(List.of()));
     }
 }
