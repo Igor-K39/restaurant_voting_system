@@ -1,90 +1,78 @@
 package ru.kopyshev.rvs.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import org.springframework.util.Assert;
+import org.springframework.transaction.annotation.Transactional;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.MenuItem;
+import ru.kopyshev.rvs.model.Menu;
 import ru.kopyshev.rvs.repository.CrudMenuRepository;
-import ru.kopyshev.rvs.util.CollectionUtil;
-import ru.kopyshev.rvs.util.DateTimeUtil;
+import ru.kopyshev.rvs.to.MenuDTO;
+import ru.kopyshev.rvs.to.MenuUpdateDTO;
 import ru.kopyshev.rvs.util.ValidationUtil;
+import ru.kopyshev.rvs.util.mapper.MenuMapper;
 
 import java.time.LocalDate;
 import java.util.List;
-import java.util.Objects;
+
+import static java.util.Objects.isNull;
+import static ru.kopyshev.rvs.util.DateTimeUtil.getMaxIfNull;
+import static ru.kopyshev.rvs.util.DateTimeUtil.getMinIfNull;
 
 
+@Slf4j
 @Service
 public class MenuService {
 
-    private final CrudMenuRepository repository;
+    private final CrudMenuRepository menuRepository;
+    private final MenuMapper menuMapper;
 
-    public MenuService(CrudMenuRepository repository) {
-        this.repository = repository;
+    public MenuService(CrudMenuRepository menuRepository, MenuMapper menuMapper) {
+        this.menuRepository = menuRepository;
+        this.menuMapper = menuMapper;
     }
 
-    public MenuItem create(MenuItem item) {
-        ValidationUtil.checkNew(item);
-        return repository.save(item);
+    @Transactional
+    public MenuDTO create(MenuUpdateDTO menuDTO) {
+        ValidationUtil.checkNew(menuDTO);
+        Menu menu = menuMapper.getEntity(menuDTO);
+        Menu saved = menuRepository.save(menu);
+        return menuMapper.getDTO(saved);
     }
 
-    public MenuItem get(int id) {
-        return repository.get(id).orElseThrow(() -> new NotFoundException("Not found MenuItem with id = " + id));
+    public MenuDTO get(int id) {
+        Menu menu = menuRepository.get(id).orElseThrow(() -> new NotFoundException("Not found MenuItem with id = " + id));
+        return menuMapper.getDTO(menu);
     }
 
-    public void update(MenuItem item, int id) {
-        ValidationUtil.assureIdConsistent(item, id);
-        checkExisting(id);
-        repository.save(item);
+    public List<MenuDTO> getAll() {
+        return getAll(null, null);
+    }
+
+    public List<MenuDTO> getAll(LocalDate start, LocalDate end) {
+        log.debug("Getting menu items between {} and {}", start, end);
+        List<Menu> menus = menuRepository.getAll(getMinIfNull(start), getMaxIfNull(end));
+        return !isNull(menus)
+                ? menuMapper.getDTO(menus)
+                : List.of();
+    }
+
+    public List<MenuDTO> getAll(int restaurantId, LocalDate start, LocalDate end) {
+        log.debug("Getting menu items of restaurant {} between {} and {}", restaurantId, start, end);
+        List<Menu> menuItems = menuRepository.getAll(restaurantId, getMinIfNull(start), getMaxIfNull(end));
+        return !isNull(menuItems)
+                ? menuMapper.getDTO(menuItems)
+                : List.of();
+    }
+
+    public void update(MenuUpdateDTO menuUpdateDTO, int id) {
+        ValidationUtil.assureIdConsistent(menuUpdateDTO, id);
+        menuRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found menu with id = " + id));
+        Menu menu = menuMapper.getEntity(menuUpdateDTO);
+        menuRepository.update(menu);
     }
 
     public void delete(int id) {
-        ValidationUtil.checkNotFoundWithId(repository.delete(id) != 0, id);
-    }
-
-    public List<MenuItem> createAll(List<MenuItem> items) {
-        Assert.notNull(items, "Creating menu item must not be null");
-        items.forEach(ValidationUtil::checkNew);
-        return repository.saveAll(items);
-    }
-
-    public List<MenuItem> getAll() {
-        return getAll(DateTimeUtil.getMinDate(), DateTimeUtil.getMaxDate());
-    }
-
-    public List<MenuItem> getAll(LocalDate start, LocalDate end) {
-        LocalDate startDate = Objects.isNull(start) ? DateTimeUtil.getMinDate() : start;
-        LocalDate endDate = Objects.isNull(end) ? DateTimeUtil.getMaxDate() : end;
-        var menuItems = repository.getAll(startDate, endDate);
-        return CollectionUtil.getImmutableListIfNull(menuItems);
-    }
-
-    public List<MenuItem> getAll(int restaurantId) {
-        var menuItems = repository.getAll(restaurantId);
-        return CollectionUtil.getImmutableListIfNull(menuItems);
-    }
-
-    public List<MenuItem> getAll(int restaurantId, LocalDate start, LocalDate end) {
-        var menuItems = repository.getAll(restaurantId, start, end);
-        return CollectionUtil.getImmutableListIfNull(menuItems);
-    }
-
-    public List<MenuItem> updateAllByReplacing(List<MenuItem> items) {
-        items.forEach(item -> Assert.notNull(item, "Updating items must not be null"));
-        repository.deleteAll(items);
-        return repository.saveAll(items);
-    }
-
-    public void deleteAtDate(int restaurant_id, LocalDate date) {
-        Assert.notNull(date, "The date must not be null");
-        var affectedRows = repository.delete(restaurant_id, date);
-        var message = String.format("Nothing is found for restaurant %d at %s", restaurant_id, date);
-        ValidationUtil.checkNotFound(affectedRows != 0, message);
-    }
-
-    private void checkExisting(int id) {
-        if (!repository.existsById(id)) {
-            throw new NotFoundException("The updating MenuItem does not exist");
-        }
+        int affectedRows = menuRepository.delete(id);
+        ValidationUtil.checkNotFoundWithId(affectedRows != 0, id);
     }
 }

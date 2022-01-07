@@ -2,10 +2,10 @@ package ru.kopyshev.rvs;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
-import ru.kopyshev.rvs.model.Dish;
-import ru.kopyshev.rvs.model.MenuItem;
 import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.NamedDTO;
+import ru.kopyshev.rvs.to.MenuDTO.MenuItemDTO;
+import ru.kopyshev.rvs.to.MenuUpdateDTO;
+import ru.kopyshev.rvs.to.MenuUpdateDTO.MenuItemUpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -13,55 +13,75 @@ import java.util.List;
 import static ru.kopyshev.rvs.DishTestData.*;
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
 import static ru.kopyshev.rvs.RestaurantTestData.*;
-import static ru.kopyshev.rvs.TestData.DATE_1;
-import static ru.kopyshev.rvs.TestData.DATE_2;
 
 @UtilityClass
 public class MenuTestData {
-    public static final Matcher<MenuItem> MENU_ITEM_MATCHER = usingIgnoreFieldComparator(MenuItem.class, "dish.restaurant");
-    public static final Matcher<MenuDTO> MENU_TO_MATCHER = usingIgnoreFieldComparator(MenuDTO.class, "menuItemTos.id");
-    public static final int ITEM_ID_1 = 100_010;
-    public static final int ITEM_ID_2 = 100_011;
-    public static final int ITEM_ID_3 = 100_012;
-    public static final int ITEM_ID_4 = 100_013;
-    public static final int ITEM_ID_5 = 100_014;
-    public static final int ITEM_ID_6 = 100_015;
-    public static final MenuItem ITEM_1 = new MenuItem(ITEM_ID_1, RESTAURANT_1, DISH_1, DATE_1, 13000);
-    public static final MenuItem ITEM_2 = new MenuItem(ITEM_ID_2, RESTAURANT_1, DISH_2, DATE_1, 30000);
-    public static final MenuItem ITEM_3 = new MenuItem(ITEM_ID_3, RESTAURANT_1, DISH_3, DATE_2, 32000);
-    public static final MenuItem ITEM_4 = new MenuItem(ITEM_ID_4, RESTAURANT_2, DISH_4, DATE_1, 10000);
-    public static final MenuItem ITEM_5 = new MenuItem(ITEM_ID_5, RESTAURANT_2, DISH_5, DATE_1, 17000);
-    public static final MenuItem ITEM_6 = new MenuItem(ITEM_ID_6, RESTAURANT_2, DISH_6, DATE_2, 11000);
 
-    public static MenuItem getNew() {
-        return new MenuItem(RESTAURANT_1, DISH_1, LocalDate.now(), 100_000);
-    }
+    public static final Matcher<MenuDTO> MENU_TO_MATCHER = usingIgnoreFieldComparator(MenuDTO.class, "id", "menuItems.id");
+    public static final int MENU_ID_1 = 100_010;
+    public static final int MENU_ID_2 = 100_011;
+    public static final int MENU_ID_3 = 100_012;
+    public static final int MENU_ID_4 = 100_013;
 
-    public static MenuItem getUpdated(MenuItem item, Dish dish) {
-        var itemCopy = new MenuItem(item);
-        var dateNextDay = LocalDate.now().plusDays(1);
-        itemCopy.setDateOf(dateNextDay);
-        itemCopy.setPrice(item.getPrice() * 2);
-        itemCopy.setDish(dish);
-        return itemCopy;
-    }
+    public static final int MENU_ITEM_ID_1 = 100_014;
+    public static final int MENU_ITEM_ID_2 = 100_015;
+    public static final int MENU_ITEM_ID_3 = 100_016;
+    public static final int MENU_ITEM_ID_4 = 100_017;
+    public static final int MENU_ITEM_ID_5 = 100_018;
+    public static final int MENU_ITEM_ID_6 = 100_019;
+    public static final int MENU_ITEM_ID_7 = 100_020;
+    public static final int MENU_ITEM_ID_8 = 100_021;
 
-    public static List<MenuItem> getAllUpdated(List<MenuItem> items) {
-        var itemsCopy = List.copyOf(items);
-        var newUpdated = items.get(0).getDateOf().plusDays(10);
-        itemsCopy.forEach(item -> {
-            item.setPrice(item.getPrice() * 2);
-            item.setDateOf(newUpdated);
-        });
-        return itemsCopy;
-    }
+    public static final LocalDate MENU_DATE_1 = LocalDate.of(2021, 3, 1);
+    public static final LocalDate MENU_DATE_2 = LocalDate.of(2021, 3, 2);
 
-    public static MenuDTO getMenuTo() {
-        var dishTo1 = new NamedDTO(DISH_1.id(), DISH_1.getName());
-        var dishTo2 = new NamedDTO(DISH_2.id(), DISH_2.getName());
-        var menuItemTo1 = new MenuDTO.MenuItemDTO(ITEM_ID_1, dishTo1, ITEM_1.getPrice());
-        var menuItemTo2 = new MenuDTO.MenuItemDTO(ITEM_ID_2, dishTo2, ITEM_2.getPrice());
-        var menuItemTos = List.of(menuItemTo1, menuItemTo2);
-        return new MenuDTO(DATE_1, RESTAURANT_TO_1, menuItemTos);
-    }
+    public static final MenuItemDTO MENU_ITEM_DTO_1 = new MenuItemDTO(MENU_ITEM_ID_1, DISH_DTO_1, 13000);
+    public static final MenuItemDTO MENU_ITEM_DTO_2 = new MenuItemDTO(MENU_ITEM_ID_2, DISH_DTO_2, 30000);
+    public static final MenuItemDTO MENU_ITEM_DTO_3 = new MenuItemDTO(MENU_ITEM_ID_3, DISH_DTO_2, 32000);
+    public static final MenuItemDTO MENU_ITEM_DTO_4 = new MenuItemDTO(MENU_ITEM_ID_4, DISH_DTO_3, 19000);
+    public static final MenuItemDTO MENU_ITEM_DTO_5 = new MenuItemDTO(MENU_ITEM_ID_5, DISH_DTO_4, 10000);
+    public static final MenuItemDTO MENU_ITEM_DTO_6 = new MenuItemDTO(MENU_ITEM_ID_6, DISH_DTO_5, 12000);
+    public static final MenuItemDTO MENU_ITEM_DTO_7 = new MenuItemDTO(MENU_ITEM_ID_7, DISH_DTO_5, 17000);
+    public static final MenuItemDTO MENU_ITEM_DTO_8 = new MenuItemDTO(MENU_ITEM_ID_8, DISH_DTO_6, 11000);
+
+    public static final MenuDTO MENU_DTO_1 =
+            new MenuDTO(MENU_ID_1, "Меню 1", RESTAURANT_TO_1, MENU_DATE_1, List.of(MENU_ITEM_DTO_1, MENU_ITEM_DTO_2));
+    public static final MenuDTO MENU_DTO_2 =
+            new MenuDTO(MENU_ID_2, "Меню 2", RESTAURANT_TO_1, MENU_DATE_2, List.of(MENU_ITEM_DTO_3, MENU_ITEM_DTO_4));
+    public static final MenuDTO MENU_DTO_3 =
+            new MenuDTO(MENU_ID_3, "Меню 3", RESTAURANT_TO_2, MENU_DATE_1, List.of(MENU_ITEM_DTO_5, MENU_ITEM_DTO_6));
+    public static final MenuDTO MENU_DTO_4 =
+            new MenuDTO(MENU_ID_4, "Меню 4", RESTAURANT_TO_2, MENU_DATE_2, List.of(MENU_ITEM_DTO_7, MENU_ITEM_DTO_8));
+
+    public static final int NEW_PRICE_1 = 10000;
+    public static final int NEW_PRICE_2 = 20000;
+    public static final int UPDATED_PRICE_1 = NEW_PRICE_1 * 2;
+    public static final int UPDATED_PRICE_2 = NEW_PRICE_2 * 2;
+    public static final String NEW_MENU_NAME = "New menu";
+    public static final String UPDATED_MENU_NAME = "Updated menu name";
+
+
+    public static final MenuUpdateDTO NEW_MENU_UPDATE_DTO =
+            new MenuUpdateDTO(NEW_MENU_NAME, RESTAURANT_ID_1, LocalDate.now(), List.of(
+                    new MenuItemUpdateDTO(DISH_ID_1, NEW_PRICE_1),
+                    new MenuItemUpdateDTO(DISH_ID_2, NEW_PRICE_2))
+            );
+
+    public static final MenuDTO NEW_MENU_DTO =
+            new MenuDTO(NEW_MENU_NAME, RESTAURANT_TO_1, LocalDate.now(), List.of(
+                    new MenuItemDTO(DISH_DTO_1, NEW_PRICE_1),
+                    new MenuItemDTO(DISH_DTO_2, NEW_PRICE_2))
+            );
+
+    public static final MenuUpdateDTO UPDATED_MENU_UPDATE_DTO =
+            new MenuUpdateDTO(UPDATED_MENU_NAME, RESTAURANT_ID_2, LocalDate.now().plusDays(1), List.of(
+                    new MenuItemUpdateDTO(DISH_ID_2, UPDATED_PRICE_1),
+                    new MenuItemUpdateDTO(DISH_ID_3, UPDATED_PRICE_2))
+            );
+
+    public static final MenuDTO UPDATED_MENU_DTO =
+            new MenuDTO(UPDATED_MENU_NAME, RESTAURANT_TO_2, LocalDate.now().plusDays(1), List.of(
+                    new MenuItemDTO(DISH_DTO_2, UPDATED_PRICE_1),
+                    new MenuItemDTO(DISH_DTO_3, UPDATED_PRICE_2)
+            ));
 }

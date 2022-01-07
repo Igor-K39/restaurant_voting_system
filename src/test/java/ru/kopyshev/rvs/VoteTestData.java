@@ -17,10 +17,10 @@ public class VoteTestData {
     public static final
     Matcher<Vote> VOTE_MATCHER = usingIgnoreFieldComparator(Vote.class, "restaurant", "time", "user");
     public static final Matcher<VoteDTO> VOTE_TO_MATCHER = usingIgnoreFieldComparator(VoteDTO.class);
-    public static final int VOTE_1_ID = 100_016;
-    public static final int VOTE_2_ID = 100_017;
-    public static final int VOTE_3_ID = 100_018;
-    public static final int VOTE_4_ID = 100_019;
+    public static final int VOTE_1_ID = 100_022;
+    public static final int VOTE_2_ID = 100_023;
+    public static final int VOTE_3_ID = 100_024;
+    public static final int VOTE_4_ID = 100_025;
 
     public static final
     Vote VOTE_1 = new Vote(VOTE_1_ID, LocalDate.parse("2021-03-01"), LocalTime.parse("09:00:00"), USER, RESTAURANT_1);

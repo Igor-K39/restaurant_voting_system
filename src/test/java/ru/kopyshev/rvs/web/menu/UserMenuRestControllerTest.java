@@ -1,49 +1,80 @@
 package ru.kopyshev.rvs.web.menu;
 
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.service.MenuService;
-import ru.kopyshev.rvs.util.MenuUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
+
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.MenuTestData.MENU_TO_MATCHER;
+import static ru.kopyshev.rvs.MenuTestData.*;
 import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestData.DATE_1;
+import static ru.kopyshev.rvs.TestData.DATE_2;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
+import static ru.kopyshev.rvs.UserTestData.USER_AUTH;
+import static ru.kopyshev.rvs.web.menu.UserMenuRestController.REST_URL;
 
 class UserMenuRestControllerTest extends AbstractControllerTest {
-    private static final String restUrl = UserMenuRestController.REST_URL + "/";
-
-    @Autowired
-    private MenuService service;
 
     @Test
-    void getAllWithRestaurant() throws Exception {
-        var menuItems = service.getAll(RESTAURANT_ID_1, DATE_1, DATE_1);
-        var menuTosExpected = MenuUtil.getMenuTos(menuItems);
-
-        perform(MockMvcRequestBuilders.get(restUrl + RESTAURANT_ID_1 + "/menu")
-                .param("date", DATE_1.toString()))
+    void get() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL + "/" + MENU_ID_1)
+                .with(userHttpBasic(USER_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_TO_MATCHER.contentJson(menuTosExpected));
+                .andExpect(MENU_TO_MATCHER.contentJson(MENU_DTO_1));
     }
 
     @Test
     void getAll() throws Exception {
-        var menuItems = service.getAll(DATE_1, DATE_1);
-        var menuTosExpected = MenuUtil.getMenuTos(menuItems);
-        perform(MockMvcRequestBuilders.get(restUrl + "menu")
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER_AUTH))
+                .param("start", DATE_1.toString())
+                .param("end", DATE_2.toString()))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_TO_MATCHER.contentJson(List.of(MENU_DTO_4, MENU_DTO_2, MENU_DTO_3, MENU_DTO_1)));
+    }
+
+    @Test
+    void getOfRestaurant() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER_AUTH))
+                .param("restaurant", "" + RESTAURANT_ID_1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_TO_MATCHER.contentJson(List.of(MENU_DTO_1, MENU_DTO_2)));
+    }
+
+    @Test
+    void getOfBetweenDates() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER_AUTH))
                 .param("start", DATE_1.toString())
                 .param("end", DATE_1.toString()))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(MENU_TO_MATCHER.contentJson(menuTosExpected));
+                .andExpect(MENU_TO_MATCHER.contentJson(List.of(MENU_DTO_3, MENU_DTO_1)));
+    }
+
+    @Test
+    void getOfBetweenDatesOfRestaurant() throws Exception {
+        perform(MockMvcRequestBuilders.get(REST_URL)
+                .with(userHttpBasic(USER_AUTH))
+                .param("start", DATE_1.toString())
+                .param("end", DATE_1.toString())
+                .param("restaurant", "" + RESTAURANT_ID_1))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(MENU_TO_MATCHER.contentJson(List.of(MENU_DTO_1)));
     }
 }
