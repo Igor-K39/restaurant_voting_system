@@ -5,25 +5,27 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.http.MediaType;
+import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.VoteService;
-import ru.kopyshev.rvs.util.VoteUtil;
+import ru.kopyshev.rvs.to.VoteDTO;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
-import java.time.LocalDate;
+import java.util.List;
 
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.TestData.DATE_1;
+import static ru.kopyshev.rvs.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.*;
-import static ru.kopyshev.rvs.VoteTestData.VOTE_TO_MATCHER;
+import static ru.kopyshev.rvs.VoteTestData.*;
+import static ru.kopyshev.rvs.web.vote.UserVoteRestController.USER_REST_URL;
 
 class UserVoteRestControllerTest extends AbstractControllerTest {
-    private static final String restUrl = UserVoteRestController.USER_REST_URL;
 
     @Autowired
     @Qualifier(value = "voteService")
@@ -31,20 +33,21 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
 
     @Test
     void voteUp() throws Exception {
-        perform(MockMvcRequestBuilders.post(restUrl)
+        ResultActions actions = perform(MockMvcRequestBuilders.post(USER_REST_URL)
                 .param("restaurant", String.valueOf(RESTAURANT_ID_1))
                 .with(userHttpBasic(USER_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
-        var votes = service.getAll(USER_ID, LocalDate.now(), LocalDate.now());
-        Assertions.assertEquals(1, votes.size());
-        Assertions.assertEquals(RESTAURANT_ID_1, votes.get(0).getRestaurant().id());
+
+        VoteDTO created = VOTE_TO_MATCHER.readFromJson(actions);
+        VoteDTO expected = service.get(created.id());
+        VOTE_TO_MATCHER.assertMatch(created, expected);
     }
 
     @Test
     void cancelVote() throws Exception {
-        int id = service.voteUp(USER, RESTAURANT_1).id();
-        perform(MockMvcRequestBuilders.post(restUrl + "/cancel")
+        int id = service.voteUp(USER, RESTAURANT_ID_1).id();
+        perform(MockMvcRequestBuilders.post(USER_REST_URL + "/cancel")
                 .with(userHttpBasic(USER_AUTH)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -52,15 +55,25 @@ class UserVoteRestControllerTest extends AbstractControllerTest {
     }
 
     @Test
-    void getAll() throws Exception {
-        var votes = service.getAll(USER_ID, DATE_1, DATE_1);
-        perform(MockMvcRequestBuilders.get(restUrl)
-                .param("start", DATE_1.toString())
-                .param("end", DATE_1.toString())
+    void getOnDate() throws Exception {
+        perform(MockMvcRequestBuilders.get(USER_REST_URL + "/of")
+                .param("date", DATE_1.toString())
                 .with(userHttpBasic(USER_AUTH)))
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(VOTE_TO_MATCHER.contentJson(VoteUtil.getToFromVote(votes)));
+                .andExpect(VOTE_TO_MATCHER.contentJson(VOTE_DTO_1));
+    }
+
+    @Test
+    void getAll() throws Exception {
+        perform(MockMvcRequestBuilders.get(USER_REST_URL)
+                .param("start", DATE_1.toString())
+                .param("end", DATE_2.toString())
+                .with(userHttpBasic(USER_AUTH)))
+                .andDo(print())
+                .andExpect(status().isOk())
+                .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
+                .andExpect(VOTE_TO_MATCHER.contentJson(List.of(VOTE_DTO_1, VOTE_DTO_3)));
     }
 }

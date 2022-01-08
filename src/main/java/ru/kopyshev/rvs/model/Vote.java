@@ -9,6 +9,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.time.LocalTime;
 
 @Getter
@@ -18,14 +19,6 @@ import java.time.LocalTime;
 @Table(name = "vote")
 @Access(AccessType.FIELD)
 public class Vote extends BaseEntity {
-
-    @NotNull
-    @Column(name = "date_of")
-    private LocalDate date;
-
-    @NotNull
-    @Column(name = "time_of")
-    private LocalTime time;
 
     @NotNull
     @ManyToOne(fetch = FetchType.EAGER)
@@ -39,20 +32,29 @@ public class Vote extends BaseEntity {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private Restaurant restaurant;
 
-    public Vote(Vote v) {
-        this(v.id, v.date, v.time, v.user, v.restaurant);
-    }
+    @NotNull
+    @Column(name = "date_of")
+    private LocalDate date;
+
+    @NotNull
+    @Column(name = "time_of")
+    private LocalTime time;
 
     public Vote(User user, Restaurant restaurant) {
-        this(null, LocalDate.now(), LocalTime.now(), user, restaurant);
+        this(null, user, restaurant, LocalDate.now(), LocalTime.now());
     }
 
-    public Vote(Integer id, LocalDate date, LocalTime time, User user, Restaurant restaurant) {
+    public Vote(Integer id, User user, Restaurant restaurant, LocalDate date, LocalTime time) {
         super(id);
-        this.date = date;
-        this.time = time;
         this.user = user;
         this.restaurant = restaurant;
+        this.date = date;
+        this.time = time;
+    }
+
+    public void setDateTime(LocalDateTime dateTime) {
+        date = dateTime.toLocalDate();
+        time = dateTime.toLocalTime();
     }
 
     @Override

@@ -1,13 +1,11 @@
 package ru.kopyshev.rvs.to;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.validation.constraints.NotNull;
 import java.time.LocalDate;
-import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Objects;
 
@@ -17,37 +15,23 @@ import java.util.Objects;
 public class VoteDTO extends BaseDTO {
 
     @NotNull
-    private LocalDateTime dateTime;
-
-    @NotNull
     private Integer userId;
 
     @NotNull
     private Integer restaurantId;
 
-    public VoteDTO(VoteDTO vote) {
-        this(vote.id, vote.userId, vote.restaurantId, vote.dateTime);
-    }
+    @NotNull
+    private LocalDate date;
 
-    public VoteDTO(Integer userId, Integer restaurantId, LocalDateTime dateTime){
-        this(null, userId, restaurantId, dateTime);
-    }
+    @NotNull
+    private LocalTime time;
 
-    public VoteDTO(Integer id, Integer userId, Integer restaurantId, LocalDateTime dateTime) {
+    public VoteDTO(Integer id, Integer userId, Integer restaurantId, LocalDate date, LocalTime time) {
         super(id);
         this.userId = userId;
         this.restaurantId = restaurantId;
-        this.dateTime = dateTime;
-    }
-
-    @JsonIgnore
-    public LocalDate getLocalDate() {
-        return dateTime.toLocalDate();
-    }
-
-    @JsonIgnore
-    public LocalTime getLocalTime() {
-        return dateTime.toLocalTime();
+        this.date = date;
+        this.time = time;
     }
 
     @Override
@@ -55,21 +39,23 @@ public class VoteDTO extends BaseDTO {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         if (!super.equals(o)) return false;
-        VoteDTO voteTo = (VoteDTO) o;
-        return Objects.equals(dateTime, voteTo.dateTime) && Objects.equals(userId, voteTo.userId) && Objects.equals(restaurantId, voteTo.restaurantId);
+        VoteDTO voteDTO = (VoteDTO) o;
+        return Objects.equals(userId, voteDTO.userId) && Objects.equals(restaurantId, voteDTO.restaurantId) && Objects.equals(date, voteDTO.date) && Objects.equals(time, voteDTO.time);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(super.hashCode(), dateTime, userId, restaurantId);
+        return Objects.hash(super.hashCode(), userId, restaurantId, date, time);
     }
 
     @Override
     public String toString() {
-        return "VoteTo{" +
-                "dateTime=" + dateTime +
+        return "VoteDTO{" +
+                "id=" + id +
                 ", userId=" + userId +
                 ", restaurantId=" + restaurantId +
+                ", date=" + date +
+                ", time=" + time +
                 '}';
     }
 }

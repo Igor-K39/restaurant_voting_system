@@ -43,4 +43,5 @@ public class ApplicationProperties {
     public static final String HIBERNATE_ORDER_UPDATES = properties.getProperty("hibernate.order_updates");
 
     public static final String SECURITY_FILTER_NAME = properties.getProperty("spring.security.filter_name");
+    public static final String VOTE_EXPIRATION_TIME = properties.getProperty("vote.expiration.time");
 }

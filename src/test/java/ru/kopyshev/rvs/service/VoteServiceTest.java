@@ -4,17 +4,18 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-import ru.kopyshev.rvs.VoteTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.exception.TimeExpiredException;
-import ru.kopyshev.rvs.model.Vote;
 import ru.kopyshev.rvs.repository.CrudVoteRepository;
+import ru.kopyshev.rvs.to.VoteDTO;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.List;
 
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_2;
 import static ru.kopyshev.rvs.TestData.DATE_1;
 import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
 import static ru.kopyshev.rvs.UserTestData.USER;
@@ -39,16 +40,14 @@ class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     void voteUp() {
-        var votes = voteService.getAll(USER_ID, LocalDate.now(), LocalDate.now());
-        Assertions.assertEquals(0, votes.size());
-        var expected = voteService.voteUp(USER, RESTAURANT_1);
-        var actual = new Vote(expected.id(), LocalDate.now(), expected.getTime(), USER, RESTAURANT_1);
-        VOTE_MATCHER.assertMatch(expected, actual);
+        VoteDTO actual = voteService.voteUp(USER, RESTAURANT_ID_1);
+        VoteDTO expected = new VoteDTO(actual.id(), USER_ID, RESTAURANT_ID_1, LocalDate.now(), LocalTime.now());
+        VOTE_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void cancelVote() {
-        var vote = voteService.voteUp(USER, RESTAURANT_1);
+        VoteDTO vote = voteService.voteUp(USER, RESTAURANT_ID_1);
         Assertions.assertNotNull(vote);
         voteService.cancelVote(USER_ID);
         Assertions.assertThrows(NotFoundException.class, () -> voteService.get(vote.id()));
@@ -56,35 +55,41 @@ class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     void get() {
-        var actual = voteService.get(VOTE_1_ID);
-        VOTE_MATCHER.assertMatch(actual, VoteTestData.VOTE_1);
+        VoteDTO actual = voteService.get(VOTE_1_ID);
+        VOTE_TO_MATCHER.assertMatch(actual, VOTE_DTO_1);
     }
 
     @Test
     void getAll() {
-        var actual = List.of(VOTE_1, VOTE_3);
-        var expected = voteService.getAll(USER_ID);
-        VOTE_MATCHER.assertMatch(actual, expected);
+        List<VoteDTO> actual = List.of(VOTE_DTO_1, VOTE_DTO_3);
+        List<VoteDTO> expected = voteService.getAll(USER_ID, null, null);
+        VOTE_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void getBetweenDates() {
-        var expected = List.of(VOTE_1);
-        var actual = voteService.getAll(USER_ID, DATE_1, DATE_1);
-        VOTE_MATCHER.assertMatch(actual, expected);
+        List<VoteDTO> expected = List.of(VOTE_DTO_1);
+        List<VoteDTO> actual = voteService.getAll(USER_ID, DATE_1, DATE_1);
+        VOTE_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
-    void voteUpWhenCannotVoteAgain() {
-        var expected = voteServiceExpired.voteUp(USER, RESTAURANT_1);
-        var actual = voteServiceExpired.get(expected.id());
-        VOTE_MATCHER.assertMatch(actual, expected);
+    void voteUpWhenExpired() {
+        VoteDTO expected = voteServiceExpired.voteUp(USER, RESTAURANT_ID_1);
+        VoteDTO actual = voteServiceExpired.get(expected.id());
+        VOTE_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void voteAgainWhenExpired() {
-        voteServiceExpired.voteUp(USER, RESTAURANT_1);
-        Assertions.assertThrows(TimeExpiredException.class, () -> voteServiceExpired.voteUp(USER, RESTAURANT_2));
+        voteServiceExpired.voteUp(USER, RESTAURANT_ID_1);
+        Assertions.assertThrows(TimeExpiredException.class, () -> voteServiceExpired.voteUp(USER, RESTAURANT_ID_2));
+    }
+
+    @Test
+    void cancelWhenExpired() {
+        voteServiceExpired.voteUp(USER, RESTAURANT_ID_1);
+        Assertions.assertThrows(TimeExpiredException.class, () -> voteServiceExpired.cancelVote(USER_ID));
     }
 
     @Test
@@ -94,6 +99,6 @@ class VoteServiceTest extends AbstractServiceTest {
 
     @Test
     void cancelNotExistingVote() {
-        Assertions.assertThrows(TimeExpiredException.class, () -> voteServiceExpired.cancelVote(USER_ID));
+        Assertions.assertThrows(NotFoundException.class, () -> voteService.cancelVote(USER_ID));
     }
 }

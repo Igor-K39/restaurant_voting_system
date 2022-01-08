@@ -1,8 +1,10 @@
 package ru.kopyshev.rvs.config;
 
 import org.springframework.context.annotation.*;
+import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
 import ru.kopyshev.rvs.repository.CrudVoteRepository;
 import ru.kopyshev.rvs.service.VoteService;
+import ru.kopyshev.rvs.util.mapper.VoteMapper;
 
 @Configuration
 @Import(SpringDataJpaConfig.class)
@@ -13,14 +15,20 @@ import ru.kopyshev.rvs.service.VoteService;
         }
 )
 public class SpringApplicationConfig {
-    private final CrudVoteRepository voteRepository;
 
-    public SpringApplicationConfig(CrudVoteRepository voteRepository) {
+    private final CrudVoteRepository voteRepository;
+    private final CrudRestaurantRepository restaurantRepository;
+    private final VoteMapper voteMapper;
+
+    public SpringApplicationConfig(CrudVoteRepository voteRepository, CrudRestaurantRepository restaurantRepository,
+                                   VoteMapper voteMapper) {
         this.voteRepository = voteRepository;
+        this.restaurantRepository = restaurantRepository;
+        this.voteMapper = voteMapper;
     }
 
     @Bean
     public VoteService voteService() {
-        return new VoteService(voteRepository);
+        return new VoteService(voteRepository, restaurantRepository, voteMapper);
     }
 }
