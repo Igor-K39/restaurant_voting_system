@@ -1,12 +1,16 @@
 package ru.kopyshev.rvs.util;
 
 import lombok.experimental.UtilityClass;
+import org.slf4j.Logger;
 import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.HasId;
+import ru.kopyshev.rvs.exception.ErrorType;
 import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
+
+import javax.servlet.http.HttpServletRequest;
 
 @UtilityClass
 public class ValidationUtil {
@@ -54,5 +58,16 @@ public class ValidationUtil {
     public static String getMessage(Throwable throwable) {
         String localizedMessage = throwable.getLocalizedMessage();
         return localizedMessage == null ? throwable.getMessage() : localizedMessage;
+    }
+
+    public static Throwable logAndGetRootCause(Logger log, HttpServletRequest request, Exception exception,
+                                               boolean logStackTrace, ErrorType errorType) {
+        Throwable rootCause = getRootCause(exception);
+        if (logStackTrace) {
+            log.error("{} at request {} {}", errorType, request.getRequestURL(), rootCause);
+        } else {
+            log.warn("{} at request {}: {}", errorType, request.getRequestURL(), rootCause.toString());
+        }
+        return rootCause;
     }
 }
