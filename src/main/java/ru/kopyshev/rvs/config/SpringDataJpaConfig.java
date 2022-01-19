@@ -76,6 +76,7 @@ public class SpringDataJpaConfig {
         jpaPropertyMap.put(ConfigSettings.PROVIDER, HIBERNATE_JCACHE_PROVIDER);
         jpaPropertyMap.put(AvailableSettings.USE_SECOND_LEVEL_CACHE, HIBERNATE_USE_SECOND_LEVEL_CACHE);
         jpaPropertyMap.put(AvailableSettings.USE_QUERY_CACHE, HIBERNATE_USE_QUERY_CACHE);
+        jpaPropertyMap.put(ConfigSettings.CONFIG_URI, EHCACHE_CONFIGURATION);
         jpaPropertyMap.put(AvailableSettings.STATEMENT_BATCH_SIZE, HIBERNATE_JDBC_BATCH_SIZE);
         jpaPropertyMap.put(AvailableSettings.ORDER_INSERTS, HIBERNATE_ORDER_INSERTS);
         jpaPropertyMap.put(AvailableSettings.ORDER_UPDATES, HIBERNATE_ORDER_UPDATES);

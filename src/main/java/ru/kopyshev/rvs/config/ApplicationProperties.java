@@ -46,4 +46,6 @@ public class ApplicationProperties {
 
     public static final String SECURITY_FILTER_NAME = properties.getProperty("spring.security.filter_name");
     public static final String VOTE_EXPIRATION_TIME = properties.getProperty("vote.expiration.time");
+
+    public static final String EHCACHE_CONFIGURATION = properties.getProperty("ehcache.configuration");
 }

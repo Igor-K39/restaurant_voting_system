@@ -1,0 +1,33 @@
+<config xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance'
+        xmlns='http://www.ehcache.org/v3'
+        xsi:schemaLocation="http://www.ehcache.org/v3 http://www.ehcache.org/schema/ehcache-core-3.0.xsd">
+
+    <cache-template name="defaultExpiryCache">
+        <expiry>
+            <ttl unit="hours">3</ttl>
+        </expiry>
+        <heap>100</heap>
+    </cache-template>
+
+    <cache-template name="defaultNonExpiryCache">
+        <expiry>
+            <none/>
+        </expiry>
+        <heap>100</heap>
+    </cache-template>
+
+    <cache-template name="singleNonExpiryCache">
+        <expiry>
+            <none/>
+        </expiry>
+        <heap>1</heap>
+    </cache-template>
+
+    <!-- Spring cache -->
+    <cache alias="menu.get" uses-template="defaultExpiryCache"/>
+    <cache alias="menu.getAll" uses-template="singleNonExpiryCache"/>
+
+    <!-- Hibernate second level cache -->
+    <cache alias="ru.kopyshev.rvs.domain.Restaurant" uses-template="defaultNonExpiryCache"/>
+    <cache alias="ru.kopyshev.rvs.domain.Dish"       uses-template="defaultNonExpiryCache"/>
+</config>
