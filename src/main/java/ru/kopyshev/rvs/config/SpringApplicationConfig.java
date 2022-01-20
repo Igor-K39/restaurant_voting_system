@@ -7,7 +7,7 @@ import ru.kopyshev.rvs.service.VoteService;
 @Configuration
 @Import(SpringDataJpaConfig.class)
 @ComponentScan(
-        basePackages = ApplicationProperties.SERVICE_PACKAGE,
+        basePackages = {ApplicationProperties.MAPPER_PACKAGE, ApplicationProperties.SERVICE_PACKAGE},
         excludeFilters = {
                 @ComponentScan.Filter(type = FilterType.ASSIGNABLE_TYPE, value = VoteService.class)
         }

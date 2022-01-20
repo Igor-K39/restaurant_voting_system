@@ -9,6 +9,7 @@ public class ApplicationProperties {
     public static final String WEB_PACKAGE = "ru.kopyshev.rvs.web";
     public static final String MODEL_PACKAGE = "ru.kopyshev.rvs.model";
     public static final String SERVICE_PACKAGE = "ru.kopyshev.rvs.service";
+    public static final String MAPPER_PACKAGE = "ru.kopyshev.rvs.util.mapper";
     public static final String JPA_REPOSITORIES_PACKAGE = "ru.kopyshev.rvs.repository";
     public static final String DATABASE_INIT_LOCATION = "db/init_hsqldb.sql";
     public static final String DATABASE_POPULATE_LOCATION = "db/populateDB.sql";
