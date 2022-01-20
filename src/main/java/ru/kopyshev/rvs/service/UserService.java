@@ -1,6 +1,12 @@
 package ru.kopyshev.rvs.service;
 
+import org.springframework.context.annotation.Scope;
+import org.springframework.context.annotation.ScopedProxyMode;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
+import ru.kopyshev.rvs.AuthorizedUser;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.model.User;
 import ru.kopyshev.rvs.repository.CrudUserRepository;
@@ -11,7 +17,8 @@ import java.util.List;
 import java.util.Map;
 
 @Service
-public class UserService {
+@Scope(proxyMode = ScopedProxyMode.TARGET_CLASS)
+public class UserService implements UserDetailsService {
 
     private final CrudUserRepository userRepository;
 
@@ -43,5 +50,14 @@ public class UserService {
 
     public User getByEmail(String email) {
         return ValidationUtil.checkNotFound(userRepository.getByEmail(email), "email = " + email);
+    }
+
+    @Override
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
+        User user = userRepository.getByEmail(email.toLowerCase());
+        if (user == null) {
+            throw new UsernameNotFoundException("User " + email + " is not found");
+        }
+        return new AuthorizedUser(user);
     }
 }

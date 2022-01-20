@@ -27,4 +27,6 @@ public class ApplicationProperties {
     public static final String HIBERNATE_JDBC_BATCH_SIZE = "10";
     public static final String HIBERNATE_ORDER_INSERTS = "true";
     public static final String HIBERNATE_ORDER_UPDATES = "true";
+
+    public static final String SECURITY_FILTER_NAME = "springSecurityFilterChain";
 }

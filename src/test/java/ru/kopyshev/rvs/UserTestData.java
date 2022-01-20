@@ -21,9 +21,9 @@ public class UserTestData {
     public static final int USER_ID = 100_000;
     public static final int ADMIN_ID = 100_001;
     public static final
-    User USER = new User(100_000, "User", "user.sd@gmail.com", "user_password", Set.of(Role.USER));
+    User USER = new User(100_000, "User", "user.sd@gmail.com", "{noop}user_password", Set.of(Role.USER));
     public static final
-    User ADMIN = new User(100_001, "Admin", "admin.sd@gmail.com", "admin_password", Set.of(Role.ADMIN));
+    User ADMIN = new User(100_001, "Admin", "admin.sd@gmail.com", "{noop}admin_password", Set.of(Role.ADMIN));
 
     public static final String USER_UPDATED_NAME = "Updated Elk";
     public static final String USER_UPDATED_EMAIL = "updated.little.elk@gmail.com";
