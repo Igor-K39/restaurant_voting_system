@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.DishTestData;
+import ru.kopyshev.rvs.testdata.DishTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.DishService;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
@@ -19,10 +19,10 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.DishTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.testdata.DishTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
+import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_AUTH;
 
 class AdminDishRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = "/rest/admin/dishes/";

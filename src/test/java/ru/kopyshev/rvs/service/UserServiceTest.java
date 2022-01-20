@@ -14,8 +14,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
-import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
-import static ru.kopyshev.rvs.UserTestData.*;
+import static ru.kopyshev.rvs.testdata.TestData.NOT_FOUND_ID;
+import static ru.kopyshev.rvs.testdata.UserTestData.*;
 import static ru.kopyshev.rvs.util.SecurityUtil.matches;
 
 public class UserServiceTest extends AbstractServiceTest {

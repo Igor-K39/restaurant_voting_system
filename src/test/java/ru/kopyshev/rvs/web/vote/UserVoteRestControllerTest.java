@@ -17,12 +17,12 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
-import static ru.kopyshev.rvs.TestData.DATE_1;
-import static ru.kopyshev.rvs.TestData.DATE_2;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.*;
-import static ru.kopyshev.rvs.VoteTestData.*;
+import static ru.kopyshev.rvs.testdata.UserTestData.*;
+import static ru.kopyshev.rvs.testdata.VoteTestData.*;
 import static ru.kopyshev.rvs.web.vote.UserVoteRestController.USER_REST_URL;
 
 class UserVoteRestControllerTest extends AbstractControllerTest {

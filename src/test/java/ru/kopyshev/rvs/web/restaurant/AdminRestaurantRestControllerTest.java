@@ -17,9 +17,9 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
+import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_AUTH;
 
 class AdminRestaurantRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = AdminRestaurantRestController.ADMIN_REST_URL + "/";

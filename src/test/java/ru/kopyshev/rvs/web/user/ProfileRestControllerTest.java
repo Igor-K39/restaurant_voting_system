@@ -16,7 +16,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.*;
+import static ru.kopyshev.rvs.testdata.UserTestData.*;
 import static ru.kopyshev.rvs.web.user.ProfileRestController.REST_URL;
 
 public class ProfileRestControllerTest extends AbstractControllerTest {

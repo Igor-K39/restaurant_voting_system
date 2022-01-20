@@ -1,4 +1,4 @@
-package ru.kopyshev.rvs;
+package ru.kopyshev.rvs.testdata;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
@@ -11,9 +11,9 @@ import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO.MenuItemUpdateDTO;
 import java.time.LocalDate;
 import java.util.List;
 
-import static ru.kopyshev.rvs.DishTestData.*;
+import static ru.kopyshev.rvs.testdata.DishTestData.*;
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
 
 @UtilityClass
 public class MenuTestData {

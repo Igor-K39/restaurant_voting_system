@@ -10,12 +10,12 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.MenuTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
-import static ru.kopyshev.rvs.TestData.DATE_1;
-import static ru.kopyshev.rvs.TestData.DATE_2;
+import static ru.kopyshev.rvs.testdata.MenuTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.USER_AUTH;
+import static ru.kopyshev.rvs.testdata.UserTestData.USER_AUTH;
 import static ru.kopyshev.rvs.web.menu.UserMenuRestController.REST_URL;
 
 class UserMenuRestControllerTest extends AbstractControllerTest {

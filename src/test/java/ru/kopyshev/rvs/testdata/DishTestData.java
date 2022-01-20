@@ -1,11 +1,12 @@
-package ru.kopyshev.rvs;
+package ru.kopyshev.rvs.testdata;
 
 import lombok.experimental.UtilityClass;
+import ru.kopyshev.rvs.MatcherFactory;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
 import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
 
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
 
 @UtilityClass
 public class DishTestData {

@@ -4,7 +4,7 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import ru.kopyshev.rvs.DishTestData;
+import ru.kopyshev.rvs.testdata.DishTestData;
 import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
@@ -15,10 +15,10 @@ import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
 import java.util.List;
 
-import static ru.kopyshev.rvs.DishTestData.getUpdated;
-import static ru.kopyshev.rvs.DishTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.*;
-import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
+import static ru.kopyshev.rvs.testdata.DishTestData.getUpdated;
+import static ru.kopyshev.rvs.testdata.DishTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
+import static ru.kopyshev.rvs.testdata.TestData.NOT_FOUND_ID;
 
 public class DishServiceTest extends AbstractServiceTest {
 

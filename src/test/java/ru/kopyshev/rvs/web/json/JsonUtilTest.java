@@ -7,7 +7,7 @@ import ru.kopyshev.rvs.util.JsonUtil;
 import java.util.Arrays;
 import java.util.List;
 
-import static ru.kopyshev.rvs.UserTestData.*;
+import static ru.kopyshev.rvs.testdata.UserTestData.*;
 
 public class JsonUtilTest {
 

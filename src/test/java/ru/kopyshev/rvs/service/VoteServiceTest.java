@@ -14,13 +14,13 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 import java.util.List;
 
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_2;
-import static ru.kopyshev.rvs.TestData.DATE_1;
-import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
-import static ru.kopyshev.rvs.UserTestData.USER;
-import static ru.kopyshev.rvs.UserTestData.USER_ID;
-import static ru.kopyshev.rvs.VoteTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_2;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_1;
+import static ru.kopyshev.rvs.testdata.TestData.NOT_FOUND_ID;
+import static ru.kopyshev.rvs.testdata.UserTestData.USER;
+import static ru.kopyshev.rvs.testdata.UserTestData.USER_ID;
+import static ru.kopyshev.rvs.testdata.VoteTestData.*;
 
 class VoteServiceTest extends AbstractServiceTest {
 

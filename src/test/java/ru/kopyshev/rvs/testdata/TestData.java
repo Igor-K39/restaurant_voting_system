@@ -1,4 +1,4 @@
-package ru.kopyshev.rvs;
+package ru.kopyshev.rvs.testdata;
 
 import lombok.experimental.UtilityClass;
 

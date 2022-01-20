@@ -10,8 +10,8 @@ import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
 
 import java.util.List;
 
-import static ru.kopyshev.rvs.MenuTestData.*;
-import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
+import static ru.kopyshev.rvs.testdata.MenuTestData.*;
+import static ru.kopyshev.rvs.testdata.TestData.NOT_FOUND_ID;
 
 public class MenuServiceTest extends AbstractServiceTest {
 

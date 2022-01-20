@@ -1,4 +1,4 @@
-package ru.kopyshev.rvs;
+package ru.kopyshev.rvs.testdata;
 
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
 import ru.kopyshev.rvs.dto.VoteDTO;
@@ -7,10 +7,10 @@ import java.time.LocalDate;
 import java.time.LocalTime;
 
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_2;
-import static ru.kopyshev.rvs.UserTestData.ADMIN_ID;
-import static ru.kopyshev.rvs.UserTestData.USER_ID;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_2;
+import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_ID;
+import static ru.kopyshev.rvs.testdata.UserTestData.USER_ID;
 
 public class VoteTestData {
     public static final Matcher<VoteDTO> VOTE_TO_MATCHER = usingIgnoreFieldComparator(VoteDTO.class, "time");

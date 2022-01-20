@@ -6,7 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.MenuTestData;
+import ru.kopyshev.rvs.testdata.MenuTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.MenuService;
 import ru.kopyshev.rvs.dto.menu.MenuDTO;
@@ -19,12 +19,12 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-import static ru.kopyshev.rvs.MenuTestData.*;
-import static ru.kopyshev.rvs.RestaurantTestData.RESTAURANT_ID_1;
-import static ru.kopyshev.rvs.TestData.DATE_1;
-import static ru.kopyshev.rvs.TestData.DATE_2;
+import static ru.kopyshev.rvs.testdata.MenuTestData.*;
+import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_1;
+import static ru.kopyshev.rvs.testdata.TestData.DATE_2;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.ADMIN_AUTH;
+import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_AUTH;
 import static ru.kopyshev.rvs.web.menu.AdminMenuRestController.REST_URL;
 
 class AdminMenuRestControllerTest extends AbstractControllerTest {

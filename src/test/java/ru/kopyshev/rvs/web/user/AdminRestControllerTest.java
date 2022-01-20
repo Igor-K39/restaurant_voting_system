@@ -19,7 +19,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
-import static ru.kopyshev.rvs.UserTestData.*;
+import static ru.kopyshev.rvs.testdata.UserTestData.*;
 import static ru.kopyshev.rvs.util.SecurityUtil.matches;
 
 public class AdminRestControllerTest extends AbstractControllerTest {
