@@ -2,9 +2,9 @@ package ru.kopyshev.rvs;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
-import ru.kopyshev.rvs.model.Role;
-import ru.kopyshev.rvs.model.User;
-import ru.kopyshev.rvs.to.UserDTO;
+import ru.kopyshev.rvs.domain.Role;
+import ru.kopyshev.rvs.domain.User;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 
 import java.util.HashMap;
 import java.util.Map;

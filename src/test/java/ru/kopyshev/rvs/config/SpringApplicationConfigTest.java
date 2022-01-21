@@ -2,8 +2,8 @@ package ru.kopyshev.rvs.config;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.*;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.repository.CrudVoteRepository;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.repository.VoteRepository;
 import ru.kopyshev.rvs.service.VoteService;
 import ru.kopyshev.rvs.util.mapper.VoteMapper;
 
@@ -22,10 +22,10 @@ import java.time.*;
 public class SpringApplicationConfigTest {
 
     @Autowired
-    private CrudVoteRepository voteRepository;
+    private VoteRepository voteRepository;
 
     @Autowired
-    private CrudRestaurantRepository restaurantRepository;
+    private RestaurantRepository restaurantRepository;
 
     @Autowired
     private VoteMapper voteMapper;
@@ -40,7 +40,7 @@ public class SpringApplicationConfigTest {
                     .of(LocalDate.now(), LocalTime.parse(ApplicationProperties.VOTE_EXPIRATION_TIME).plusHours(1))
                     .toInstant(ZoneOffset.UTC), ZoneId.of("UTC"));
 
-    public SpringApplicationConfigTest(CrudVoteRepository voteRepository) {
+    public SpringApplicationConfigTest(VoteRepository voteRepository) {
         this.voteRepository = voteRepository;
     }
 

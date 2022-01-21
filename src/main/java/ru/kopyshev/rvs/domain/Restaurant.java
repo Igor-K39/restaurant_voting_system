@@ -1,8 +1,9 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 
 import javax.persistence.*;
@@ -11,6 +12,7 @@ import javax.validation.constraints.Size;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "restaurant")
@@ -40,15 +42,5 @@ public class Restaurant extends NamedEntity {
         super(id, name);
         this.address = address;
         this.website = website;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", address='" + address + '\'' +
-                ", website='" + website + '\'' +
-                '}';
     }
 }

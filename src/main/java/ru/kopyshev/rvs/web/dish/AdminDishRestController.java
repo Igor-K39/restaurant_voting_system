@@ -7,9 +7,10 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 import ru.kopyshev.rvs.service.DishService;
-import ru.kopyshev.rvs.to.DishDTO;
-import ru.kopyshev.rvs.to.DishUpdateDTO;
+import ru.kopyshev.rvs.dto.dish.DishDTO;
+import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 
@@ -26,7 +27,7 @@ public class AdminDishRestController {
     }
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<DishDTO> createWithLocation(@RequestBody DishUpdateDTO dishUpdateDTO) {
+    public ResponseEntity<DishDTO> createWithLocation(@RequestBody @Valid DishUpdateDTO dishUpdateDTO) {
         log.info("creating dish from dishUpdateDTO {}", dishUpdateDTO);
         var dishDTO = dishService.create(dishUpdateDTO);
 
@@ -46,7 +47,7 @@ public class AdminDishRestController {
 
     @PutMapping(value = {"/{id}"}, consumes = MediaType.APPLICATION_JSON_VALUE)
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    public void update(@PathVariable("id") int dishId, @RequestBody DishUpdateDTO dishUpdateDTO) {
+    public void update(@PathVariable("id") int dishId, @RequestBody @Valid DishUpdateDTO dishUpdateDTO) {
         log.info("updating dish {} of by dishUpdateDTO {}", dishUpdateDTO.getId(), dishUpdateDTO);
         dishService.update(dishUpdateDTO, dishId);
     }

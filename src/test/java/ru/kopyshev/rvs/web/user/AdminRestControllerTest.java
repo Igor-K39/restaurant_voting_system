@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.to.UserDTO;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.util.UserUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;

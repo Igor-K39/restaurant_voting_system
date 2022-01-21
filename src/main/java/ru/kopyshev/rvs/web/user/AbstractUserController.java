@@ -2,9 +2,9 @@ package ru.kopyshev.rvs.web.user;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import ru.kopyshev.rvs.model.User;
+import ru.kopyshev.rvs.domain.User;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.to.UserDTO;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 
 import java.util.HashMap;
 import java.util.List;

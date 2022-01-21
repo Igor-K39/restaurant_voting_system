@@ -1,8 +1,9 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.*;
 import javax.validation.constraints.NotNull;
@@ -10,6 +11,7 @@ import javax.validation.constraints.PositiveOrZero;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "menu_item")
@@ -34,15 +36,5 @@ public class MenuItem extends BaseEntity {
         this.dish = dish;
         this.price = price;
         this.menu = menu;
-    }
-
-    @Override
-    public String toString() {
-        return "\n        MenuItem{" +
-                "id=" + id +
-                ", dish=" + dish +
-                ", price=" + price +
-                ", menu=" + (menu != null ? menu.getName() : null)  +
-                '}';
     }
 }

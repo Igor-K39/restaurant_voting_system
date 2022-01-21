@@ -31,7 +31,7 @@ public class MainWebInitializer implements WebApplicationInitializer {
         rootContext.register(SpringApplicationConfig.class);
         rootContext.register(SpringWebMvc.class);
         rootContext.register(SpringSecurityConfig.class);
-        rootContext.register(SpringFoxConfig.class);
+        rootContext.register(SwaggerConfig.class);
         rootContext.setDisplayName("RVS");
     }
 }

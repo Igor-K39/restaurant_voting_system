@@ -4,8 +4,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
+import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;
@@ -75,7 +76,7 @@ public class RestaurantServiceTest extends AbstractServiceTest {
 
     @Test
     void updateNotConsistent() {
-        Assertions.assertThrows(IllegalArgumentException.class, () -> service.update(getUpdated(RESTAURANT_TO_1), NOT_FOUND_ID));
+        Assertions.assertThrows(IllegalRequestDataException.class, () -> service.update(getUpdated(RESTAURANT_TO_1), NOT_FOUND_ID));
     }
 
     @Test

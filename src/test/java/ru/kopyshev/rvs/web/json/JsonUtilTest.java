@@ -1,7 +1,7 @@
 package ru.kopyshev.rvs.web.json;
 
 import org.junit.jupiter.api.Test;
-import ru.kopyshev.rvs.model.User;
+import ru.kopyshev.rvs.domain.User;
 import ru.kopyshev.rvs.util.JsonUtil;
 
 import java.util.Arrays;

@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.exception.TimeExpiredException;
-import ru.kopyshev.rvs.repository.CrudVoteRepository;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.repository.VoteRepository;
+import ru.kopyshev.rvs.dto.VoteDTO;
 
 import javax.persistence.EntityManager;
 import java.time.LocalDate;
@@ -33,7 +33,7 @@ class VoteServiceTest extends AbstractServiceTest {
     VoteService voteServiceExpired;
 
     @Autowired
-    CrudVoteRepository voteRepository;
+    VoteRepository voteRepository;
 
     @Autowired
     EntityManager entityManager;

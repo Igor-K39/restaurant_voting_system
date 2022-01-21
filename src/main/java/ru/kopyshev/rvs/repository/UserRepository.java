@@ -9,14 +9,14 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import org.springframework.transaction.annotation.Transactional;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.User;
+import ru.kopyshev.rvs.domain.User;
 
 import java.util.List;
 import java.util.Map;
 
 @Repository
 @Transactional(readOnly = true)
-public interface CrudUserRepository extends JpaRepository<User, Integer> {
+public interface UserRepository extends JpaRepository<User, Integer> {
 
     @Modifying
     @Transactional
@@ -31,7 +31,7 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Modifying
     @Transactional
     default void patch(Map<String, Object> patch, int id) {
-        User stored = findById(id).orElseThrow(() -> new NotFoundException("Not found user with id " + id));
+        User stored = findById(id).orElseThrow(() -> new NotFoundException(User.class, "id = " + id));
         BeanWrapper wrapper = new BeanWrapperImpl(stored);
         wrapper.setPropertyValues(patch);
     }

@@ -1,6 +1,6 @@
 package ru.kopyshev.rvs;
 
-import ru.kopyshev.rvs.model.User;
+import ru.kopyshev.rvs.domain.User;
 
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 

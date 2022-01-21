@@ -2,10 +2,10 @@ package ru.kopyshev.rvs.util.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.kopyshev.rvs.model.Vote;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.repository.CrudUserRepository;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.domain.Vote;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.repository.UserRepository;
+import ru.kopyshev.rvs.dto.VoteDTO;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -14,10 +14,10 @@ import java.util.stream.Collectors;
 @Component
 public class VoteMapper {
     private final ModelMapper voteMapper;
-    private final CrudUserRepository userRepository;
-    private final CrudRestaurantRepository restaurantRepository;
+    private final UserRepository userRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public VoteMapper(CrudUserRepository userRepository, CrudRestaurantRepository restaurantRepository) {
+    public VoteMapper(UserRepository userRepository, RestaurantRepository restaurantRepository) {
         this.voteMapper = new ModelMapper();
         this.userRepository = userRepository;
         this.restaurantRepository = restaurantRepository;

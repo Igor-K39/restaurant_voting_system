@@ -1,7 +1,5 @@
 package ru.kopyshev.rvs.config;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.stereotype.Component;
@@ -20,13 +18,9 @@ import java.util.List;
 @Component
 @Configuration
 @EnableSwagger2
-public class SpringFoxConfig {
-    private static final Logger log = LoggerFactory.getLogger(SpringFoxConfig.class);
-
+public class SwaggerConfig {
     @Bean
     public Docket api() {
-        log.error("Enabling swagger API");
-
         return new Docket(DocumentationType.SWAGGER_2)
                 .apiInfo(apiInfo())
                 .securityContexts(List.of(securityContext()))
@@ -35,11 +29,6 @@ public class SpringFoxConfig {
                 .apis(RequestHandlerSelectors.any())
                 .paths(PathSelectors.any())
                 .build();
-//        return new Docket(DocumentationType.SWAGGER_2)
-//                .select()
-//                .apis(RequestHandlerSelectors.any())
-//                .paths(PathSelectors.any())
-//                .build();
     }
 
     private ApiInfo apiInfo() {

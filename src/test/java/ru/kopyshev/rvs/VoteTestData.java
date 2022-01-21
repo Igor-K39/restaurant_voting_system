@@ -1,7 +1,7 @@
 package ru.kopyshev.rvs;
 
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.dto.VoteDTO;
 
 import java.time.LocalDate;
 import java.time.LocalTime;

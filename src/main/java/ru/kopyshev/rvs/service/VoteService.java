@@ -1,13 +1,15 @@
 package ru.kopyshev.rvs.service;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.exception.TimeExpiredException;
-import ru.kopyshev.rvs.model.User;
-import ru.kopyshev.rvs.model.Vote;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.repository.CrudVoteRepository;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.domain.User;
+import ru.kopyshev.rvs.domain.Vote;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.repository.VoteRepository;
+import ru.kopyshev.rvs.dto.VoteDTO;
 import ru.kopyshev.rvs.util.ValidationUtil;
 import ru.kopyshev.rvs.util.mapper.VoteMapper;
 
@@ -23,25 +25,26 @@ import static ru.kopyshev.rvs.config.ApplicationProperties.VOTE_EXPIRATION_TIME;
 import static ru.kopyshev.rvs.util.DateTimeUtil.getMaxIfNull;
 import static ru.kopyshev.rvs.util.DateTimeUtil.getMinIfNull;
 
+@Slf4j
 @Service
 public class VoteService {
     private Clock clock = Clock.systemUTC();
-    private final CrudVoteRepository voteRepository;
-    private final CrudRestaurantRepository restaurantRepository;
+    private final VoteRepository voteRepository;
+    private final RestaurantRepository restaurantRepository;
     private final VoteMapper voteMapper;
     private final LocalTime votingExpirationTime = LocalTime.parse(VOTE_EXPIRATION_TIME);
     private final Predicate<LocalDateTime> canVoteUp =
             dt -> dt.isBefore(LocalDateTime.of(LocalDate.now(clock), LocalTime.parse(VOTE_EXPIRATION_TIME)));
 
 
-    public VoteService(CrudVoteRepository voteRepository, CrudRestaurantRepository restaurantRepository,
+    public VoteService(VoteRepository voteRepository, RestaurantRepository restaurantRepository,
                        VoteMapper voteMapper) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
         this.voteMapper = voteMapper;
     }
 
-    public VoteService(CrudVoteRepository voteRepository, CrudRestaurantRepository restaurantRepository,
+    public VoteService(VoteRepository voteRepository, RestaurantRepository restaurantRepository,
                        VoteMapper voteMapper, Clock clock) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
@@ -49,7 +52,8 @@ public class VoteService {
         this.clock = clock;
     }
 
-    public VoteDTO voteUp(User user, int restaurantId) {
+    public VoteDTO voteUp(User user, Integer restaurantId) {
+        log.debug("Voting up for restaurant {} by user {}", restaurantId, user);
         if (voteRepository.hasSingleVote(user.id(), LocalDate.now())) {
             assureVotingTimeNotExpired("Cannot change the vote after " + votingExpirationTime);
         }
@@ -57,23 +61,27 @@ public class VoteService {
         return voteMapper.getDTO(vote);
     }
 
-    public void cancelVote(int userId) {
+    public void cancelVote(Integer userId) {
+        log.debug("Cancelling vote by user {} at date {}", userId, LocalDate.now());
         assureVotingTimeNotExpired("Can not cancel the vote after " + votingExpirationTime);
-        int deletedRows = voteRepository.delete(LocalDate.now(clock), userId);
-        ValidationUtil.checkNotFound(deletedRows != 0, "Cannot delete the vote of user " + userId);
+        int deletedRows = voteRepository.delete(LocalDate.now(), userId);
+        ValidationUtil.checkNotFound(deletedRows != 0, Vote.class);
     }
 
-    public VoteDTO get(int id) {
-        Vote vote = voteRepository.findById(id).orElseThrow(() -> new NotFoundException("Not found vote with id = " + id));
+    public VoteDTO get(Integer id) {
+        log.debug("Getting a vote with id {}", id);
+        Vote vote = voteRepository.findById(id).orElseThrow(() -> new NotFoundException(Vote.class, "id = "));
         return voteMapper.getDTO(vote);
     }
 
     public VoteDTO get(int userId, LocalDate localDate) {
+        log.debug("Getting a vote of user {} at date {}", userId, localDate);
         Vote vote = voteRepository.getVoteOfUserByDate(userId, localDate).orElse(null);
         return !isNull(vote) ? voteMapper.getDTO(vote) : null;
     }
 
     public List<VoteDTO> getAll(int userId, LocalDate start, LocalDate end) {
+        log.debug("Getting all votes of user {} between {} and {}", userId, start, end);
         LocalDate startDate = getMinIfNull(start);
         LocalDate endDate = getMaxIfNull(end);
         List<Vote> votes = voteRepository.getBetweenDates(userId, startDate, endDate).orElse(List.of());
@@ -81,7 +89,9 @@ public class VoteService {
     }
 
     private void assureVotingTimeNotExpired(String message) {
-        if (!canVoteUp.test(LocalDateTime.now(clock))) {
+        LocalDateTime now = LocalDateTime.now(clock);
+        log.debug("Checking if voting time is not expired: {}", now);
+        if (!canVoteUp.test(now)) {
             throw new TimeExpiredException(message);
         }
     }

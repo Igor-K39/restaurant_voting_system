@@ -9,8 +9,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.DishTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.DishService;
-import ru.kopyshev.rvs.to.DishDTO;
-import ru.kopyshev.rvs.to.DishUpdateDTO;
+import ru.kopyshev.rvs.dto.dish.DishDTO;
+import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 

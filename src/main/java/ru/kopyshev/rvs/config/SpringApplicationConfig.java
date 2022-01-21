@@ -1,8 +1,8 @@
 package ru.kopyshev.rvs.config;
 
 import org.springframework.context.annotation.*;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.repository.CrudVoteRepository;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.repository.VoteRepository;
 import ru.kopyshev.rvs.service.VoteService;
 import ru.kopyshev.rvs.util.mapper.VoteMapper;
 
@@ -16,11 +16,11 @@ import ru.kopyshev.rvs.util.mapper.VoteMapper;
 )
 public class SpringApplicationConfig {
 
-    private final CrudVoteRepository voteRepository;
-    private final CrudRestaurantRepository restaurantRepository;
+    private final VoteRepository voteRepository;
+    private final RestaurantRepository restaurantRepository;
     private final VoteMapper voteMapper;
 
-    public SpringApplicationConfig(CrudVoteRepository voteRepository, CrudRestaurantRepository restaurantRepository,
+    public SpringApplicationConfig(VoteRepository voteRepository, RestaurantRepository restaurantRepository,
                                    VoteMapper voteMapper) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;

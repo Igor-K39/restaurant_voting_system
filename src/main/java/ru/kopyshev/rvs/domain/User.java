@@ -1,9 +1,10 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.BatchSize;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
@@ -18,6 +19,7 @@ import java.util.Set;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "users")
@@ -79,17 +81,5 @@ public class User extends NamedEntity {
 
     public void setRoles(Set<Role> roles) {
         this.roles = (roles != null) ? roles : Set.of();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", enabled=" + enabled +
-                ", registered=" + registered +
-                ", roles=" + roles +
-                '}';
     }
 }

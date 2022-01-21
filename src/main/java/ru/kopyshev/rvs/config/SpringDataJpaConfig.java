@@ -1,7 +1,6 @@
 package ru.kopyshev.rvs.config;
 
 import org.apache.tomcat.jdbc.pool.DataSource;
-import org.hibernate.cache.jcache.ConfigSettings;
 import org.hibernate.cfg.AvailableSettings;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -16,6 +15,7 @@ import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
+import org.hibernate.cache.jcache.ConfigSettings;
 
 import java.util.HashMap;
 
@@ -79,6 +79,7 @@ public class SpringDataJpaConfig {
         jpaPropertyMap.put(AvailableSettings.STATEMENT_BATCH_SIZE, HIBERNATE_JDBC_BATCH_SIZE);
         jpaPropertyMap.put(AvailableSettings.ORDER_INSERTS, HIBERNATE_ORDER_INSERTS);
         jpaPropertyMap.put(AvailableSettings.ORDER_UPDATES, HIBERNATE_ORDER_UPDATES);
+        jpaPropertyMap.put(AvailableSettings.GENERATE_STATISTICS, HIBERNATE_GENERATE_STATISTICS);
         factoryBean.setJpaPropertyMap(jpaPropertyMap);
         return factoryBean;
     }

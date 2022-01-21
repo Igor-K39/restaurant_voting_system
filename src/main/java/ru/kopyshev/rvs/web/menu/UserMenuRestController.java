@@ -3,7 +3,7 @@ package ru.kopyshev.rvs.web.menu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import ru.kopyshev.rvs.to.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
 
 import java.time.LocalDate;
 import java.util.List;

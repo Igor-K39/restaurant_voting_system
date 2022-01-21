@@ -3,9 +3,10 @@ package ru.kopyshev.rvs.service;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
 
 import java.util.List;
 
@@ -47,6 +48,8 @@ public class MenuServiceTest extends AbstractServiceTest {
     void getAll() {
         List<MenuDTO> actual = service.getAll();
         List<MenuDTO> expected = List.of(MENU_DTO_4, MENU_DTO_2, MENU_DTO_3, MENU_DTO_1);
+        System.out.println(actual.get(0));
+        System.out.println(expected.get(0));
         Assertions.assertIterableEquals(actual, expected);
     }
 
@@ -59,7 +62,7 @@ public class MenuServiceTest extends AbstractServiceTest {
     void updateNotConsistent() {
         MenuUpdateDTO menuUpdateDTO = new MenuUpdateDTO(UPDATED_MENU_UPDATE_DTO);
         menuUpdateDTO.setId(MENU_ID_1);
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        Assertions.assertThrows(IllegalRequestDataException.class, () ->
                 service.update(menuUpdateDTO, NOT_FOUND_ID));
     }
 

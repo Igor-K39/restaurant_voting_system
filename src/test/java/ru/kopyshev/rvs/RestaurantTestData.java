@@ -2,8 +2,8 @@ package ru.kopyshev.rvs;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
-import ru.kopyshev.rvs.model.Restaurant;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 
 import static ru.kopyshev.rvs.MatcherFactory.usingIgnoreFieldComparator;
 

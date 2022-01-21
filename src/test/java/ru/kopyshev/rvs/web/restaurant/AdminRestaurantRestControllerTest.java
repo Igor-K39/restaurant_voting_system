@@ -8,7 +8,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.RestaurantService;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
@@ -48,7 +48,7 @@ class AdminRestaurantRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(RESTAURANT_TO_MATCHER.contentJson(RESTAURANT_TO_1));
+                .andExpect(RESTAURANT_TO_MATCHER.contentJson(service.get(RESTAURANT_ID_1)));
     }
 
     @Test

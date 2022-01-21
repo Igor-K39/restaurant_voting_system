@@ -9,8 +9,8 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.MenuTestData;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.MenuService;
-import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 

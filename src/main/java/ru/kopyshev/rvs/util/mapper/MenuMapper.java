@@ -3,14 +3,14 @@ package ru.kopyshev.rvs.util.mapper;
 import org.modelmapper.Converter;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.kopyshev.rvs.model.Menu;
-import ru.kopyshev.rvs.model.MenuItem;
-import ru.kopyshev.rvs.model.Restaurant;
-import ru.kopyshev.rvs.repository.CrudDishRepository;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.domain.Menu;
+import ru.kopyshev.rvs.domain.MenuItem;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.repository.DishRepository;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -20,8 +20,8 @@ import java.util.stream.Collectors;
 public class MenuMapper {
     private final ModelMapper menuMapper;
     private RestaurantMapper restaurantMapper;
-    private CrudDishRepository dishRepository;
-    private CrudRestaurantRepository restaurantRepository;
+    private DishRepository dishRepository;
+    private RestaurantRepository restaurantRepository;
 
     private final Converter<Restaurant, RestaurantDTO> restaurantToDtoConverter =
             ctx -> ctx.getSource() != null ? restaurantMapper.toDTO(ctx.getSource()) : null;
@@ -48,7 +48,7 @@ public class MenuMapper {
             };
 
     public MenuMapper(RestaurantMapper restaurantMapper,
-                      CrudRestaurantRepository restaurantRepository, CrudDishRepository dishRepository) {
+                      RestaurantRepository restaurantRepository, DishRepository dishRepository) {
         this.restaurantMapper = restaurantMapper;
         this.restaurantRepository = restaurantRepository;
         this.dishRepository = dishRepository;

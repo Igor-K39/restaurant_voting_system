@@ -1,15 +1,16 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.HasId;
 
 import javax.persistence.*;
-import java.util.Objects;
 
-@Getter
-@Setter
+@Data
 @NoArgsConstructor
+@AllArgsConstructor
 @MappedSuperclass
 @Access(AccessType.FIELD)
 public abstract class BaseEntity implements HasId {
@@ -20,10 +21,6 @@ public abstract class BaseEntity implements HasId {
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "global_seq")
     protected Integer id;
 
-    public BaseEntity(Integer id) {
-        this.id = id;
-    }
-
     public Integer id() {
         Assert.notNull(id, "id must not be null");
         return id;
@@ -31,25 +28,5 @@ public abstract class BaseEntity implements HasId {
 
     public boolean isNew() {
         return id == null;
-    }
-
-    @Override
-    public boolean equals(Object o) {
-        if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        BaseEntity that = (BaseEntity) o;
-        return Objects.equals(id, that.id);
-    }
-
-    @Override
-    public int hashCode() {
-        return id == null ? 0 : id;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() +
-                "id=" + id +
-                '}';
     }
 }

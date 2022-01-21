@@ -9,7 +9,7 @@ import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.VoteService;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.dto.VoteDTO;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
 import java.util.List;

@@ -1,8 +1,9 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
-import lombok.Getter;
+import lombok.Data;
+import lombok.EqualsAndHashCode;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.ToString;
 
 import javax.persistence.Access;
 import javax.persistence.AccessType;
@@ -11,8 +12,9 @@ import javax.persistence.MappedSuperclass;
 import javax.validation.constraints.NotBlank;
 import javax.validation.constraints.Size;
 
-@Getter
-@Setter
+@Data
+@ToString(callSuper = true)
+@EqualsAndHashCode(callSuper = true)
 @NoArgsConstructor
 @MappedSuperclass
 @Access(AccessType.FIELD)
@@ -26,13 +28,5 @@ public abstract class NamedEntity extends BaseEntity {
     public NamedEntity(Integer id, String name) {
         super(id);
         this.name = name;
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() +
-                "id=" + id +
-                ", name='" + name + '\'' +
-                '}';
     }
 }

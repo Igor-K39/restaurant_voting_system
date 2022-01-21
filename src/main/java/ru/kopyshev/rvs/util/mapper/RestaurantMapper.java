@@ -2,8 +2,8 @@ package ru.kopyshev.rvs.util.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.kopyshev.rvs.model.Restaurant;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 
 import javax.annotation.PostConstruct;
 import java.util.List;

@@ -2,10 +2,11 @@ package ru.kopyshev.rvs;
 
 import lombok.experimental.UtilityClass;
 import ru.kopyshev.rvs.MatcherFactory.Matcher;
-import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.MenuDTO.MenuItemDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO.MenuItemUpdateDTO;
+import ru.kopyshev.rvs.dto.NamedDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO.MenuItemDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO.MenuItemUpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -35,14 +36,14 @@ public class MenuTestData {
     public static final LocalDate MENU_DATE_1 = LocalDate.of(2021, 3, 1);
     public static final LocalDate MENU_DATE_2 = LocalDate.of(2021, 3, 2);
 
-    public static final MenuItemDTO MENU_ITEM_DTO_1 = new MenuItemDTO(MENU_ITEM_ID_1, DISH_DTO_1, 13000);
-    public static final MenuItemDTO MENU_ITEM_DTO_2 = new MenuItemDTO(MENU_ITEM_ID_2, DISH_DTO_2, 30000);
-    public static final MenuItemDTO MENU_ITEM_DTO_3 = new MenuItemDTO(MENU_ITEM_ID_3, DISH_DTO_2, 32000);
-    public static final MenuItemDTO MENU_ITEM_DTO_4 = new MenuItemDTO(MENU_ITEM_ID_4, DISH_DTO_3, 19000);
-    public static final MenuItemDTO MENU_ITEM_DTO_5 = new MenuItemDTO(MENU_ITEM_ID_5, DISH_DTO_4, 10000);
-    public static final MenuItemDTO MENU_ITEM_DTO_6 = new MenuItemDTO(MENU_ITEM_ID_6, DISH_DTO_5, 12000);
-    public static final MenuItemDTO MENU_ITEM_DTO_7 = new MenuItemDTO(MENU_ITEM_ID_7, DISH_DTO_5, 17000);
-    public static final MenuItemDTO MENU_ITEM_DTO_8 = new MenuItemDTO(MENU_ITEM_ID_8, DISH_DTO_6, 11000);
+    public static final MenuItemDTO MENU_ITEM_DTO_1 = new MenuItemDTO(MENU_ITEM_ID_1, new NamedDTO(DISH_ID_1, "R1-Borsch"), 13000);
+    public static final MenuItemDTO MENU_ITEM_DTO_2 = new MenuItemDTO(MENU_ITEM_ID_2, new NamedDTO(DISH_ID_2, "R1-Beef"), 30000);
+    public static final MenuItemDTO MENU_ITEM_DTO_3 = new MenuItemDTO(MENU_ITEM_ID_3, new NamedDTO(DISH_ID_2, "R1-Beef"), 32000);
+    public static final MenuItemDTO MENU_ITEM_DTO_4 = new MenuItemDTO(MENU_ITEM_ID_4, new NamedDTO(DISH_ID_3, "R1-Pork"), 19000);
+    public static final MenuItemDTO MENU_ITEM_DTO_5 = new MenuItemDTO(MENU_ITEM_ID_5, new NamedDTO(DISH_ID_4, "R2-Potato"), 10000);
+    public static final MenuItemDTO MENU_ITEM_DTO_6 = new MenuItemDTO(MENU_ITEM_ID_6, new NamedDTO(DISH_ID_5, "R2-Mushrooms"), 12000);
+    public static final MenuItemDTO MENU_ITEM_DTO_7 = new MenuItemDTO(MENU_ITEM_ID_7, new NamedDTO(DISH_ID_5, "R2-Mushrooms"), 17000);
+    public static final MenuItemDTO MENU_ITEM_DTO_8 = new MenuItemDTO(MENU_ITEM_ID_8, new NamedDTO(DISH_ID_6, "R2-Cabbage"), 11000);
 
     public static final MenuDTO MENU_DTO_1 =
             new MenuDTO(MENU_ID_1, "Меню 1", RESTAURANT_TO_1, MENU_DATE_1, List.of(MENU_ITEM_DTO_1, MENU_ITEM_DTO_2));

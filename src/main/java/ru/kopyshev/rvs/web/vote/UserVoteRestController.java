@@ -6,7 +6,7 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 import ru.kopyshev.rvs.AuthorizedUser;
 import ru.kopyshev.rvs.service.VoteService;
-import ru.kopyshev.rvs.to.VoteDTO;
+import ru.kopyshev.rvs.dto.VoteDTO;
 import ru.kopyshev.rvs.web.SecurityUtil;
 
 import java.time.LocalDate;

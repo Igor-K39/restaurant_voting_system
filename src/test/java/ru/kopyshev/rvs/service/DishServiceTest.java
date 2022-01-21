@@ -5,9 +5,10 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.DishTestData;
+import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.to.DishDTO;
-import ru.kopyshev.rvs.to.DishUpdateDTO;
+import ru.kopyshev.rvs.dto.dish.DishDTO;
+import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
 import ru.kopyshev.rvs.util.mapper.DishMapper;
 
 import javax.validation.ConstraintViolationException;
@@ -92,7 +93,7 @@ public class DishServiceTest extends AbstractServiceTest {
     @Test
     void updateNotConsistent() {
         DishUpdateDTO updateDTO = getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
-        Assertions.assertThrows(IllegalArgumentException.class, () ->
+        Assertions.assertThrows(IllegalRequestDataException.class, () ->
                 service.update(updateDTO, NOT_FOUND_ID));
     }
 

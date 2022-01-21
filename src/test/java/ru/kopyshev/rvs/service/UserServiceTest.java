@@ -6,8 +6,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.model.Role;
-import ru.kopyshev.rvs.model.User;
+import ru.kopyshev.rvs.domain.Role;
+import ru.kopyshev.rvs.domain.User;
 
 import javax.validation.ConstraintViolationException;
 import java.util.List;

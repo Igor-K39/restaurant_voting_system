@@ -1,8 +1,9 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
@@ -14,6 +15,7 @@ import java.time.LocalTime;
 
 @Getter
 @Setter
+@ToString(callSuper = true)
 @NoArgsConstructor
 @Entity
 @Table(name = "vote")
@@ -55,16 +57,5 @@ public class Vote extends BaseEntity {
     public void setDateTime(LocalDateTime dateTime) {
         date = dateTime.toLocalDate();
         time = dateTime.toLocalTime();
-    }
-
-    @Override
-    public String toString() {
-        return getClass().getSimpleName() + "{" +
-                "id=" + id +
-                ", date=" + date +
-                ", time=" + time +
-                ", user=" + user.id +
-                ", restaurant=" + restaurant.id +
-                '}';
     }
 }

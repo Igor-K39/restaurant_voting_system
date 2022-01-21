@@ -6,8 +6,9 @@ import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
-import ru.kopyshev.rvs.to.UserDTO;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 
+import javax.validation.Valid;
 import java.net.URI;
 import java.util.List;
 import java.util.Map;
@@ -19,7 +20,7 @@ public class AdminRestController extends AbstractUserController {
     static final String ADMIN_REST_URL = "/rest/admin/users";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> createWithLocation(@RequestBody UserDTO userTo) {
+    public ResponseEntity<UserDTO> createWithLocation(@RequestBody @Valid UserDTO userTo) {
         UserDTO created = super.create(userTo);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()

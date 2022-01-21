@@ -1,4 +1,4 @@
-package ru.kopyshev.rvs.model;
+package ru.kopyshev.rvs.domain;
 
 import org.springframework.security.core.GrantedAuthority;
 

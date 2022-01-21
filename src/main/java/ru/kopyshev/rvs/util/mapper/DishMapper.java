@@ -2,11 +2,11 @@ package ru.kopyshev.rvs.util.mapper;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Component;
-import ru.kopyshev.rvs.model.Dish;
-import ru.kopyshev.rvs.model.Restaurant;
-import ru.kopyshev.rvs.repository.CrudRestaurantRepository;
-import ru.kopyshev.rvs.to.DishDTO;
-import ru.kopyshev.rvs.to.DishUpdateDTO;
+import ru.kopyshev.rvs.domain.Dish;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.repository.RestaurantRepository;
+import ru.kopyshev.rvs.dto.dish.DishDTO;
+import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
 
 import javax.annotation.PostConstruct;
 import java.util.List;
@@ -16,9 +16,9 @@ import java.util.stream.Collectors;
 @Component
 public class DishMapper {
     private final ModelMapper dishMapper;
-    private final CrudRestaurantRepository restaurantRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    public DishMapper(CrudRestaurantRepository restaurantRepository) {
+    public DishMapper(RestaurantRepository restaurantRepository) {
         this.dishMapper = new ModelMapper();
         this.restaurantRepository = restaurantRepository;
     }

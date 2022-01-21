@@ -3,8 +3,8 @@ package ru.kopyshev.rvs.web.menu;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.MenuService;
-import ru.kopyshev.rvs.to.MenuDTO;
-import ru.kopyshev.rvs.to.MenuUpdateDTO;
+import ru.kopyshev.rvs.dto.menu.MenuDTO;
+import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
 
 import java.time.LocalDate;
 import java.util.List;

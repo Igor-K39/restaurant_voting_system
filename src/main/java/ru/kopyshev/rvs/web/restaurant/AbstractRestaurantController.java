@@ -3,7 +3,7 @@ package ru.kopyshev.rvs.web.restaurant;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import ru.kopyshev.rvs.service.RestaurantService;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 
 import java.util.List;
 

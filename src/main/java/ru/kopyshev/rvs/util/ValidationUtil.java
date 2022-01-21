@@ -5,6 +5,7 @@ import org.springframework.core.NestedExceptionUtils;
 import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import ru.kopyshev.rvs.HasId;
+import ru.kopyshev.rvs.exception.IllegalRequestDataException;
 import ru.kopyshev.rvs.exception.NotFoundException;
 
 @UtilityClass
@@ -13,27 +14,24 @@ public class ValidationUtil {
     public static void checkNew(HasId bean) {
         Assert.notNull(bean, "The bean must not be null");
         if (!bean.isNew()) {
-            throw new IllegalArgumentException(bean + " must be new (id == null)");
+            throw new IllegalRequestDataException(bean + " must be new (id == null)");
         }
     }
 
-    public static <T> T checkNotFoundWithId(T object, int id) {
-        checkNotFoundWithId(object != null, id);
-        return object;
-    }
-
-    public static void checkNotFoundWithId(boolean found, int id) {
-        checkNotFound(found, "id = " + id);
-    }
-
-    public static <T> T checkNotFound(T object, String message) {
-        checkNotFound(object != null, message);
-        return object;
-    }
-
-    public static void checkNotFound(boolean found, String message) {
+    public static void checkNotFoundWithId(boolean found, Class<?> clazz, Integer id) {
         if (!found) {
-            throw new NotFoundException("Not found entity: " + message);
+            throw new NotFoundException(clazz, "id = " + id);
+        }
+    }
+
+    public static <T> T checkNotFound(T bean, Class<?> clazz) {
+        checkNotFoundWithId(bean != null, clazz, null);
+        return bean;
+    }
+
+    public static void checkNotFound(boolean found, Class<?> clazz) {
+        if (!found) {
+            throw new NotFoundException(clazz, null);
         }
     }
 
@@ -42,7 +40,7 @@ public class ValidationUtil {
         if (hasId.isNew()) {
             hasId.setId(id);
         } else if (hasId.id() != id) {
-            throw new IllegalArgumentException(hasId + " must be with id = " + id);
+            throw new IllegalRequestDataException(hasId + " must be with id = " + id);
         }
     }
 
@@ -51,5 +49,10 @@ public class ValidationUtil {
     public static Throwable getRootCause(@NonNull Throwable t) {
         Throwable rootCause = NestedExceptionUtils.getRootCause(t);
         return rootCause != null ? rootCause : t;
+    }
+
+    public static String getMessage(Throwable throwable) {
+        String localizedMessage = throwable.getLocalizedMessage();
+        return localizedMessage == null ? throwable.getMessage() : localizedMessage;
     }
 }

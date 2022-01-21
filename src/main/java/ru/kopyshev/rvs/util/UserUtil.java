@@ -1,8 +1,8 @@
 package ru.kopyshev.rvs.util;
 
 import lombok.experimental.UtilityClass;
-import ru.kopyshev.rvs.model.User;
-import ru.kopyshev.rvs.to.UserDTO;
+import ru.kopyshev.rvs.domain.User;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -3,7 +3,7 @@ package ru.kopyshev.rvs.web.restaurant;
 import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.to.RestaurantDTO;
+import ru.kopyshev.rvs.dto.RestaurantDTO;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
 import java.util.List;
