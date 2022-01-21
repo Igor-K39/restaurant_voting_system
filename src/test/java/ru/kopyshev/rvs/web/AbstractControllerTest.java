@@ -32,7 +32,7 @@ public abstract class AbstractControllerTest extends AbstractBaseTest {
     private WebApplicationContext webApplicationContext;
 
     @PostConstruct
-    private void postConstruct() {
+    public void postConstruct() {
         mvc = MockMvcBuilders
                 .webAppContextSetup(webApplicationContext)
                 .addFilter(characterEncodingFilter)

@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.testdata.DishTestData;
-import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.service.DishService;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
 import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
+import ru.kopyshev.rvs.exception.NotFoundException;
+import ru.kopyshev.rvs.service.DishService;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
@@ -19,9 +18,10 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
+import static ru.kopyshev.rvs.testdata.DishTestData.getUpdated;
 import static ru.kopyshev.rvs.testdata.DishTestData.*;
 import static ru.kopyshev.rvs.testdata.RestaurantTestData.*;
-import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_AUTH;
 
 class AdminDishRestControllerTest extends AbstractControllerTest {
@@ -58,7 +58,7 @@ class AdminDishRestControllerTest extends AbstractControllerTest {
 
     @Test
     void update() throws Exception {
-        DishUpdateDTO updateDTO = DishTestData.getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
+        DishUpdateDTO updateDTO = getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
         DishDTO expected = new DishDTO(DISH_DTO_1);
         expected.setName(updateDTO.getName());
         expected.setRestaurant(RESTAURANT_TO_2);

@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
-import ru.kopyshev.rvs.testdata.MenuTestData;
-import ru.kopyshev.rvs.exception.NotFoundException;
-import ru.kopyshev.rvs.service.MenuService;
 import ru.kopyshev.rvs.dto.menu.MenuDTO;
 import ru.kopyshev.rvs.dto.menu.MenuUpdateDTO;
+import ru.kopyshev.rvs.exception.NotFoundException;
+import ru.kopyshev.rvs.service.MenuService;
 import ru.kopyshev.rvs.util.JsonUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
@@ -19,11 +18,11 @@ import java.util.List;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.testdata.MenuTestData.*;
 import static ru.kopyshev.rvs.testdata.RestaurantTestData.RESTAURANT_ID_1;
 import static ru.kopyshev.rvs.testdata.TestData.DATE_1;
 import static ru.kopyshev.rvs.testdata.TestData.DATE_2;
-import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.testdata.UserTestData.ADMIN_AUTH;
 import static ru.kopyshev.rvs.web.menu.AdminMenuRestController.REST_URL;
 
@@ -37,7 +36,7 @@ class AdminMenuRestControllerTest extends AbstractControllerTest {
         ResultActions actions = perform(MockMvcRequestBuilders.post(REST_URL)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(MenuTestData.NEW_MENU_UPDATE_DTO)))
+                .content(JsonUtil.writeValue(NEW_MENU_UPDATE_DTO)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 

@@ -4,12 +4,10 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.util.Assert;
-import ru.kopyshev.rvs.testdata.DishTestData;
-import ru.kopyshev.rvs.exception.IllegalRequestDataException;
-import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
 import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
-import ru.kopyshev.rvs.util.mapper.DishMapper;
+import ru.kopyshev.rvs.exception.IllegalRequestDataException;
+import ru.kopyshev.rvs.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
 import java.sql.SQLException;
@@ -24,9 +22,6 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Autowired
     private DishService service;
-
-    @Autowired
-    private DishMapper dishMapper;
 
     @Test
     void create() {
@@ -43,7 +38,7 @@ public class DishServiceTest extends AbstractServiceTest {
 
     @Test
     void update() {
-        DishUpdateDTO updateDTO = DishTestData.getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
+        DishUpdateDTO updateDTO = getUpdated(DISH_DTO_1, RESTAURANT_ID_2);
         service.update(updateDTO, updateDTO.id());
         DishDTO actual = service.get(DISH_ID_1);
         DishDTO expected = new DishDTO();
