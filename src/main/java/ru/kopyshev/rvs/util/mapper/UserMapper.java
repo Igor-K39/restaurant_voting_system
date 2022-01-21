@@ -23,12 +23,12 @@ public class UserMapper {
         userMapper.createTypeMap(User.class, UserDTO.class);
     }
 
-    public UserDTO toDTO(User user) {
-        return userMapper.map(user, UserDTO.class);
-    }
-
     public User toEntity(UserDTO userDTO) {
         return userMapper.map(userDTO, User.class);
+    }
+
+    public UserDTO toDTO(User user) {
+        return userMapper.map(user, UserDTO.class);
     }
 
     public List<UserDTO> toDTO(List<User> users) {

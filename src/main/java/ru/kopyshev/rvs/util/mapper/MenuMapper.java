@@ -19,36 +19,12 @@ import java.util.stream.Collectors;
 @Component
 public class MenuMapper {
     private final ModelMapper menuMapper;
-    private RestaurantMapper restaurantMapper;
-    private DishRepository dishRepository;
-    private RestaurantRepository restaurantRepository;
+    private final RestaurantMapper restaurantMapper;
+    private final DishRepository dishRepository;
+    private final RestaurantRepository restaurantRepository;
 
-    private final Converter<Restaurant, RestaurantDTO> restaurantToDtoConverter =
-            ctx -> ctx.getSource() != null ? restaurantMapper.toDTO(ctx.getSource()) : null;
-
-    private final Converter<RestaurantDTO, Restaurant> restaurantDtoToEntityConverter =
-            ctx -> ctx.getSource() != null ? restaurantMapper.toEntity(ctx.getSource()) : null;
-
-
-    private final Converter<MenuUpdateDTO, Menu> updateDTOtoEntityPostConverter =
-            ctx -> {
-                Integer restaurantId = ctx.getSource().getRestaurantId();
-                Restaurant restaurant = restaurantRepository.getById(restaurantId);
-                Menu menu = ctx.getDestination();
-                menu.setRestaurant(restaurant);
-                List<MenuItem> items = menu.getMenuItems();
-
-                items.forEach(item -> {
-                    int dishId = item.getDish().id();
-                    item.setDish(dishRepository.getById(dishId));
-                    item.setMenu(menu);
-
-                });
-                return menu;
-            };
-
-    public MenuMapper(RestaurantMapper restaurantMapper,
-                      RestaurantRepository restaurantRepository, DishRepository dishRepository) {
+    public MenuMapper(RestaurantRepository restaurantRepository, DishRepository dishRepository,
+                      RestaurantMapper restaurantMapper) {
         this.restaurantMapper = restaurantMapper;
         this.restaurantRepository = restaurantRepository;
         this.dishRepository = dishRepository;
@@ -57,34 +33,39 @@ public class MenuMapper {
 
     @PostConstruct
     public void setup() {
+        Converter<Restaurant, RestaurantDTO> restaurantToDto = ctx -> restaurantMapper.toDTO(ctx.getSource());
+        Converter<RestaurantDTO, Restaurant> restaurantToEntity = ctx -> restaurantMapper.toEntity(ctx.getSource());
+        Converter<MenuUpdateDTO, Menu> menuUpdateToEntity = ctx -> {
+            Restaurant restaurant = restaurantRepository.getById(ctx.getSource().getRestaurantId());
+            Menu menu = ctx.getDestination();
+            menu.setRestaurant(restaurant);
+            menu.getMenuItems().forEach(item -> {
+                int dishId = item.getDish().id();
+                item.setDish(dishRepository.getById(dishId));
+                item.setMenu(menu);
+            });
+            return menu;
+        };
+        menuMapper.addConverter(restaurantToDto);
+        menuMapper.addConverter(restaurantToEntity);
         menuMapper.createTypeMap(Menu.class, MenuDTO.class);
+        menuMapper.createTypeMap(MenuItem.class, MenuDTO.MenuItemDTO.class);
         menuMapper.createTypeMap(MenuUpdateDTO.class, Menu.class)
                 .addMappings(m -> m.skip(Menu::setRestaurant))
-                .setPostConverter(updateDTOtoEntityPostConverter);
-
-        menuMapper.createTypeMap(MenuItem.class, MenuDTO.MenuItemDTO.class);
-        menuMapper.addConverter(restaurantToDtoConverter);
-        menuMapper.addConverter(restaurantDtoToEntityConverter);
+                .setPostConverter(menuUpdateToEntity);
     }
 
-    public Menu getEntity(MenuUpdateDTO menuUpdateDTO) {
+    public Menu toEntity(MenuUpdateDTO menuUpdateDTO) {
         return menuMapper.map(menuUpdateDTO, Menu.class);
     }
 
-    public Menu getEntity(MenuDTO menuDTO) {
-        Menu menu = menuMapper.map(menuDTO, Menu.class);
-        Restaurant restaurant = menu.getRestaurant();
-        menu.getMenuItems().forEach(item -> item.getDish().setRestaurant(restaurant));
-        return menu;
-    }
-
-    public MenuDTO getDTO(Menu menu) {
+    public MenuDTO toDTO(Menu menu) {
         return menuMapper.map(menu, MenuDTO.class);
     }
 
-    public List<MenuDTO> getDTO(List<Menu> menus) {
+    public List<MenuDTO> toDTO(List<Menu> menus) {
         return menus.stream()
-                .map(this::getDTO)
+                .map(this::toDTO)
                 .collect(Collectors.toList());
     }
 }

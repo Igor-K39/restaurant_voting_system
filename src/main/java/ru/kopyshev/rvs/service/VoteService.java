@@ -2,7 +2,6 @@ package ru.kopyshev.rvs.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
-import ru.kopyshev.rvs.domain.Restaurant;
 import ru.kopyshev.rvs.domain.Vote;
 import ru.kopyshev.rvs.dto.VoteDTO;
 import ru.kopyshev.rvs.dto.user.UserDTO;
@@ -62,7 +61,7 @@ public class VoteService {
             assureVotingTimeNotExpired("Cannot change the vote after " + votingExpirationTime);
         }
         Vote vote = voteRepository.voteUp(userMapper.toEntity(userDTO), restaurantRepository.getById(restaurantId));
-        return voteMapper.getDTO(vote);
+        return voteMapper.toDTO(vote);
     }
 
     public void cancelVote(Integer userId) {
@@ -75,13 +74,13 @@ public class VoteService {
     public VoteDTO get(Integer id) {
         log.debug("Getting a vote with id {}", id);
         Vote vote = voteRepository.findById(id).orElseThrow(() -> new NotFoundException(Vote.class, "id = "));
-        return voteMapper.getDTO(vote);
+        return voteMapper.toDTO(vote);
     }
 
     public VoteDTO get(int userId, LocalDate localDate) {
         log.debug("Getting a vote of user {} at date {}", userId, localDate);
         Vote vote = voteRepository.getVoteOfUserByDate(userId, localDate).orElse(null);
-        return !isNull(vote) ? voteMapper.getDTO(vote) : null;
+        return !isNull(vote) ? voteMapper.toDTO(vote) : null;
     }
 
     public List<VoteDTO> getAll(int userId, LocalDate start, LocalDate end) {
@@ -89,7 +88,7 @@ public class VoteService {
         LocalDate startDate = getMinIfNull(start);
         LocalDate endDate = getMaxIfNull(end);
         List<Vote> votes = voteRepository.getBetweenDates(userId, startDate, endDate).orElse(List.of());
-        return voteMapper.getDTO(votes);
+        return voteMapper.toDTO(votes);
     }
 
     private void assureVotingTimeNotExpired(String message) {

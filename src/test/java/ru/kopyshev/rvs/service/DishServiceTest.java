@@ -81,7 +81,7 @@ public class DishServiceTest extends AbstractServiceTest {
     void createWithException() {
         validateRootCause(ConstraintViolationException.class,
                 () -> service.create(new DishUpdateDTO(null, "   ", RESTAURANT_ID_1)));
-        validateRootCause(NullPointerException.class,
+        validateRootCause(IllegalArgumentException.class,
                 () -> service.create(new DishUpdateDTO(null, "The valid name of a dish", null)));
     }
 

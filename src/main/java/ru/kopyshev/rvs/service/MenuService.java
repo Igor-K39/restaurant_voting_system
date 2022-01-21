@@ -35,14 +35,14 @@ public class MenuService {
     public MenuDTO create(MenuUpdateDTO menuUpdateDTO) {
         log.debug("Creating a new menu: {}", menuUpdateDTO);
         ValidationUtil.checkNew(menuUpdateDTO);
-        Menu menu = menuMapper.getEntity(menuUpdateDTO);
-        return menuMapper.getDTO(menuRepository.save(menu));
+        Menu menu = menuMapper.toEntity(menuUpdateDTO);
+        return menuMapper.toDTO(menuRepository.save(menu));
     }
 
     public MenuDTO get(Integer id) {
         log.debug("Getting a menu with id {}", id);
         Menu menu = menuRepository.get(id).orElseThrow(() -> new NotFoundException(Menu.class, "id = " + id));
-        return menuMapper.getDTO(menu);
+        return menuMapper.toDTO(menu);
     }
 
     public List<MenuDTO> getAll() {
@@ -54,7 +54,7 @@ public class MenuService {
         log.debug("Getting all menus between {} and {}", start, end);
         List<Menu> menus = menuRepository.getAll(getMinIfNull(start), getMaxIfNull(end));
         return !isNull(menus)
-                ? menuMapper.getDTO(menus)
+                ? menuMapper.toDTO(menus)
                 : List.of();
     }
 
@@ -62,7 +62,7 @@ public class MenuService {
         log.debug("Getting all menus of restaurant {} between {} and {}", restaurantId, start, end);
         List<Menu> menuItems = menuRepository.getAll(restaurantId, getMinIfNull(start), getMaxIfNull(end));
         return !isNull(menuItems)
-                ? menuMapper.getDTO(menuItems)
+                ? menuMapper.toDTO(menuItems)
                 : List.of();
     }
 
@@ -70,7 +70,7 @@ public class MenuService {
         log.debug("Updating menu {} by {}", id, menuUpdateDTO);
         ValidationUtil.assureIdConsistent(menuUpdateDTO, id);
         menuRepository.findById(id).orElseThrow(() -> new NotFoundException(Menu.class, "id = " + id));
-        Menu menu = menuMapper.getEntity(menuUpdateDTO);
+        Menu menu = menuMapper.toEntity(menuUpdateDTO);
         menuRepository.update(menu);
     }
 

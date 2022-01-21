@@ -3,17 +3,17 @@ package ru.kopyshev.rvs.service;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.domain.Dish;
-import ru.kopyshev.rvs.repository.DishRepository;
 import ru.kopyshev.rvs.dto.dish.DishDTO;
 import ru.kopyshev.rvs.dto.dish.DishUpdateDTO;
-import ru.kopyshev.rvs.util.ValidationUtil;
+import ru.kopyshev.rvs.exception.NotFoundException;
+import ru.kopyshev.rvs.repository.DishRepository;
 import ru.kopyshev.rvs.util.mapper.DishMapper;
 
 import java.util.List;
 
 import static java.util.Objects.isNull;
+import static ru.kopyshev.rvs.util.ValidationUtil.*;
 
 @Slf4j
 @Service
@@ -27,10 +27,10 @@ public class DishService {
     }
 
     @Transactional
-    public DishDTO create(DishUpdateDTO dishUpdateDTO) {
-        log.debug("Creating a new dish: {}", dishUpdateDTO);
-        ValidationUtil.checkNew(dishUpdateDTO);
-        Dish saved = dishRepository.save(dishMapper.toEntity(dishUpdateDTO));
+    public DishDTO create(DishUpdateDTO dto) {
+        log.debug("Creating a new dish: {}", dto);
+        checkNew(dto);
+        Dish saved = dishRepository.save(dishMapper.toEntity(dto));
         return dishMapper.toDTO(saved);
     }
 
@@ -41,16 +41,16 @@ public class DishService {
     }
 
     @Transactional
-    public void update(DishUpdateDTO dishUpdateDTO, Integer dishId) {
-        log.debug("updating dish with id {} by {}", dishId, dishUpdateDTO);
-        ValidationUtil.assureIdConsistent(dishUpdateDTO, dishId);
-        dishRepository.save(dishMapper.toEntity(dishUpdateDTO));
+    public void update(DishUpdateDTO dto, Integer dishId) {
+        log.debug("updating dish with id {} by {}", dishId, dto);
+        assureIdConsistent(dto, dishId);
+        dishRepository.save(dishMapper.toEntity(dto));
     }
 
     public void delete(Integer dishId) {
         log.debug("deleting dish with id {}", dishId);
         int affectedRows = dishRepository.delete(dishId);
-        ValidationUtil.checkNotFoundWithId(affectedRows != 0, Dish.class, dishId);
+        checkNotFoundWithId(affectedRows != 0, Dish.class, dishId);
     }
 
     public List<DishDTO> getAll(Integer restaurantId) {
