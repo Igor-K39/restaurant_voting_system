@@ -5,17 +5,18 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.util.Assert;
-import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.domain.Role;
-import ru.kopyshev.rvs.domain.User;
+import ru.kopyshev.rvs.dto.user.UserDTO;
+import ru.kopyshev.rvs.exception.NotFoundException;
 
 import javax.validation.ConstraintViolationException;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
 import static ru.kopyshev.rvs.TestData.NOT_FOUND_ID;
 import static ru.kopyshev.rvs.UserTestData.*;
-import static ru.kopyshev.rvs.UserTestData.getMapWithUpdates;
+import static ru.kopyshev.rvs.util.SecurityUtil.matches;
 
 public class UserServiceTest extends AbstractServiceTest {
 
@@ -24,32 +25,32 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     void create() {
-        User expected = getNew();
-        User created = service.create(expected);
-        int userId = created.id();
-
-        expected.setId(userId);
-        USER_MATCHER.assertMatch(created, expected);
-        USER_MATCHER.assertMatch(service.get(userId), created);
+        UserDTO expected = getNew();
+        UserDTO created = service.create(expected);
+        expected.setId(created.id());
+        Assertions.assertTrue(matches(expected.getPassword(), created.getPassword()));
+        USER_TO_MATCHER.assertMatch(created, expected);
+        USER_TO_MATCHER.assertMatch(service.get(created.id()), created);
     }
 
     @Test
     void get() {
-        User user = service.get(USER_ID);
-        USER_MATCHER.assertMatch(user, USER);
+        UserDTO user = service.get(USER_ID);
+        USER_TO_MATCHER.assertMatch(user, USER);
     }
 
     @Test
     void update() {
-        User updated = getUpdated(USER);
+        UserDTO expected = getUpdated(USER);
         service.update(getMapWithUpdates(), USER_ID);
-        User actual = service.get(USER_ID);
-        USER_MATCHER.assertMatch(actual, updated);
+        UserDTO actual = service.get(expected.id());
+        Assertions.assertTrue(matches(expected.getPassword(), actual.getPassword()));
+        USER_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test
     void delete() {
-        User existing = service.get(USER_ID);
+        UserDTO existing = service.get(USER_ID);
         Assert.notNull(existing, "Must be an existing user");
         service.delete(USER_ID);
         Assertions.assertThrows(NotFoundException.class, () -> service.get(USER_ID));
@@ -57,20 +58,20 @@ public class UserServiceTest extends AbstractServiceTest {
 
     @Test
     void getAll() {
-        List<User> actual = service.getAll();
-        USER_MATCHER.assertMatch(actual, List.of(ADMIN, USER));
+        List<UserDTO> actual = service.getAll();
+        USER_TO_MATCHER.assertMatch(actual, List.of(ADMIN, USER));
     }
 
     @Test
     void getByEmail() {
         String email = USER.getEmail();
-        User user = service.getByEmail(email);
-        USER_MATCHER.assertMatch(user, USER);
+        UserDTO user = service.getByEmail(email);
+        USER_TO_MATCHER.assertMatch(user, USER);
     }
 
     @Test
     void createDuplicate() {
-        User user = new User(USER);
+        UserDTO user = new UserDTO(USER);
         user.setId(null);
         Assertions.assertThrows(DataAccessException.class, () -> service.create(user));
     }
@@ -78,9 +79,8 @@ public class UserServiceTest extends AbstractServiceTest {
     @Test
     void createWithException() {
         Set<Role> role = Set.of(Role.USER);
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "  ", "mail@yandex.ru", "password", role)));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "  ", "password", role)));
-        validateRootCause(ConstraintViolationException.class, () -> service.create(new User(null, "User", "mail@yandex.ru", "  ", role)));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new UserDTO(null, "  ", "mail@yandex.ru", "password", true, new Date(), role)));
+        validateRootCause(ConstraintViolationException.class, () -> service.create(new UserDTO(null, "User", "  ", "password", true, new Date(), role)));
     }
 
     @Test

@@ -1,18 +1,13 @@
 package ru.kopyshev.rvs.config;
 
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.filter.DelegatingFilterProxy;
 import ru.kopyshev.rvs.service.UserService;
-
-import static ru.kopyshev.rvs.config.ApplicationProperties.SECURITY_FILTER_NAME;
 
 @Configuration
 @EnableWebSecurity
@@ -20,15 +15,18 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
     private final UserService service;
 
-    public SpringSecurityConfig(UserService service) {
+    private final PasswordEncoder passwordEncoder;
+
+    public SpringSecurityConfig(UserService service, PasswordEncoder passwordEncoder) {
         this.service = service;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @Override
     public void configure(AuthenticationManagerBuilder auth) throws Exception {
         auth
                 .eraseCredentials(true)
-                .userDetailsService(service).passwordEncoder(passwordEncoder());
+                .userDetailsService(service).passwordEncoder(passwordEncoder);
     }
 
     @Override
@@ -49,13 +47,4 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
-    @Bean
-    public PasswordEncoder passwordEncoder() {
-        return new BCryptPasswordEncoder();
-    }
-
-    @Bean
-    public DelegatingFilterProxy delegatingFilterProxy() {
-        return new DelegatingFilterProxy(SECURITY_FILTER_NAME);
-    }
 }

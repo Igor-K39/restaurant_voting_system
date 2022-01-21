@@ -20,8 +20,8 @@ public class ProfileRestController extends AbstractUserController{
     static final String REST_URL = "/rest/profile";
 
     @PostMapping("/register")
-    public ResponseEntity<UserDTO> createWithLocation(@RequestBody @Valid UserDTO userTo) {
-        UserDTO created = super.create(userTo);
+    public ResponseEntity<UserDTO> createWithLocation(@RequestBody @Valid UserDTO userDTO) {
+        UserDTO created = super.create(userDTO);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(REST_URL + "/{id}")

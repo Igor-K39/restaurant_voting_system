@@ -8,14 +8,17 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 import ru.kopyshev.rvs.AuthorizedUser;
-import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.domain.User;
+import ru.kopyshev.rvs.dto.user.UserDTO;
+import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.repository.UserRepository;
-import ru.kopyshev.rvs.util.CollectionUtil;
-import ru.kopyshev.rvs.util.ValidationUtil;
+import ru.kopyshev.rvs.util.mapper.UserMapper;
 
 import java.util.List;
 import java.util.Map;
+
+import static ru.kopyshev.rvs.util.SecurityUtil.encodePassword;
+import static ru.kopyshev.rvs.util.ValidationUtil.*;
 
 @Slf4j
 @Service
@@ -24,40 +27,50 @@ public class UserService implements UserDetailsService {
 
     private final UserRepository userRepository;
 
-    public UserService(UserRepository userRepository) {
+    private final UserMapper userMapper;
+
+    public UserService(UserRepository userRepository, UserMapper userMapper) {
         this.userRepository = userRepository;
+        this.userMapper = userMapper;
     }
 
-    public User create(User user) {
-        log.debug("Creating a new user: {}", user);
-        ValidationUtil.checkNew(user);
-        return userRepository.save(user);
+    public UserDTO create(UserDTO userDTO) {
+        log.debug("Creating a new user: {}", userDTO);
+        checkNew(userDTO);
+        User user = userMapper.toEntity(userDTO);
+        encodePassword(user);
+        return userMapper.toDTO(userRepository.save(user));
     }
 
-    public User get(Integer id) {
+    public UserDTO get(Integer id) {
         log.debug("Getting user with id {}", id);
-        return userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, "id = " + id));
+        User user = userRepository.findById(id).orElseThrow(() -> new NotFoundException(User.class, "id = " + id));
+        return userMapper.toDTO(user);
     }
 
     public void update(Map<String, Object> patch, Integer id) {
         log.debug("Patching a user with id {} by {}", id, patch);
+        String password = (String) patch.get("password");
+        patch.put("password", encodePassword(password));
         userRepository.patch(patch, id);
     }
 
     public void delete(Integer id) {
         log.debug("Deleting a user with id {}", id);
         int affectedRows = userRepository.delete(id);
-        ValidationUtil.checkNotFoundWithId(affectedRows != 0, User.class, id);
+        checkNotFoundWithId(affectedRows != 0, User.class, id);
     }
 
-    public List<User> getAll() {
+    public List<UserDTO> getAll() {
         log.debug("Getting all users");
-        return CollectionUtil.getImmutableListIfNull(userRepository.getAll());
+        List<User> users = userRepository.getAll();
+        return userMapper.toDTO(users);
     }
 
-    public User getByEmail(String email) {
+    public UserDTO getByEmail(String email) {
         log.debug("Getting a user with email {}", email);
-        return ValidationUtil.checkNotFound(userRepository.getByEmail(email), User.class);
+        User user = userRepository.getByEmail(email);
+        return userMapper.toDTO(checkNotFound(user, User.class));
     }
 
     @Override
@@ -67,6 +80,6 @@ public class UserService implements UserDetailsService {
         if (user == null) {
             throw new UsernameNotFoundException("User " + email + " is not found");
         }
-        return new AuthorizedUser(user);
+        return new AuthorizedUser(userMapper.toDTO(user));
     }
 }

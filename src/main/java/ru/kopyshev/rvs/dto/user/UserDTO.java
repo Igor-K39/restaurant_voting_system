@@ -14,7 +14,6 @@ import java.util.*;
 @Data
 @EqualsAndHashCode(callSuper = true)
 @ToString(callSuper = true)
-@NoArgsConstructor
 public class UserDTO extends NamedDTO {
 
     @Email
@@ -34,6 +33,14 @@ public class UserDTO extends NamedDTO {
     @NotNull
     private Set<Role> roles = new HashSet<>();
 
+    public UserDTO() {
+        roles.add(Role.USER);
+    }
+
+    public UserDTO(UserDTO userDTO) {
+        this(userDTO.id, userDTO.name, userDTO.email, userDTO.password, userDTO.enabled, userDTO.registered, userDTO.roles);
+    }
+
     public UserDTO(Integer id, String name, String email, String password, boolean enabled, Date registered, Collection<Role> roles) {
         super(id, name);
         this.email = email;
@@ -49,6 +56,7 @@ public class UserDTO extends NamedDTO {
 
     public void setRoles(Collection<Role> roles) {
         Assert.notNull(roles, "Roles must not be null");
+        Assert.notEmpty(roles, "Roles must not be empty");
         this.roles.clear();
         this.roles.addAll(roles);
     }

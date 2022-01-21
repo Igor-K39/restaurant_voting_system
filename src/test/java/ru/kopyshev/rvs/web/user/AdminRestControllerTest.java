@@ -6,11 +6,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.ResultActions;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.service.UserService;
-import ru.kopyshev.rvs.dto.user.UserDTO;
 import ru.kopyshev.rvs.util.JsonUtil;
-import ru.kopyshev.rvs.util.UserUtil;
 import ru.kopyshev.rvs.web.AbstractControllerTest;
 
 import java.util.Arrays;
@@ -21,30 +20,31 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static ru.kopyshev.rvs.TestUtil.userHttpBasic;
 import static ru.kopyshev.rvs.UserTestData.*;
+import static ru.kopyshev.rvs.util.SecurityUtil.matches;
 
 public class AdminRestControllerTest extends AbstractControllerTest {
     private static final String restUrl = AdminRestController.ADMIN_REST_URL + '/';
-    private static final UserDTO adminTo = UserUtil.getToFromUser(ADMIN);
-    private static final List<UserDTO> allTo = UserUtil.getToFromUser(Arrays.asList(ADMIN, USER));
+    private static final UserDTO adminTo = ADMIN;
+    private static final List<UserDTO> allDTO = Arrays.asList(ADMIN, USER);
 
     @Autowired
     private UserService service;
 
     @Test
     void create() throws Exception {
-        var userTo = UserUtil.getToFromUser(getNew());
+        UserDTO expected = getNew();
         ResultActions actions = perform(MockMvcRequestBuilders.post(restUrl)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(userTo)))
+                .content(JsonUtil.writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isCreated());
 
-        var createdTo = USER_TO_MATCHER.readFromJson(actions);
-        int id = createdTo.getId();
-        userTo.setId(id);
-        USER_TO_MATCHER.assertMatch(createdTo, userTo);
-        USER_MATCHER.assertMatch(service.get(id), UserUtil.getUserFromTo(userTo));
+        UserDTO actual = USER_TO_MATCHER.readFromJson(actions);
+        expected.setId(actual.id());
+        Assertions.assertTrue(matches(expected.getPassword(), actual.getPassword()));
+        USER_TO_MATCHER.assertMatch(actual, expected);
+        USER_TO_MATCHER.assertMatch(service.get(actual.id()), expected);
     }
 
     @Test
@@ -64,7 +64,7 @@ public class AdminRestControllerTest extends AbstractControllerTest {
                 .andDo(print())
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.APPLICATION_JSON))
-                .andExpect(USER_TO_MATCHER.contentJson(allTo));
+                .andExpect(USER_TO_MATCHER.contentJson(allDTO));
     }
 
     @Test
@@ -80,17 +80,18 @@ public class AdminRestControllerTest extends AbstractControllerTest {
 
     @Test
     void patch() throws Exception  {
-        UserDTO updated = UserUtil.getToFromUser(getUpdated(USER));
+        UserDTO expected = getUpdated(USER);
 
         perform(MockMvcRequestBuilders.patch(restUrl + USER_ID)
                 .with(userHttpBasic(ADMIN_AUTH))
                 .contentType(MediaType.APPLICATION_JSON)
-                .content(JsonUtil.writeValue(updated)))
+                .content(JsonUtil.writeValue(expected)))
                 .andDo(print())
                 .andExpect(status().isNoContent());
 
-        UserDTO actual = UserUtil.getToFromUser(service.get(USER_ID));
-        USER_TO_MATCHER.assertMatch(actual, updated);
+        UserDTO actual = service.get(expected.id());
+        Assertions.assertTrue(matches(expected.getPassword(), actual.getPassword()));
+        USER_TO_MATCHER.assertMatch(actual, expected);
     }
 
     @Test

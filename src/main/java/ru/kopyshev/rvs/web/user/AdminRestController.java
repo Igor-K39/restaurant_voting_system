@@ -20,8 +20,8 @@ public class AdminRestController extends AbstractUserController {
     static final String ADMIN_REST_URL = "/rest/admin/users";
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<UserDTO> createWithLocation(@RequestBody @Valid UserDTO userTo) {
-        UserDTO created = super.create(userTo);
+    public ResponseEntity<UserDTO> createWithLocation(@RequestBody @Valid UserDTO userDTO) {
+        UserDTO created = super.create(userDTO);
         URI uriOfNewResource = ServletUriComponentsBuilder
                 .fromCurrentContextPath()
                 .path(ADMIN_REST_URL + "/{id}")

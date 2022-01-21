@@ -2,15 +2,16 @@ package ru.kopyshev.rvs.service;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import ru.kopyshev.rvs.domain.Restaurant;
+import ru.kopyshev.rvs.domain.Vote;
+import ru.kopyshev.rvs.dto.VoteDTO;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 import ru.kopyshev.rvs.exception.NotFoundException;
 import ru.kopyshev.rvs.exception.TimeExpiredException;
-import ru.kopyshev.rvs.domain.Restaurant;
-import ru.kopyshev.rvs.domain.User;
-import ru.kopyshev.rvs.domain.Vote;
 import ru.kopyshev.rvs.repository.RestaurantRepository;
 import ru.kopyshev.rvs.repository.VoteRepository;
-import ru.kopyshev.rvs.dto.VoteDTO;
 import ru.kopyshev.rvs.util.ValidationUtil;
+import ru.kopyshev.rvs.util.mapper.UserMapper;
 import ru.kopyshev.rvs.util.mapper.VoteMapper;
 
 import java.time.Clock;
@@ -32,32 +33,35 @@ public class VoteService {
     private final VoteRepository voteRepository;
     private final RestaurantRepository restaurantRepository;
     private final VoteMapper voteMapper;
+    private final UserMapper userMapper;
     private final LocalTime votingExpirationTime = LocalTime.parse(VOTE_EXPIRATION_TIME);
     private final Predicate<LocalDateTime> canVoteUp =
             dt -> dt.isBefore(LocalDateTime.of(LocalDate.now(clock), LocalTime.parse(VOTE_EXPIRATION_TIME)));
 
 
     public VoteService(VoteRepository voteRepository, RestaurantRepository restaurantRepository,
-                       VoteMapper voteMapper) {
+                       VoteMapper voteMapper, UserMapper userMapper) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
         this.voteMapper = voteMapper;
+        this.userMapper = userMapper;
     }
 
     public VoteService(VoteRepository voteRepository, RestaurantRepository restaurantRepository,
-                       VoteMapper voteMapper, Clock clock) {
+                       VoteMapper voteMapper, UserMapper userMapper, Clock clock) {
         this.voteRepository = voteRepository;
         this.restaurantRepository = restaurantRepository;
         this.voteMapper = voteMapper;
+        this.userMapper = userMapper;
         this.clock = clock;
     }
 
-    public VoteDTO voteUp(User user, Integer restaurantId) {
-        log.debug("Voting up for restaurant {} by user {}", restaurantId, user);
-        if (voteRepository.hasSingleVote(user.id(), LocalDate.now())) {
+    public VoteDTO voteUp(UserDTO userDTO, Integer restaurantId) {
+        log.debug("Voting up for restaurant {} by user {}", restaurantId, userDTO);
+        if (voteRepository.hasSingleVote(userDTO.id(), LocalDate.now())) {
             assureVotingTimeNotExpired("Cannot change the vote after " + votingExpirationTime);
         }
-        Vote vote = voteRepository.voteUp(user, restaurantRepository.getById(restaurantId));
+        Vote vote = voteRepository.voteUp(userMapper.toEntity(userDTO), restaurantRepository.getById(restaurantId));
         return voteMapper.getDTO(vote);
     }
 

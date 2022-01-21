@@ -1,12 +1,14 @@
 package ru.kopyshev.rvs;
 
-import ru.kopyshev.rvs.domain.User;
+import lombok.ToString;
+import ru.kopyshev.rvs.dto.user.UserDTO;
 
+@ToString(callSuper = true)
 public class AuthorizedUser extends org.springframework.security.core.userdetails.User {
 
-    private User user;
+    private UserDTO user;
 
-    public AuthorizedUser(User user) {
+    public AuthorizedUser(UserDTO user) {
         super(user.getEmail(), user.getPassword(), user.isEnabled(),
                 true, true, true, user.getRoles());
         this.user = user;
@@ -16,16 +18,11 @@ public class AuthorizedUser extends org.springframework.security.core.userdetail
         return user.getId();
     }
 
-    public void update(User user) {
-        this.user = new User(user);
+    public void update(UserDTO userDTO) {
+        this.user = new UserDTO(userDTO);
     }
 
-    public User getUser() {
+    public UserDTO getUser() {
         return user;
-    }
-
-    @Override
-    public String toString() {
-        return user.toString();
     }
 }
